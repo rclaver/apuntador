@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent">
+
+   <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:paddingLeft="8dp"
+      android:paddingRight="8dp"
+      tools:context="ui.ConfiguracioFragment">
+
+      <TextView
+         android:id="@+id/titol_configuracio"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="8dp"
+         android:gravity="center"
+         android:textSize="22sp"
+         android:text="@string/titol"
+         android:textStyle="bold"
+         app:layout_constraintTop_toTopOf="parent" />
+
+      <LinearLayout
+         android:id="@+id/grup_etiquetes"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="70dp"
+         android:gravity="center"
+         android:orientation="horizontal" >
+         <TextView
+            android:id="@+id/titol_actors"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/marro"
+            android:text="@string/titol_actors"
+            android:textStyle="bold"
+            android:background="@color/blau_200" />
+         <TextView
+            android:id="@+id/titol_veus"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/marro"
+            android:text="@string/titol_veus"
+            android:textStyle="bold"
+            android:background="@color/blau_200" />
+      </LinearLayout>
+
+      <ScrollView
+         android:id="@+id/grup_scroll"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:contentDescription="scroll"
+         android:gravity="center"
+         android:layout_gravity="center"
+         android:orientation="vertical"
+         android:layout_marginTop="12dp"
+         android:layout_below="@id/grup_etiquetes" >
+
+         <LinearLayout
+            android:id="@+id/formContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="vertical" />
+      </ScrollView>
+
+      <LinearLayout
+         android:id="@+id/formIdioma"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="10dp"
+         android:orientation="horizontal"
+         android:layout_below="@id/grup_scroll">
+         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginBottom="20dp"
+            android:text="@string/titol_seleccio_idioma"
+            android:textSize="16sp"
+            android:textColor="@color/marro"
+            android:textStyle="bold" />
+         <Spinner
+            android:id="@+id/selectorIdioma"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp" />
+      </LinearLayout>
+
+      <ProgressBar
+         android:id="@+id/espera"
+         style="?android:attr/progressBarStyle"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_below="@id/formIdioma"
+         android:layout_marginTop="40dp" />
+
+      <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:gravity="center|bottom"
+         android:orientation="horizontal"
+         android:layout_marginBottom="20dp"
+         android:layout_alignParentBottom="true" >
+
+         <Button
+            android:id="@+id/boto_desar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/boto_desar"
+            app:layout_constraintLeft_toLeftOf="parent" />
+         <Button
+            android:id="@+id/boto_instruccions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/boto_instruccions"
+            android:layout_marginLeft="40dp"
+            app:layout_constraintLeft_toRightOf="@id/boto_desar" />
+      </LinearLayout>
+
+   </RelativeLayout>
+
+   <TextView
+      android:id="@+id/instruccions"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      android:layout_marginBottom="80dp"
+      android:text="@string/instruccions"
+      android:textSize="16sp"
+      android:visibility="invisible"
+      android:background="@drawable/rounded_corner"
+      android:backgroundTint="@color/blau_200" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

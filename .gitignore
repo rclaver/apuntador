@@ -1,0 +1,13 @@
+*.iml
+.gradle
+.idea/
+.kotlin/
+.git
+assets/
+build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+gradlew
+gradlew.bat

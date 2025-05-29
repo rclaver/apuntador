@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:tools="http://schemas.android.com/tools">
+
+   <uses-permission android:name="android.permission.INTERNET" />
+   <uses-permission android:name="android.permission.RECORD_AUDIO" />
+   <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"
+      tools:ignore="ProtectedPermissions" />
+   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+   <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+      tools:ignore="ScopedStorage" />
+
+   <application
+      android:allowBackup="true"
+      android:icon="@mipmap/apuntador"
+      android:label="@string/app_name"
+      android:roundIcon="@mipmap/apuntador_round"
+      android:supportsRtl="false"
+      android:theme="@style/Theme.ApuntadorDeTeatre"
+      tools:targetApi="31">
+
+      <activity
+         android:name=".MainActivity"
+         android:exported="true">
+
+         <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+         </intent-filter>
+
+      </activity>
+      <activity android:name="cat.tron.apuntador.activitat.Activitat" />
+
+      <provider
+         android:name="androidx.core.content.FileProvider"
+         android:authorities="${applicationId}.provider; com.android.providers.downloads.documents"
+         android:exported="false"
+         android:grantUriPermissions="true" >
+         <grant-uri-permission android:path="content://com.android.externalstorage.documents/tree/primary:Download" />
+         <grant-uri-permission android:path="content://com.android.providers.downloads.documents/tree/downloads/document/downloads" />
+         <grant-uri-permission android:path="content://com.android.providers.downloads.documents/tree/downloads/Apuntador" />
+      </provider>
+
+   </application>
+
+   <queries>
+      <intent>
+         <action android:name="android.intent.action.TTS_SERVICE" />
+      </intent>
+   </queries>
+
+</manifest>

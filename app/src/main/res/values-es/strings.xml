@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <string name="app_name">El apuntador del teatro</string>
+   <string name="titol">El apuntador</string>
+   <string name="titol_configuracio">configuración</string>
+   <string name="titol_seleccio">Selección de fagmentos</string>
+   <string name="obra_sencera">obra completa</string>
+   <string name="boto_configurar">Configurar</string>
+   <string name="boto_sortir">Salir</string>
+   <string name="boto_desar">Guardar</string>
+   <string name="boto_instruccions">Instrucciones</string>
+   <string name="instruccions">Selección de los parámetros para cada actor:
+      \n<b>voz:</b> para a cada actor debes seleccionar una de las voces disponibles\n
+      \n<b>Nota:</b> Los archivos correspondientes a los fragmentos de la obra para cada actor y el archivo de la
+      obra completa deben guardarse en la carpeta \'Downloads/Apuntador\'\n
+      \n<b>El nombre de los archivos</b> debe tener el siguiente formato:
+      \n- <b><u>nombre_obra</u>-<u>nombre_actor</u>-<u>99</u>.txt</b>
+      \n(el número_de_secuencia_de_fragmento: de 01 a 99 para cada actor)\n
+      \n<b>El formato de cada archivo</b> (fragmentos para cada actor) es:
+      \n<b>- Texto del actor:</b> <u>Nombre_actor: </u> (nombre seguido de : y espacio) A continuación, el texto en una única línea. Puede contener, entre paréntesis, elementos de situación narrativa.
+      \n<b>- Texto del narrador y situación:</b> Cualquier texto que no empiece con el nombre de un actor seguido de dos puntos (:)
+   </string>
+   <string name="inici_assaig">Hola %s, ya puedes empezar</string>
+   <string name="encert">"acierto: %d%%\ntexto: %s\nrecibido: %s"</string>
+   <string name="escoltant">escuchando …</string>
+   <string name="error_audio">Error de audio</string>
+   <string name="error_no_escolto_res">No he oido nada</string>
+   <string name="titol_actors">actores</string>
+   <string name="titol_veus">voces</string>
+   <string name="titol_seleccio_idioma">Selección de idioma:</string>
+   <string name="error_document_llegint">No he podido leer el archivo %s</string>
+   <string name="error_document_desconegut">Error lleyendo el archivo %s - %s</string>
+   <string name="idioma_no_soportat">TTS: Idioma no soportado</string>
+   <string name="error_inici_TTS">TTS: Inicialización fallida</string>
+</resources>

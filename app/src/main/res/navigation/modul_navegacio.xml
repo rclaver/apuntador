@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   xmlns:tools="http://schemas.android.com/tools"
+   android:id="@+id/modul_navegacio"
+   app:startDestination="@+id/BuitFragment">
+
+   <fragment
+      android:id="@+id/BuitFragment"
+      android:name="cat.tron.apuntador.ui.BuitFragment"
+      android:label="@string/blanc"
+      tools:layout="@layout/fragment_buit" >
+      <action
+         android:id="@+id/action_BuitFragment_to_ConfiguracioFragment"
+         app:destination="@id/ConfiguracioFragment" />
+      <action
+         android:id="@+id/action_BuitFragment_to_SeleccioFragment"
+         app:destination="@id/SeleccioFragment" />
+   </fragment>
+
+   <fragment
+      android:id="@+id/ConfiguracioFragment"
+      android:name="cat.tron.apuntador.ui.ConfiguracioFragment"
+      android:label="@string/titol_configuracio"
+      tools:layout="@layout/fragment_configuracio" >
+      <action
+         android:id="@+id/action_ConfiguracioFragment_to_SeleccioFragment"
+         app:destination="@id/SeleccioFragment" />
+   </fragment>
+
+   <fragment
+      android:id="@+id/SeleccioFragment"
+      android:name="cat.tron.apuntador.ui.SeleccioFragment"
+      android:label="@string/titol_seleccio"
+      tools:layout="@layout/fragment_seleccio">
+      <action
+         android:id="@+id/action_SeleccioFragment_to_AssaigFragment"
+         app:destination="@id/AssaigFragment" />
+      <action
+         android:id="@+id/action_SeleccioFragment_to_ConfiguracioFragment"
+         app:destination="@id/ConfiguracioFragment" />
+   </fragment>
+
+   <fragment
+      android:id="@+id/AssaigFragment"
+      android:name="cat.tron.apuntador.ui.AssaigFragment"
+      android:label="@string/titol"
+      tools:layout="@layout/fragment_assaig">
+      <action
+         android:id="@+id/action_AssaigFragment_to_SeleccioFragment"
+         app:destination="@id/SeleccioFragment" />
+   </fragment>
+
+</navigation>

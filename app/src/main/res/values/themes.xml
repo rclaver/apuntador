@@ -1,0 +1,11 @@
+<resources>
+    <style name="Base.Theme.ApuntadorDeTeatre" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/purple_200</item>
+        <item name="colorPrimaryVariant">@color/blau_200</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_200</item>
+        <item name="colorOnSecondary">@color/black</item>
+    </style>
+    <style name="Theme.ApuntadorDeTeatre" parent="Base.Theme.ApuntadorDeTeatre" />
+</resources>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:tools="http://schemas.android.com/tools"
+   xmlns:app="http://schemas.android.com/apk/res-auto"
+   android:layout_width="match_parent"
+   android:layout_height="match_parent"
+   android:orientation="vertical"
+   tools:context="ui.SeleccioFragment">
+
+   <TextView
+      android:id="@+id/titol_seleccio"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="8dp"
+      android:layout_marginEnd="8dp"
+      android:gravity="center"
+      android:hint="@string/titol"
+      android:textSize="22sp"
+      android:textStyle="bold" />
+
+   <TextView
+      android:id="@+id/subtitol"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="30dp"
+      android:layout_marginEnd="8dp"
+      android:gravity="center"
+      android:hint="@string/titol_seleccio"
+      android:textSize="16sp"
+      android:textStyle="bold" />
+
+   <RadioGroup
+      android:id="@+id/rg_actors"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:textAlignment="center"
+      android:layout_marginTop="10dp"
+      android:orientation="vertical"
+      android:isScrollContainer="true" >
+<!--
+      <RadioButton
+         android:id="@+id/actor_canut"
+         android:layout_width="wrap_content"
+         android:layout_height="40dp"
+         android:text="@string/actor_canut" />
+-->
+   </RadioGroup>
+
+   <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center">
+      <Button
+         android:id="@+id/boto_configurar"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/boto_configurar"
+         android:layout_marginTop="40dp"
+         android:layout_marginRight="20dp"
+         app:layout_constraintLeft_toLeftOf="parent"
+         app:layout_constraintTop_toTopOf="parent" />
+
+      <Button
+         android:id="@+id/boto_tancar"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="@string/boto_sortir"
+         android:layout_marginLeft="40dp"
+         app:layout_constraintLeft_toRightOf="@id/boto_configurar"
+         app:layout_constraintTop_toTopOf="@id/boto_configurar" />
+   </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
