@@ -3,15 +3,15 @@
    <string name="app_name">El apuntador del teatro</string>
    <string name="titol">El apuntador</string>
    <string name="titol_configuracio">configuración</string>
-   <string name="titol_seleccio">Selección de fagmentos</string>
-   <string name="obra_sencera">obra completa</string>
-   <string name="boto_configurar">Configurar</string>
-   <string name="boto_sortir">Salir</string>
-   <string name="boto_desar">Guardar</string>
-   <string name="boto_instruccions">Instrucciones</string>
-   <string name="instruccions">Selección de los parámetros para cada actor:
-      \n<b>voz:</b> para a cada actor debes seleccionar una de las voces disponibles\n
-      \n<b>Nota:</b> Los archivos correspondientes a los fragmentos de la obra para cada actor y el archivo de la
+   <string name="titol_seleccio">Selection of fragments</string>
+   <string name="obra_sencera">complete play</string>
+   <string name="boto_configurar">Set up</string>
+   <string name="boto_sortir">Exit</string>
+   <string name="boto_desar">Save</string>
+   <string name="boto_instruccions">Instructions</string>
+   <string name="instruccions">Selecting the parameters for each actor:
+      \n<b>voice:</b> for each actor you must select one of the available voices\n
+      \n<b>nota:</b> Los archivos correspondientes a los fragmentos de la obra para cada actor y el archivo de la
       obra completa deben guardarse en la carpeta \'Downloads/Apuntador\'\n
       \n<b>El nombre de los archivos</b> debe tener el siguiente formato:
       \n- <b><u>nombre_obra</u>-<u>nombre_actor</u>-<u>99</u>.txt</b>
@@ -29,7 +29,7 @@
    <string name="titol_veus">voces</string>
    <string name="titol_seleccio_idioma">Selección de idioma:</string>
    <string name="error_document_llegint">No he podido leer el archivo %s</string>
-   <string name="error_document_desconegut">Error lleyendo el archivo %s - %s</string>
+   <string name="error_document_desconegut">Error leyendo el archivo %s - %s</string>
    <string name="idioma_no_soportat">TTS: Idioma no soportado</string>
    <string name="error_inici_TTS">TTS: Inicialización fallida</string>
 </resources>

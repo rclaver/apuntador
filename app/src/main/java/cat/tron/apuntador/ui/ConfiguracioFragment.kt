@@ -33,7 +33,7 @@ class ConfiguracioFragment : Fragment() {
    private lateinit var instruccions: TextView
    private lateinit var espera: ProgressBar
    private val opcionsVeu = objVeus.getList()
-   private val opcionsIdioma = arrayOf("Català", "Español")
+   private val opcionsIdioma = arrayOf("Català", "English", "Español")
 
    data class VistaDadesActors(
       val actor: TextView,

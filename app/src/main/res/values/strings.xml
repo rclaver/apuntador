@@ -2,11 +2,9 @@
    <string name="app_name">L\'apuntador del teatre</string>
    <string name="titol">L\'apuntador</string>
    <string name="titol_configuracio">configuració</string>
-   <string name="titol_seleccio">Selecció de fagments</string>
+   <string name="titol_seleccio">Selecció de fragments</string>
    <string name="blanc" translatable="false"> </string>
-
    <string name="obra_sencera">obra sencera</string>
-
    <string name="boto_configurar">Configurar</string>
    <string name="boto_sortir">Sortir</string>
 
@@ -16,8 +14,8 @@
    <string name="boto_desar">Desar</string>
    <string name="boto_instruccions">Instruccions</string>
    <string name="instruccions">Selecció dels paràmetres per a cada actor:
-      \n<b>veu:</b> per a a cada actor heu de seleccionar una de les veus disponibles\n
-      \n<b>Nota:</b> Els arxius corresponents als fragments de l\'obra per a cada actor i l\'arxiu de l\'obra sencera
+      \n<b>veu:</b> per a cada actor heu de seleccionar una de les veus disponibles\n
+      \n<b>nota:</b> Els arxius corresponents als fragments de l\'obra per a cada actor i l\'arxiu de l\'obra sencera
       s\'han de desar a la carpeta \'Downloads/Apuntador\'\n
       \n<b>El nom dels arxius</b> ha de tenir el següent format:
       \n- <b><u>nom_obra</u>-<u>nom_actor</u>-<u>99</u>.txt</b>

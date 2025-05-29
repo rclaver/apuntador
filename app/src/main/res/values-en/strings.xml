@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+   <string name="app_name">The theater prompter</string>
+   <string name="titol">The prompter</string>
+   <string name="titol_configuracio">configuration</string>
+   <string name="titol_seleccio">Selección de fagmentos</string>
+   <string name="obra_sencera">obra completa</string>
+   <string name="boto_configurar">Configurar</string>
+   <string name="boto_sortir">Salir</string>
+   <string name="boto_desar">Guardar</string>
+   <string name="boto_instruccions">Instrucciones</string>
+   <string name="instruccions">Selección de los parámetros para cada actor:
+      \n<b>voz:</b> para cada actor debes seleccionar una de las voces disponibles\n
+      \n<b>note:</b> The files corresponding to the fragments of the play for each actor and the file of the complete play must be saved in the 'Downloads/Apuntador' folder.'\n
+      \n<b>The file name</b> must have the following format:
+      \n- <b><u>play_ame</u>-<u>actor_name</u>-<u>99</u>.txt</b>
+      \n(the fragment_sequence_number: from 01 to 99 for each actor)\n
+      \n<b>The format of each file</b> (fragments for each actor) is:
+      \n<b>- Actor's text:</b> <u>Actor_name: </u> (name followed by : and space) Below is the text on a single line. It may contain, in parentheses, elements of narrative context.
+      \n<b>- Narrator's text and situation:</b> Any text that does not begin with an actor's name followed by a colon (:)
+   </string>
+   <string name="inici_assaig">Hi %s, you can start now</string>
+   <string name="encert">"success: %d%%\ntext: %s\nreceived: %s"</string>
+   <string name="escoltant">listening …</string>
+   <string name="error_audio">Audio error</string>
+   <string name="error_no_escolto_res">I haven't heard anything</string>
+   <string name="titol_actors">actors</string>
+   <string name="titol_veus">voices</string>
+   <string name="titol_seleccio_idioma">Language selection:</string>
+   <string name="error_document_llegint">I have not been able to read the file %s</string>
+   <string name="error_document_desconegut">Error reading file %s - %s</string>
+   <string name="idioma_no_soportat">TTS: Language not supported</string>
+   <string name="error_inici_TTS">TTS: Initialization failed</string>
+</resources>
