@@ -2,6 +2,7 @@
 <b>L'apuntador del teatre</b>. Aplicació Android per a mòbils
 
 <p>Els arxius corresponents als fragments de l'obra per a cada actor i l'arxiu de l'obra sencera s'han de desar a la carpeta 'Downloads/Apuntador'</p>
+<p>Vegeu els exemples a la carpeta sampledata<p>
 <p><b>El nom dels arxius</b> ha de tenir el següent format:<br>
 - <b><u>nom_obra</u>-<u>nom_actor</u>-<u>99</u>.txt</b><br>
 (el número_de_seqüència_de_fragment: de 01 a 99 per a cada actor)</p>
