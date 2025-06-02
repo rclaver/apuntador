@@ -26,7 +26,10 @@ object GestorDeVeu {
 
    object objVeus {
       private val veu = Voice("ca-es-x-caf-local", Locale("ca_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
-      private val mveus: Map<String, Map<String, Any>> = mapOf(
+      private val iVeus: Map<String, Array<Voice>> = mapOf(
+         "ca" to arrayOf(Voice("ca-es-x-caf-local", Locale("ca_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null))
+      )
+      private val aVeus: Map<String, Map<String, Any>> = mapOf(
          "Vukei"  to mapOf("veu" to veu, "velocitat" to 1.0, "registre" to 0.3),
          "Brasde" to mapOf("veu" to veu, "velocitat" to 1.1, "registre" to 0.6),
          "Elkide" to mapOf("veu" to veu, "velocitat" to 1.1, "registre" to 0.8),
@@ -36,8 +39,8 @@ object GestorDeVeu {
          "Moani"  to mapOf("veu" to veu, "velocitat" to 1.3, "registre" to 1.8),
          "Sukele" to mapOf("veu" to veu, "velocitat" to 1.4, "registre" to 2.4)
       )
-      fun get(v: String?): Map<String, Any> = mveus[v ?: 1]!!
-      fun getList(): Array<String> { return mveus.keys.toTypedArray() }
+      fun get(v: String?): Map<String, Any> = aVeus[v ?: 1]!!
+      fun getList(): Array<String> { return aVeus.keys.toTypedArray() }
       fun getNarrador(): String = "Narde"
    }
 
