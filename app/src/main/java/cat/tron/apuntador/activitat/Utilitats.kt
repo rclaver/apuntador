@@ -206,9 +206,9 @@ object Utilitats {
       aca.startActivityForResult(intent, REQUEST_CODE_OPEN_DIRECTORY)
    }
 
-   fun espera(l: Long = 10)  {
+   /*fun espera(l: Long = 10)  {
       Thread.sleep(l)
-   }
+   }*/
 
    /*
    Obtenir les dades de l'obra a partir de la llista d'arxius del directori Apuntador

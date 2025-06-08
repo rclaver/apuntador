@@ -127,7 +127,7 @@ class Activitat : AppCompatActivity() {
                      frgAssaig.narracio.text = nar
                   }
                }
-               delay(100) // Espera per donar temps a l'usuari (i a la UI)
+               delay(50) // Espera per donar temps a l'usuari (i a la UI)
             }
             if (stop || (estat=="anterior" && i>0) || (estat=="següent" && i<nEscenes)) {
                break  // detenir la lectura
@@ -150,7 +150,7 @@ class Activitat : AppCompatActivity() {
          ret = escoltaActor(subText, esNarracio)
       } else {
          ret += GestorDeVeu.textToAudio(subText, veu, ends, esNarracio, objActor.esObraSencera(), this)
-         delay(300)
+         delay(100)
       }
       return ret
    }
@@ -160,12 +160,12 @@ class Activitat : AppCompatActivity() {
       withContext(Dispatchers.Main) {
          if (esNarracio || ends == ":") {
             frgAssaig.narracio.text = ret
-            delay(300)
+            //delay(100)
          } else {
             frgAssaig.escenaActual.text = patroEscena.replace(ret, "")
          }
       }
-      delay(100)
+      //delay(100)
       return ret
    }
 
@@ -183,7 +183,7 @@ class Activitat : AppCompatActivity() {
          encert = Utilitats.comparaSequenciesDeText(originalText, nouText)
          if (encert < 80) {
             mostraError(String.format(cR.getString(R.string.encert), encert, originalText, nouText))
-            Utilitats.espera(5000)
+            //Utilitats.espera(5000)
          }
       }else {
          mostraError(cR.getString(R.string.error_no_escolto_res))
