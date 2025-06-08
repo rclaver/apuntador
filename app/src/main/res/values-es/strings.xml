@@ -12,7 +12,7 @@
    <string name="instruccions">Selecting the parameters for each actor:
       \n<b>voice:</b> for each actor you must select one of the available voices\n
       \n<b>nota:</b> Los archivos correspondientes a los fragmentos de la obra para cada actor y el archivo de la
-      obra completa deben guardarse en la carpeta \'Downloads/Apuntador\'\n
+      obra completa deben guardarse en una carpeta accesible, por ejemplo: \'Downloads/Apuntador\'\n
       \n<b>El nombre de los archivos</b> debe tener el siguiente formato:
       \n- <b><u>nombre_obra</u>-<u>nombre_actor</u>-<u>99</u>.txt</b>
       \n(el número_de_secuencia_de_fragmento: de 01 a 99 para cada actor)\n
