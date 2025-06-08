@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.LinearLayout
+import android.widget.NumberPicker
 import android.widget.ProgressBar
 import android.widget.Spinner
 import android.widget.TextView
@@ -28,6 +29,12 @@ class ConfiguracioFragment : Fragment() {
 
    private lateinit var formContainer: LinearLayout
    private lateinit var selectorIdioma: Spinner
+   private lateinit var selectorRegistre: NumberPicker
+   private val opcRegistre = (3..20).map { (it * 0.1).toString().substring(0,3) }.toTypedArray()
+   private var registreSelectedItem = ""
+   private lateinit var selectorVelocitat: NumberPicker
+   private val opcVelocitat = Array<String>(6) { n -> (0.9f + (n+1).toFloat()/10).toString() }
+   private var velocitatSelectedItem = ""
    private lateinit var botoDesar: Button
    private lateinit var botoInstruccions: Button
    private lateinit var instruccions: TextView
@@ -37,7 +44,9 @@ class ConfiguracioFragment : Fragment() {
 
    data class VistaDadesActors(
       val actor: TextView,
-      val seleccioVeu: Spinner
+      val seleccioVeu: Spinner,
+      val seleccioRegistre: NumberPicker,
+      val seleccioVelocitat: NumberPicker
    )
    private val formulariActors = mutableListOf<VistaDadesActors>()
 
@@ -140,6 +149,17 @@ class ConfiguracioFragment : Fragment() {
             if (index >= 0) { setSelection(index) }
          }
       }
+
+      selectorRegistre.minValue = 0
+      selectorRegistre.maxValue = opcRegistre.size - 1
+      selectorRegistre.displayedValues = opcRegistre
+      selectorRegistre.wrapSelectorWheel = false
+
+      selectorVelocitat.minValue = 0
+      selectorVelocitat.maxValue = opcRegistre.size - 1
+      selectorVelocitat.displayedValues = opcVelocitat
+      selectorVelocitat.wrapSelectorWheel = false
+
       val fila = LinearLayout(context).apply {
          orientation = LinearLayout.HORIZONTAL
          layoutParams = LinearLayout.LayoutParams(
@@ -157,7 +177,9 @@ class ConfiguracioFragment : Fragment() {
       formulariActors.add(
          VistaDadesActors(
             actor = actor,
-            seleccioVeu = seleccioVeu
+            seleccioVeu = seleccioVeu,
+            seleccioRegistre = selectorRegistre,
+            seleccioVelocitat = selectorRegistre
          )
       )
    }
