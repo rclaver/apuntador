@@ -35,8 +35,7 @@ object Utilitats {
 
    object objCompanyia {
       private var llistaActors = mutableListOf<String>()
-      private var dadesActors = mutableMapOf<String, String>()
-      //private var dadesActors = mutableMapOf<String, Map<String,Any>>()
+      private var dadesActors = mutableMapOf<String, Map<String,Any>>()
       private var titol: String? = null
       private var idioma: String = "ca"
 
@@ -47,25 +46,10 @@ object Utilitats {
 
             val jsonLlista = it.optJSONObject("llistatDactors")
             if (jsonLlista != null) {
-               llistaActors = mutableListOf<String>()
-               jsonLlista.keys().forEach { actor ->
-                  llistaActors.add(actor)
-                  dadesActors.put(actor, jsonLlista.get(actor).toString())
-               }
-            }
-         }
-      }
-      /*////
-      fun set(json: JSONObject?) {
-         json?.let {
-            titol = it.optString("titolDeLobra", "")
-            idioma = it.optString("idioma", "")
-            val jsonLlista = it.optJSONObject("llistatDactors")
-            if (jsonLlista != null) {
                val dadesTemp = mutableMapOf<String, Map<String, Any>>()
                llistaActors = mutableListOf<String>()
                jsonLlista.keys().forEach { actor ->
-                  llistaActors!!.add(actor)
+                  llistaActors.add(actor)
                   val parametres = jsonLlista.getJSONObject(actor)
                   val mapa = mutableMapOf<String, Any>()
                   parametres.keys().forEach { k ->
@@ -77,29 +61,13 @@ object Utilitats {
             }
          }
       }
-      */
+
       fun get(): JSONObject {
          val json = JSONObject()
          json.put("titolDeLobra", titol)
          json.put("idioma", idioma)
          val jsonActors = JSONObject()
          if (dadesActors.isNotEmpty()) {
-            for ((actor, veu) in dadesActors) {
-               jsonActors.put(actor, veu)
-            }
-            json.put("llistatDactors", jsonActors)
-         }else if (llistaActors.isNotEmpty())  {
-            json.put("llistatDactors", JSONArray(llistaActors))
-         }
-         return json
-      }
-      /*////
-      fun get(): JSONObject {
-         val json = JSONObject()
-         json.put("titolDeLobra", titol)
-         json.put("idioma", idioma)
-         val jsonActors = JSONObject()
-         if (dadesActors != null) {
             for ((actor, parametres) in dadesActors) {
                val paramsJson = JSONObject()
                for ((k,v) in parametres) {
@@ -108,17 +76,16 @@ object Utilitats {
                jsonActors.put(actor, paramsJson)
             }
             json.put("llistatDactors", jsonActors)
-         }else if (llistaActors != null)  {
+         }else if (llistaActors.isNotEmpty())  {
             json.put("llistatDactors", JSONArray(llistaActors))
          }
          return json
       }
-      */
+
       fun setTitol(t: String) { titol = t }
       fun setIdioma(i: String) { idioma = i }
       fun setActors(a: MutableList<String>) { llistaActors = a }
-      fun setDadesActors(d: MutableMap<String, String>) { dadesActors = d }
-      ////fun setDadesActors(d: MutableMap<String, Map<String,Any>>) { dadesActors = d }
+      fun setDadesActors(d: MutableMap<String, Map<String,Any>>) { dadesActors = d }
 
       fun getTitol(): String = titol.orEmpty()
       fun getIdioma(): String = idioma
@@ -128,9 +95,8 @@ object Utilitats {
          }
          return llistaActors
       }
-      fun getDadesActors(): MutableMap<String, String> = dadesActors
-      ////fun getDadesActors(): MutableMap<String, Map<String,Any>> = dadesActors
-      fun getDisponible(): Boolean = dadesActors.isNotEmpty()  // = dadesActors != null
+      fun getDadesActors(): MutableMap<String, Map<String,Any>> = dadesActors
+      fun getDisponible(): Boolean = dadesActors.isNotEmpty()
    }
 
    fun obraSencera(nomArxiu: String): DocumentFile? {

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.NumberPicker
 import android.widget.ProgressBar
@@ -18,6 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import cat.tron.apuntador.R
+import cat.tron.apuntador.activitat.GestorDeVeu
 import cat.tron.apuntador.activitat.GestorDeVeu.objVeus
 import cat.tron.apuntador.activitat.Utilitats
 import cat.tron.apuntador.databinding.FragmentConfiguracioBinding
@@ -28,18 +30,20 @@ class ConfiguracioFragment : Fragment() {
    private val binding get() = _binding!!
 
    private lateinit var formContainer: LinearLayout
-   private lateinit var selectorIdioma: Spinner
    private lateinit var selectorRegistre: NumberPicker
    private val opcRegistre = (3..20).map { (it * 0.1).toString().substring(0,3) }.toTypedArray()
    private var registreSelectedItem = ""
    private lateinit var selectorVelocitat: NumberPicker
    private val opcVelocitat = Array<String>(6) { n -> (0.9f + (n+1).toFloat()/10).toString() }
    private var velocitatSelectedItem = ""
+   private lateinit var botoPlay: ImageButton
    private lateinit var botoDesar: Button
    private lateinit var botoInstruccions: Button
    private lateinit var instruccions: TextView
    private lateinit var espera: ProgressBar
+   private lateinit var selectorVeu: Spinner
    private val opcionsVeu = objVeus.getList()
+   private lateinit var selectorIdioma: Spinner
    private val opcionsIdioma = arrayOf("Català", "English", "Español")
 
    data class VistaDadesActors(
@@ -73,20 +77,30 @@ class ConfiguracioFragment : Fragment() {
          }
       }
 
+      botoPlay.setOnClickListener {
+         val veu = selectorVeu.selectedItem.toString()
+         val registre = if (registreSelectedItem.isNotEmpty()) registreSelectedItem.toFloat() else 1.0f
+         val velocitat = if (velocitatSelectedItem.isNotEmpty()) velocitatSelectedItem.toFloat() else 1.0f
+         val llengua = selectorIdioma.selectedItem.toString().substring(0, 2).lowercase()
+         GestorDeVeu.canta(veu, registre, velocitat, llengua)
+      }
+
+      selectorRegistre.setOnValueChangedListener { _, _, newVal ->
+         registreSelectedItem = opcRegistre[newVal]
+      }
+
+      selectorVelocitat.setOnValueChangedListener { _, _, newVal ->
+         velocitatSelectedItem = opcRegistre[newVal]
+      }
+
       botoDesar.setOnClickListener {
-         val dadesActors = mutableMapOf<String, String>()
-         //// val dadesActors = mutableMapOf<String, Map<String,Any>>()
+         val dadesActors = mutableMapOf<String, Map<String,Any>>()
          for (camps in formulariActors) {
             val actor = camps.actor.text.toString()
             val veu = camps.seleccioVeu.selectedItem.toString()
-            ////val velocitatText = camps.inputVelocitat.text.toString()
-            ////val registreText = camps.inputRegistre.text.toString()
-            //// Validació simple
-            ////val velocitat = velocitatText.toFloatOrNull() ?: 1.0f
-            ////val registre = registreText.toFloatOrNull() ?: 1.0f
-            dadesActors.put(actor, veu)
-            ////dadesActors.put(actor, mapOf("veu" to veu, "velocitat" to velocitat, "registre" to registre))
-
+            val registre = if (registreSelectedItem.isNotEmpty()) registreSelectedItem.toFloat() else 1.0f
+            val velocitat = if (velocitatSelectedItem.isNotEmpty()) velocitatSelectedItem.toFloat() else 1.0f
+            dadesActors.put(actor, mapOf("veu" to veu, "registre" to registre, "velocitat" to velocitat))
          }
          Utilitats.objCompanyia.setDadesActors(dadesActors)
 
@@ -100,11 +114,7 @@ class ConfiguracioFragment : Fragment() {
       }
 
       botoInstruccions.setOnClickListener {
-         if (instruccions.isVisible) {
-            instruccions.visibility = View.INVISIBLE
-         }else {
-            instruccions.visibility = View.VISIBLE
-         }
+         instruccions.visibility = if (instruccions.isVisible) View.INVISIBLE else View.VISIBLE
       }
 
    }
@@ -116,11 +126,8 @@ class ConfiguracioFragment : Fragment() {
    private fun creaFormulariConfiguracio(context: Context) {
       // establir opcions pel selector d'idioma
       var idiomes: Array<String> = arrayOf()
-      opcionsIdioma.forEach {
-         idiomes += it.substring(0,2).lowercase()
-      }
-      val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, opcionsIdioma)
-      selectorIdioma.adapter = adapter
+      opcionsIdioma.forEach { idiomes += it.substring(0,2).lowercase() }
+      selectorIdioma.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, opcionsIdioma)
       // Seleccionar, si existeix, l'opció previament desada
       val index = idiomes.indexOf(Utilitats.objCompanyia.getIdioma())
       if (index >= 0) { selectorIdioma.setSelection(index) }
@@ -128,35 +135,44 @@ class ConfiguracioFragment : Fragment() {
       // crear els elements de formulari per a cada actor
       var llistaDadesActors = Utilitats.objCompanyia.getDadesActors()
       if (llistaDadesActors.isNotEmpty()) {
-         for ((actor, veu) in llistaDadesActors) { afegirCampsActor(mapOf("actor" to actor, "veu" to veu), context) }
+         for (dadesActor in llistaDadesActors) { afegirCampsActor(dadesActor, context) }
       }else {
          var llistaActors = Utilitats.objCompanyia.getActors()
          if (llistaActors?.size == 0) {
             Utilitats.obtenirDadesCompanyia()
             llistaActors = Utilitats.objCompanyia.getActors()
          }
-         llistaActors!!.forEach { afegirCampsActor(mapOf("actor" to it, "veu" to ""), context) }
+         var mapaTemp = mutableMapOf<String, Map<String,Any>>()
+         llistaActors!!.forEach { mapaTemp[it] = mapOf<String, Any>() }
+         if (mapaTemp.isNotEmpty()) {
+            for (dActor in mapaTemp) { afegirCampsActor(dActor, context) }
+         }
       }
    }
 
-   private fun afegirCampsActor(dades: Map<String, String>, context: Context) {
-      val alt = Utilitats.dpToPx(context, 30).toInt()
+   private fun afegirCampsActor(dades: MutableMap.MutableEntry<String, Map<String, Any>>, context: Context) {
       val actor = TextView(context).apply {
-         text = dades["actor"].toString().capitalize()
-         textSize = 16f
+         text = dades.key.toString().capitalize()
+         textSize = 15f
          setTypeface(null, Typeface.BOLD)
-         setPadding(40, 2, 60, 2)
-         layoutParams = LinearLayout.LayoutParams(0, alt, 1f)
+         setPadding(0, 4, 0, 4)
+         layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
       }
+
       val seleccioVeu = Spinner(context).apply {
          adapter = ArrayAdapter(context, R.layout.spinner, opcionsVeu)
-         setPadding(40, 2, 0, 2)
          // Seleccionar, si existeix, l'opció previament desada
-         dades["veu"].let { veuDesada ->
+         dades.value["veu"].let { veuDesada ->
             val index = opcionsVeu.indexOf(veuDesada)
             if (index >= 0) { setSelection(index) }
          }
       }
+      botoPlay = ImageButton(context)
+      botoPlay.layoutParams = LinearLayout.LayoutParams(
+         ViewGroup.LayoutParams.WRAP_CONTENT,
+         ViewGroup.LayoutParams.WRAP_CONTENT
+      )
+      botoPlay.setImageResource(android.R.drawable.ic_media_play)
 
       selectorRegistre.minValue = 0
       selectorRegistre.maxValue = opcRegistre.size - 1
@@ -164,7 +180,7 @@ class ConfiguracioFragment : Fragment() {
       selectorRegistre.wrapSelectorWheel = false
 
       selectorVelocitat.minValue = 0
-      selectorVelocitat.maxValue = opcRegistre.size - 1
+      selectorVelocitat.maxValue = opcVelocitat.size - 1
       selectorVelocitat.displayedValues = opcVelocitat
       selectorVelocitat.wrapSelectorWheel = false
 
@@ -174,11 +190,13 @@ class ConfiguracioFragment : Fragment() {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,
          ).apply {
-            setMargins(8, 2, 8, 2)
+            setMargins(8, 2, 0, 2)
             gravity = View.TEXT_ALIGNMENT_VIEW_START
          }
          addView(actor)
          addView(seleccioVeu)
+         addView(selectorRegistre)
+         addView(selectorVelocitat)
       }
       formContainer.addView(fila)
 
@@ -187,7 +205,7 @@ class ConfiguracioFragment : Fragment() {
             actor = actor,
             seleccioVeu = seleccioVeu,
             seleccioRegistre = selectorRegistre,
-            seleccioVelocitat = selectorRegistre
+            seleccioVelocitat = selectorVelocitat
          )
       )
    }
