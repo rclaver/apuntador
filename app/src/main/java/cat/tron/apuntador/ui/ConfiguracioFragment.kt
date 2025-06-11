@@ -42,7 +42,7 @@ class ConfiguracioFragment : Fragment() {
    private lateinit var instruccions: TextView
    private lateinit var espera: ProgressBar
    private lateinit var selectorVeu: Spinner
-   private val opcionsVeu = objVeus.getList()
+   private val opcionsVeu = objVeus.getList(null)
    private lateinit var selectorIdioma: Spinner
    private val opcionsIdioma = arrayOf("Català", "English", "Español")
 
@@ -195,6 +195,7 @@ class ConfiguracioFragment : Fragment() {
          }
          addView(actor)
          addView(seleccioVeu)
+         addView(botoPlay)
          addView(selectorRegistre)
          addView(selectorVelocitat)
       }

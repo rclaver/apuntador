@@ -206,8 +206,13 @@ class Activitat : AppCompatActivity() {
       val llista = Utilitats.objCompanyia.getDadesActors()
       if (llista.isNotEmpty()) {
          personatges.clear()
-         for ((actriu, veu) in llista) {
-            personatges.put(actriu, veu)
+         for ((actor, params) in llista) {
+            personatges.plus(actor to mapOf(
+               "veu" to GestorDeVeu.objVeus.get(params["veu"].toString()),
+               "registre" to params["registre"],
+               "velocitat" to params["velocitat"]
+               )
+            )
          }
       }
    }
