@@ -98,9 +98,15 @@ class ConfiguracioFragment : Fragment() {
          for (camps in formulariActors) {
             val actor = camps.actor.text.toString()
             val veu = camps.seleccioVeu.selectedItem.toString()
-            val registre = if (registreSelectedItem.isNotEmpty()) registreSelectedItem.toFloat() else 1.0f
-            val velocitat = if (velocitatSelectedItem.isNotEmpty()) velocitatSelectedItem.toFloat() else 1.0f
-            dadesActors.put(actor, mapOf("idioma" to idioma, "veu" to veu, "registre" to registre, "velocitat" to velocitat))
+            //val registre = if (registreSelectedItem.isNotEmpty()) registreSelectedItem.toFloat() else 1.0f  //camps.seleccioRegistre.value
+            //val velocitat = if (velocitatSelectedItem.isNotEmpty()) velocitatSelectedItem.toFloat() else 1.0f //camps.seleccioVelocitat.value
+            camps.seleccioRegistre.setOnValueChangedListener { _, _, newVal ->
+               registreSelectedItem = opcRegistre[newVal]
+            }
+            camps.seleccioVelocitat.setOnValueChangedListener { _, _, newVal ->
+               velocitatSelectedItem = opcRegistre[newVal]
+            }
+            dadesActors.put(actor, mapOf("idioma" to idioma, "veu" to veu, "registre" to registreSelectedItem, "velocitat" to velocitatSelectedItem))
          }
          Utilitats.objCompanyia.setDadesActors(dadesActors)
 
@@ -151,6 +157,7 @@ class ConfiguracioFragment : Fragment() {
    }
 
    private fun afegirCampsActor(dades: MutableMap.MutableEntry<String, Map<String, Any>>, context: Context) {
+      val nomActor = dades.key.toString().capitalize()
       val actor = TextView(context).apply {
          text = dades.key.toString().capitalize()
          textSize = 15f
@@ -172,12 +179,14 @@ class ConfiguracioFragment : Fragment() {
          layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
          setImageResource(android.R.drawable.ic_media_play)
       }
+      botoPlay = play
 
       val seleccioRegistre = NumberPicker(context).apply {
-         minValue = 0
-         maxValue = opcRegistre.size - 1
          displayedValues = opcRegistre
          wrapSelectorWheel = false
+         dades.value["registre"].let { regDesat ->
+            value = opcRegistre.indexOf(regDesat)
+         }
       }
 
       val seleccioVelocitat = NumberPicker(context).apply {
