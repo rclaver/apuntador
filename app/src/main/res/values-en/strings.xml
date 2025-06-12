@@ -3,17 +3,19 @@
    <string name="app_name">The theater prompter</string>
    <string name="titol">The prompter</string>
    <string name="titol_configuracio">configuration</string>
-   <string name="titol_seleccio">Selección de fagmentos</string>
-   <string name="obra_sencera">obra completa</string>
-   <string name="boto_configurar">Configurar</string>
-   <string name="boto_sortir">Salir</string>
-   <string name="boto_desar">Guardar</string>
-   <string name="boto_instruccions">Instrucciones</string>
-   <string name="instruccions">Selección de los parámetros para cada actor:
-      \n<b>voz:</b> para cada actor debes seleccionar una de las voces disponibles\n
+   <string name="titol_seleccio">Selection of fragments</string>
+   <string name="obra_sencera">complete play</string>
+   <string name="boto_configurar">Set up</string>
+   <string name="boto_sortir">Exit</string>
+   <string name="boto_desar">Save</string>
+   <string name="boto_instruccions">Instructions</string>
+   <string name="instruccions">Selecting the parameters for each actor:
+      \n<b>voice:</b> for each actor you must select one of the available voices\n
+      \n<b>pitch:</b> greu = low value. agut = high value
+      \n<b>speed:</b> slow = low value. fast = high value\n
       \n<b>note:</b> The files corresponding to the fragments of the play for each actor and the file of the complete play must be saved in a accessible folder, exemple: \'Downloads/Apuntador\'\n
       \n<b>The file name</b> must have the following format:
-      \n- <b><u>play_ame</u>-<u>actor_name</u>-<u>99</u>.txt</b>
+      \n- <b><u>play_name</u>-<u>actor_name</u>-<u>99</u>.txt</b>
       \n(the fragment_sequence_number: from 01 to 99 for each actor)\n
       \n<b>The format of each file</b> (fragments for each actor) is:
       \n<b>- Actor\'s text:</b> <u>Actor_name: </u> (name followed by : and space) Below is the text on a single line. It may contain, in parentheses, elements of narrative context.

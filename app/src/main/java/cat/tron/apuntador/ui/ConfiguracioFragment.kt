@@ -175,13 +175,17 @@ class ConfiguracioFragment : Fragment() {
          }
       }
 
+      val tam = Utilitats.dpToPx(context, 30).toInt()
       val play = ImageButton(context).apply {
-         layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+         layoutParams = LinearLayout.LayoutParams(tam, tam)
          setImageResource(android.R.drawable.ic_media_play)
+         background = null
       }
       botoPlay = play
 
       val seleccioRegistre = NumberPicker(context).apply {
+         minValue = 0
+         maxValue = opcVelocitat.size - 1
          displayedValues = opcRegistre
          wrapSelectorWheel = false
          dades.value["registre"].let { regDesat ->

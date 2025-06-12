@@ -16,7 +16,9 @@
    <string name="boto_desar">Desar</string>
    <string name="boto_instruccions">Instruccions</string>
    <string name="instruccions">Selecció dels paràmetres per a cada actor:
-      \n<b>veu:</b> per a cada actor heu de seleccionar una de les veus disponibles\n
+      \n<b>veu:</b> per a cada actor heu de seleccionar una de les veus disponibles
+      \n<b>registre:</b> greu = menor valor. agut = valor major
+      \n<b>velocitat:</b> lenta = menor valor. ràpida = valor major\n
       \n<b>nota:</b> Els arxius corresponents als fragments de l\'obra per a cada actor i l\'arxiu de l\'obra sencera
       s\'han de desar a una carpeta accessible, per exemple, \'Downloads/Apuntador\'\n
       \n<b>El nom dels arxius</b> ha de tenir el següent format:
