@@ -26,9 +26,12 @@
    <string name="error_no_escolto_res">I haven\'t heard anything</string>
    <string name="titol_actors">actors</string>
    <string name="titol_veus">voices</string>
+   <string name="titol_velocitat">speed</string>
    <string name="titol_seleccio_idioma">Language selection:</string>
    <string name="error_document_llegint">I have not been able to read the file %s</string>
    <string name="error_document_desconegut">Error reading file %s - %s</string>
    <string name="idioma_no_soportat">TTS: Language not supported</string>
    <string name="error_inici_TTS">TTS: Initialization failed</string>
+   <string name="titol_play">play</string>
+   <string name="titol_registre">pitch</string>
 </resources>

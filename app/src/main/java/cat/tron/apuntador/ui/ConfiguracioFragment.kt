@@ -20,7 +20,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import cat.tron.apuntador.R
 import cat.tron.apuntador.activitat.GestorDeVeu
-import cat.tron.apuntador.activitat.GestorDeVeu.objVeus
 import cat.tron.apuntador.activitat.Utilitats
 import cat.tron.apuntador.databinding.FragmentConfiguracioBinding
 
@@ -42,7 +41,7 @@ class ConfiguracioFragment : Fragment() {
    private lateinit var instruccions: TextView
    private lateinit var espera: ProgressBar
    private lateinit var selectorVeu: Spinner
-   private val opcionsVeu = objVeus.getList(null)
+   private val opcionsVeu = GestorDeVeu.objVeus.getList(null)
    private lateinit var selectorIdioma: Spinner
    private val opcionsIdioma = arrayOf("Català", "English", "Español")
 
@@ -94,18 +93,19 @@ class ConfiguracioFragment : Fragment() {
       }
 
       botoDesar.setOnClickListener {
+         val idioma = selectorIdioma.selectedItem.toString().substring(0,2).lowercase()
          val dadesActors = mutableMapOf<String, Map<String,Any>>()
          for (camps in formulariActors) {
             val actor = camps.actor.text.toString()
             val veu = camps.seleccioVeu.selectedItem.toString()
             val registre = if (registreSelectedItem.isNotEmpty()) registreSelectedItem.toFloat() else 1.0f
             val velocitat = if (velocitatSelectedItem.isNotEmpty()) velocitatSelectedItem.toFloat() else 1.0f
-            dadesActors.put(actor, mapOf("veu" to veu, "registre" to registre, "velocitat" to velocitat))
+            dadesActors.put(actor, mapOf("idioma" to idioma, "veu" to veu, "registre" to registre, "velocitat" to velocitat))
          }
          Utilitats.objCompanyia.setDadesActors(dadesActors)
 
-         val idioma = selectorIdioma.selectedItem.toString().substring(0,2).lowercase()
          Utilitats.objCompanyia.setIdioma(idioma)
+         GestorDeVeu.objVeus.setIdioma(idioma)
          Utilitats.canviaIdioma(idioma, requireContext())
 
          if (Utilitats.desaJsonArxiu(null, null, requireContext())) {
@@ -167,22 +167,25 @@ class ConfiguracioFragment : Fragment() {
             if (index >= 0) { setSelection(index) }
          }
       }
-      botoPlay = ImageButton(context)
-      botoPlay.layoutParams = LinearLayout.LayoutParams(
-         ViewGroup.LayoutParams.WRAP_CONTENT,
-         ViewGroup.LayoutParams.WRAP_CONTENT
-      )
-      botoPlay.setImageResource(android.R.drawable.ic_media_play)
 
-      selectorRegistre.minValue = 0
-      selectorRegistre.maxValue = opcRegistre.size - 1
-      selectorRegistre.displayedValues = opcRegistre
-      selectorRegistre.wrapSelectorWheel = false
+      val play = ImageButton(context).apply {
+         layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+         setImageResource(android.R.drawable.ic_media_play)
+      }
 
-      selectorVelocitat.minValue = 0
-      selectorVelocitat.maxValue = opcVelocitat.size - 1
-      selectorVelocitat.displayedValues = opcVelocitat
-      selectorVelocitat.wrapSelectorWheel = false
+      val seleccioRegistre = NumberPicker(context).apply {
+         minValue = 0
+         maxValue = opcRegistre.size - 1
+         displayedValues = opcRegistre
+         wrapSelectorWheel = false
+      }
+
+      val seleccioVelocitat = NumberPicker(context).apply {
+         minValue = 0
+         maxValue = opcVelocitat.size - 1
+         displayedValues = opcVelocitat
+         wrapSelectorWheel = false
+      }
 
       val fila = LinearLayout(context).apply {
          orientation = LinearLayout.HORIZONTAL
@@ -195,9 +198,9 @@ class ConfiguracioFragment : Fragment() {
          }
          addView(actor)
          addView(seleccioVeu)
-         addView(botoPlay)
-         addView(selectorRegistre)
-         addView(selectorVelocitat)
+         addView(play)
+         addView(seleccioRegistre)
+         addView(seleccioVelocitat)
       }
       formContainer.addView(fila)
 
@@ -205,8 +208,8 @@ class ConfiguracioFragment : Fragment() {
          VistaDadesActors(
             actor = actor,
             seleccioVeu = seleccioVeu,
-            seleccioRegistre = selectorRegistre,
-            seleccioVelocitat = selectorVelocitat
+            seleccioRegistre = seleccioRegistre,
+            seleccioVelocitat = seleccioVelocitat
          )
       )
    }
@@ -218,6 +221,13 @@ class ConfiguracioFragment : Fragment() {
       botoInstruccions = binding.botoInstruccions
       instruccions = binding.instruccions
       espera = binding.espera
+
+      botoPlay = ImageButton(context)
+      selectorRegistre = NumberPicker(context)
+      selectorVelocitat = NumberPicker(context)
+      //botoPlay = findViewById(R.id.botoPlay)
+      //selectorRegistre = findViewById(R.id.selectorRegistre)
+      //selectorVelocitat = findViewById(R.id.selectorVelocitat)
    }
 
    override fun onDestroyView() {

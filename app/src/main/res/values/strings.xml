@@ -10,6 +10,8 @@
 
    <string name="titol_actors">actors</string>
    <string name="titol_veus">veus</string>
+   <string name="titol_registre">registre</string>
+   <string name="titol_velocitat">velocitat</string>
    <string name="titol_seleccio_idioma">Selecció d\'idioma:</string>
    <string name="boto_desar">Desar</string>
    <string name="boto_instruccions">Instruccions</string>
@@ -35,4 +37,5 @@
    <string name="error_document_desconegut">Error llegint el fitxer %s - %s</string>
    <string name="idioma_no_soportat">TTS: Idioma no soportat</string>
    <string name="error_inici_TTS">TTS: Inicialització fallida</string>
+   <string name="titol_play">toca</string>
 </resources>

@@ -46,11 +46,44 @@
             android:id="@+id/titol_veus"
             android:layout_width="90dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:gravity="center"
             android:textSize="16sp"
             android:textColor="@color/marro"
             android:text="@string/titol_veus"
+            android:textStyle="bold"
+            android:background="@color/blau_200" />
+         <TextView
+            android:id="@+id/titol_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/marro"
+            android:text="@string/titol_play"
+            android:textStyle="bold"
+            android:background="@color/blau_200" />
+         <TextView
+            android:id="@+id/titol_registre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/marro"
+            android:text="@string/titol_registre"
+            android:textStyle="bold"
+            android:background="@color/blau_200" />
+         <TextView
+            android:id="@+id/titol_velocitat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/marro"
+            android:text="@string/titol_velocitat"
             android:textStyle="bold"
             android:background="@color/blau_200" />
       </LinearLayout>

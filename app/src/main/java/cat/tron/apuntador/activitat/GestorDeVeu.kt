@@ -14,6 +14,7 @@ import cat.tron.apuntador.R
 import cat.tron.apuntador.databinding.FragmentAssaigBinding
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.Locale
+import kotlin.collections.mapKeys
 
 object GestorDeVeu {
 
@@ -25,51 +26,48 @@ object GestorDeVeu {
    }
 
    object objVeus {
-      private val veu = Voice("ca-es-x-caf-local", Locale("ca_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
-      private val aVeus: Map<String, Map<String, Any>> = mapOf(
-         "Vukei"  to mapOf("veu" to veu, "registre" to 0.3, "velocitat" to 1.0),
-         "Brasde" to mapOf("veu" to veu, "registre" to 0.6, "velocitat" to 1.1),
-         "Elkide" to mapOf("veu" to veu, "registre" to 0.8, "velocitat" to 1.1),
-         "Hetia"  to mapOf("veu" to veu, "registre" to 1.0, "velocitat" to 1.2),
-         "Narde" to mapOf("veu" to veu, "registre" to 1.2, "velocitat" to 1.2),
-         "Koeni"  to mapOf("veu" to veu, "registre" to 1.4, "velocitat" to 1.3),
-         "Moani"  to mapOf("veu" to veu, "registre" to 1.8, "velocitat" to 1.3),
-         "Sukele" to mapOf("veu" to veu, "registre" to 2.4, "velocitat" to 1.4)
-      )
       private var idioma = "ca"
       private val iVeus: Map<String, Map<String, Voice>> = mapOf(
          "ca" to mapOf(
-            "dona_ca_0" to Voice("ca-es-x-caf-local", Locale("ca_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
+            "dona_ca_1" to Voice("ca-es-x-caf-local", Locale("ca_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
          ),
          "es" to mapOf(
-            "dona_es_0" to Voice("es-ES-language", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "dona_es_1" to Voice("es-es-x-eea-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "dona_es_2" to Voice("es-es-x-eec-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "home_es_3" to Voice("es-es-x-eed-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "home_es_4" to Voice("es-es-x-eef-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "dona_us_5" to Voice("es-US-language", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "dona_us_6" to Voice("es-us-x-sfb-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "home_us_7" to Voice("es-us-x-esd-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "home_us_8" to Voice("es-us-x-esf-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
+            "dona_es_1" to Voice("es-ES-language", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "dona_es_2" to Voice("es-es-x-eea-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "dona_es_3" to Voice("es-es-x-eec-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "home_es_4" to Voice("es-es-x-eed-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "home_es_5" to Voice("es-es-x-eef-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "dona_us_6" to Voice("es-US-language", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "dona_us_7" to Voice("es-us-x-sfb-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "home_us_8" to Voice("es-us-x-esd-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "home_us_9" to Voice("es-us-x-esf-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
          )
       )
       fun setIdioma(i: String) {idioma = i}
-      fun get(v: String?): Map<String, Any> = aVeus[v ?: 1]!!
-      fun getVeu(llengua: String, elem: String): Voice = iVeus[llengua]!!.mapKeys { elem } as Voice
-      fun getVeu0(llengua: String, elem:Int): Voice = iVeus[llengua]!!.mapKeys { elem } as Voice
+      fun getVeu(elem: String, llengua: String?): Voice = iVeus[llengua ?: idioma]!!.mapKeys { elem } as Voice
+      fun getVeu0(elem: Int, llengua: String?): Voice = iVeus[llengua ?: idioma]!!.mapKeys { elem } as Voice
       fun getList(llengua: String?): Array<String> = iVeus[llengua ?: idioma]!!.keys.toTypedArray()
-      fun getNarrador(): String = iVeus[idioma]!!.keys.toTypedArray()[0]
+      fun getVeuNarrador(): Map<String, Any> = mapOf("veu" to getVeu0(1, idioma), "registre" to 1.0, "velocitat" to 1.0)
    }
 
-   suspend fun textToAudio(text: String, veuPersonatge: String, ends: String, esNarracio: Boolean = false, esObraSencera: Boolean = false, ac: Activitat): String {
+   suspend fun textToAudio(text: String, actor: String, ends: String, esNarracio: Boolean = false, esObraSencera: Boolean = false, ac: Activitat): String {
       ac.mostraSentencia(text, ends, esNarracio)
       if (esObraSencera or (ends != ":" && !esNarracio)) {
+         var veu: Voice
+         var registre: Float
+         var velocitat: Float
          val tts = objTTS.get()
-         val veuParams = objVeus.get(veuPersonatge)
-         val veu: Voice = veuParams["veu"] as Voice
-         val registre = veuParams["registre"] ?: 1.0
-         val velocitat = veuParams["velocitat"] ?: 1.0
-
+         if (actor == "narrador") {
+            val veuN = objVeus.getVeuNarrador()
+            veu = veuN["veu"] as Voice
+            registre = veuN["registre"] as Float
+            velocitat = veuN["velocitat"] as Float
+         }else {
+            val veuActor = Utilitats.objCompanyia.getDadesActors()[actor]
+            veu = objVeus.getVeu(veuActor!!["veu"].toString(), veuActor["idioma"].toString())
+            registre = veuActor!!["registre"] as Float ?: 1.0f
+            velocitat = veuActor!!["velocitat"] as Float ?: 1.0f
+         }
          tts?.setPitch(registre.toString().toFloat())       // 1.0 = normal, >1 més agut, <1 més greu
          tts?.setSpeechRate(velocitat.toString().toFloat()) // 1.0 = normal, >1 més ràpid, <1 més lent
          tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
@@ -163,7 +161,7 @@ object GestorDeVeu {
       )
       val regexVeu = """.*?_([0-9]+)""".toRegex()
       val iVeu = regexVeu.find(veuSeleccionada)!!.groupValues[1].toInt()
-      val veu = objVeus.getVeu0(llengua, iVeu)
+      val veu = objVeus.getVeu0(iVeu, llengua)
 
       tts?.setPitch(registre)
       tts?.setSpeechRate(velocitat)

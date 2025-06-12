@@ -28,7 +28,7 @@ class Activitat : AppCompatActivity() {
    private val patroEscena = Regex("""\(.*\)""")
 
    private var personatges = mutableMapOf<String, String>()
-   private val narrador = GestorDeVeu.objVeus.getNarrador()
+   private val narrador = "narrador"
 
    object objActor {
       private var actor: String = ""
@@ -183,7 +183,6 @@ class Activitat : AppCompatActivity() {
          encert = Utilitats.comparaSequenciesDeText(originalText, nouText)
          if (encert < 80) {
             mostraError(String.format(cR.getString(R.string.encert), encert, originalText, nouText))
-            //Utilitats.espera(5000)
          }
       }else {
          mostraError(cR.getString(R.string.error_no_escolto_res))
@@ -208,7 +207,7 @@ class Activitat : AppCompatActivity() {
          personatges.clear()
          for ((actor, params) in llista) {
             personatges.plus(actor to mapOf(
-               "veu" to GestorDeVeu.objVeus.get(params["veu"].toString()),
+               "veu" to GestorDeVeu.objVeus.getVeu(params["veu"].toString(), null),
                "registre" to params["registre"],
                "velocitat" to params["velocitat"]
                )

@@ -27,9 +27,12 @@
    <string name="error_no_escolto_res">No he oido nada</string>
    <string name="titol_actors">actores</string>
    <string name="titol_veus">voces</string>
+   <string name="titol_velocitat">velocidad</string>
    <string name="titol_seleccio_idioma">Selección de idioma:</string>
    <string name="error_document_llegint">No he podido leer el archivo %s</string>
    <string name="error_document_desconegut">Error leyendo el archivo %s - %s</string>
    <string name="idioma_no_soportat">TTS: Idioma no soportado</string>
    <string name="error_inici_TTS">TTS: Inicialización fallida</string>
+   <string name="titol_play">toca</string>
+   <string name="titol_registre">registro</string>
 </resources>
