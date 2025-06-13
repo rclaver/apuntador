@@ -95,15 +95,15 @@ class ConfiguracioFragment : Fragment() {
       botoDesar.setOnClickListener {
          val idioma = selectorIdioma.selectedItem.toString().substring(0,2).lowercase()
          val dadesActors = mutableMapOf<String, Map<String,Any>>()
-         for (camps in formulariActors) {
-            val actor = camps.actor.text.toString()
-            val veu = camps.seleccioVeu.selectedItem.toString()
-            //val registre = if (registreSelectedItem.isNotEmpty()) registreSelectedItem.toFloat() else 1.0f  //camps.seleccioRegistre.value
-            //val velocitat = if (velocitatSelectedItem.isNotEmpty()) velocitatSelectedItem.toFloat() else 1.0f //camps.seleccioVelocitat.value
-            camps.seleccioRegistre.setOnValueChangedListener { _, _, newVal ->
+         for (camp in formulariActors) {
+            val actor = camp.actor.text.toString()
+            val veu = camp.seleccioVeu.selectedItem.toString()
+            //val registre = if (registreSelectedItem.isNotEmpty()) registreSelectedItem.toFloat() else 1.0f  //camp.seleccioRegistre.value
+            //val velocitat = if (velocitatSelectedItem.isNotEmpty()) velocitatSelectedItem.toFloat() else 1.0f //camp.seleccioVelocitat.value
+            camp.seleccioRegistre.setOnValueChangedListener { _, _, newVal ->
                registreSelectedItem = opcRegistre[newVal]
             }
-            camps.seleccioVelocitat.setOnValueChangedListener { _, _, newVal ->
+            camp.seleccioVelocitat.setOnValueChangedListener { _, _, newVal ->
                velocitatSelectedItem = opcRegistre[newVal]
             }
             dadesActors.put(actor, mapOf("idioma" to idioma, "veu" to veu, "registre" to registreSelectedItem, "velocitat" to velocitatSelectedItem))
@@ -157,64 +157,47 @@ class ConfiguracioFragment : Fragment() {
    }
 
    private fun afegirCampsActor(dades: MutableMap.MutableEntry<String, Map<String, Any>>, context: Context) {
-      val nomActor = dades.key.toString().capitalize()
-      val actor = TextView(context).apply {
-         text = dades.key.toString().capitalize()
-         textSize = 15f
-         setTypeface(null, Typeface.BOLD)
-         setPadding(0, 4, 0, 4)
-         layoutParams = LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f)
+      val inflater = LayoutInflater.from(context)
+      val fila = inflater.inflate(R.layout.fila_formulari, formContainer, false)
+
+      val actor = fila.findViewById<TextView>(R.id.actor)
+      actor.text = dades.key.toString().capitalize()
+
+      val seleccioVeu = fila.findViewById<Spinner>(R.id.selectorVeus)
+      seleccioVeu.adapter = ArrayAdapter(context, R.layout.spinner, opcionsVeu)
+      // Seleccionar, si existeix, l'opció previament desada
+      dades.value["veu"].let { veuDesada ->
+         val index = opcionsVeu.indexOf(veuDesada)
+         if (index >= 0) { seleccioVeu.setSelection(index) }
       }
 
-      val seleccioVeu = Spinner(context).apply {
-         adapter = ArrayAdapter(context, R.layout.spinner, opcionsVeu)
-         // Seleccionar, si existeix, l'opció previament desada
-         dades.value["veu"].let { veuDesada ->
-            val index = opcionsVeu.indexOf(veuDesada)
-            if (index >= 0) { setSelection(index) }
-         }
+      val seleccioRegistre = fila.findViewById<NumberPicker>(R.id.selectorRegistre)
+      seleccioRegistre.minValue = 1
+      seleccioRegistre.maxValue = opcVelocitat.size
+      seleccioRegistre.displayedValues = opcRegistre
+      seleccioRegistre.wrapSelectorWheel = false
+      dades.value["registre"].let { regDesat ->
+         seleccioRegistre.value = opcRegistre.indexOf(regDesat)
       }
 
-      val tam = Utilitats.dpToPx(context, 30).toInt()
-      val play = ImageButton(context).apply {
-         layoutParams = LinearLayout.LayoutParams(tam, tam)
-         setImageResource(android.R.drawable.ic_media_play)
-         background = null
-      }
-      botoPlay = play
-
-      val seleccioRegistre = NumberPicker(context).apply {
-         minValue = 0
-         maxValue = opcVelocitat.size - 1
-         displayedValues = opcRegistre
-         wrapSelectorWheel = false
-         dades.value["registre"].let { regDesat ->
-            value = opcRegistre.indexOf(regDesat)
-         }
+      val seleccioVelocitat = fila.findViewById<NumberPicker>(R.id.selectorVelocitat)
+      seleccioVelocitat.minValue = 0
+      seleccioVelocitat.maxValue = opcVelocitat.size - 1
+      seleccioVelocitat.displayedValues = opcVelocitat
+      seleccioVelocitat.wrapSelectorWheel = false
+      dades.value["velocitat"].let { velDesat ->
+         seleccioRegistre.value = opcRegistre.indexOf(velDesat)
       }
 
-      val seleccioVelocitat = NumberPicker(context).apply {
-         minValue = 0
-         maxValue = opcVelocitat.size - 1
-         displayedValues = opcVelocitat
-         wrapSelectorWheel = false
+      val botoPlay = fila.findViewById<ImageButton>(R.id.botoPlay)
+      botoPlay.setOnClickListener {
+         val veu = seleccioVeu.selectedItem.toString()
+         val registre = seleccioRegistre.value.toFloat()
+         val velocitat = seleccioVelocitat.value.toFloat()
+         val llengua = selectorIdioma.selectedItem.toString().substring(0, 2).lowercase()
+         GestorDeVeu.canta(veu, registre, velocitat, llengua)
       }
 
-      val fila = LinearLayout(context).apply {
-         orientation = LinearLayout.HORIZONTAL
-         layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-         ).apply {
-            setMargins(8, 2, 0, 2)
-            gravity = View.TEXT_ALIGNMENT_VIEW_START
-         }
-         addView(actor)
-         addView(seleccioVeu)
-         addView(play)
-         addView(seleccioRegistre)
-         addView(seleccioVelocitat)
-      }
       formContainer.addView(fila)
 
       formulariActors.add(
@@ -234,13 +217,6 @@ class ConfiguracioFragment : Fragment() {
       botoInstruccions = binding.botoInstruccions
       instruccions = binding.instruccions
       espera = binding.espera
-
-      botoPlay = ImageButton(context)
-      selectorRegistre = NumberPicker(context)
-      selectorVelocitat = NumberPicker(context)
-      //botoPlay = findViewById(R.id.botoPlay)
-      //selectorRegistre = findViewById(R.id.selectorRegistre)
-      //selectorVelocitat = findViewById(R.id.selectorVelocitat)
    }
 
    override fun onDestroyView() {
