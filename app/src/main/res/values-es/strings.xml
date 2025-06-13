@@ -3,14 +3,16 @@
    <string name="app_name">El apuntador del teatro</string>
    <string name="titol">El apuntador</string>
    <string name="titol_configuracio">configuración</string>
-   <string name="titol_seleccio">Selection of fragments</string>
-   <string name="obra_sencera">complete play</string>
-   <string name="boto_configurar">Set up</string>
-   <string name="boto_sortir">Exit</string>
-   <string name="boto_desar">Save</string>
-   <string name="boto_instruccions">Instructions</string>
-   <string name="instruccions">Selecting the parameters for each actor:
-      \n<b>voice:</b> for each actor you must select one of the available voices\n
+   <string name="titol_seleccio">Selección de fagmentos</string>
+   <string name="obra_sencera">obra completa</string>
+   <string name="boto_configurar">Configurar</string>
+   <string name="boto_sortir">Salir</string>
+   <string name="boto_desar">Guardar</string>
+   <string name="boto_instruccions">Instruciones</string>
+   <string name="instruccions">Selección de los parámetros para cada actor:
+      \n<b>voz:</b> para cada actor debes seleccionar una de las voces disponibles\n
+      \n<b>registro:</b> grave = menor valor. agudo = mayor valor
+      \n<b>velocidad:</b> lenta = menor valor. rápida = mayor valor\n
       \n<b>nota:</b> Los archivos correspondientes a los fragmentos de la obra para cada actor y el archivo de la
       obra completa deben guardarse en una carpeta accesible, por ejemplo: \'Downloads/Apuntador\'\n
       \n<b>El nombre de los archivos</b> debe tener el siguiente formato:
@@ -27,9 +29,12 @@
    <string name="error_no_escolto_res">No he oido nada</string>
    <string name="titol_actors">actores</string>
    <string name="titol_veus">voces</string>
+   <string name="titol_velocitat">velocidad</string>
    <string name="titol_seleccio_idioma">Selección de idioma:</string>
    <string name="error_document_llegint">No he podido leer el archivo %s</string>
    <string name="error_document_desconegut">Error leyendo el archivo %s - %s</string>
    <string name="idioma_no_soportat">TTS: Idioma no soportado</string>
    <string name="error_inici_TTS">TTS: Inicialización fallida</string>
+   <string name="titol_play">toca</string>
+   <string name="titol_registre">registro</string>
 </resources>
