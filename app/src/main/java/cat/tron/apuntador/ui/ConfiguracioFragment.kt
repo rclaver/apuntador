@@ -29,18 +29,14 @@ class ConfiguracioFragment : Fragment() {
    private val binding get() = _binding!!
 
    private lateinit var formContainer: LinearLayout
-   private lateinit var selectorRegistre: NumberPicker
    private val opcRegistre = (3..20).map { (it * 0.1).toString().substring(0,3) }.toTypedArray()
    private var registreSelectedItem = ""
-   private lateinit var selectorVelocitat: NumberPicker
    private val opcVelocitat = Array<String>(6) { n -> (0.9f + (n+1).toFloat()/10).toString() }
    private var velocitatSelectedItem = ""
-   private lateinit var botoPlay: ImageButton
    private lateinit var botoDesar: Button
    private lateinit var botoInstruccions: Button
    private lateinit var instruccions: TextView
    private lateinit var espera: ProgressBar
-   private lateinit var selectorVeu: Spinner
    private val opcionsVeu = GestorDeVeu.objVeus.getList(null)
    private lateinit var selectorIdioma: Spinner
    private val opcionsIdioma = arrayOf("Català", "English", "Español")
@@ -76,30 +72,12 @@ class ConfiguracioFragment : Fragment() {
          }
       }
 
-      botoPlay.setOnClickListener {
-         val veu = selectorVeu.selectedItem.toString()
-         val registre = if (registreSelectedItem.isNotEmpty()) registreSelectedItem.toFloat() else 1.0f
-         val velocitat = if (velocitatSelectedItem.isNotEmpty()) velocitatSelectedItem.toFloat() else 1.0f
-         val llengua = selectorIdioma.selectedItem.toString().substring(0, 2).lowercase()
-         GestorDeVeu.canta(veu, registre, velocitat, llengua)
-      }
-
-      selectorRegistre.setOnValueChangedListener { _, _, newVal ->
-         registreSelectedItem = opcRegistre[newVal]
-      }
-
-      selectorVelocitat.setOnValueChangedListener { _, _, newVal ->
-         velocitatSelectedItem = opcRegistre[newVal]
-      }
-
       botoDesar.setOnClickListener {
          val idioma = selectorIdioma.selectedItem.toString().substring(0,2).lowercase()
          val dadesActors = mutableMapOf<String, Map<String,Any>>()
          for (camp in formulariActors) {
             val actor = camp.actor.text.toString()
             val veu = camp.seleccioVeu.selectedItem.toString()
-            //val registre = if (registreSelectedItem.isNotEmpty()) registreSelectedItem.toFloat() else 1.0f  //camp.seleccioRegistre.value
-            //val velocitat = if (velocitatSelectedItem.isNotEmpty()) velocitatSelectedItem.toFloat() else 1.0f //camp.seleccioVelocitat.value
             camp.seleccioRegistre.setOnValueChangedListener { _, _, newVal ->
                registreSelectedItem = opcRegistre[newVal]
             }
