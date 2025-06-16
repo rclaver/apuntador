@@ -33,11 +33,11 @@
    <NumberPicker
       android:id="@+id/selectorRegistre"
       android:layout_width="wrap_content"
-      android:layout_height="30dp" />
+      android:layout_height="50dp" />
 
    <NumberPicker
       android:id="@+id/selectorVelocitat"
       android:layout_width="wrap_content"
-      android:layout_height="30dp" />
+      android:layout_height="50dp" />
 
 </LinearLayout>

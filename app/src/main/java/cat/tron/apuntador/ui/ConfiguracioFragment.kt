@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ImageButton
@@ -40,6 +41,7 @@ class ConfiguracioFragment : Fragment() {
    private val opcionsVeu = GestorDeVeu.objVeus.getList(null)
    private lateinit var selectorIdioma: Spinner
    private val opcionsIdioma = arrayOf("Català", "English", "Español")
+   private var idiomaItemSelected = false
 
    data class VistaDadesActors(
       val actor: TextView,
@@ -70,6 +72,19 @@ class ConfiguracioFragment : Fragment() {
             Utilitats.objEnFagmentSeleccio.set(false)
             creaFormulariConfiguracio(requireContext())
          }
+      }
+
+      selectorIdioma.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+         override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            if (idiomaItemSelected) {
+               idiomaItemSelected = false
+               val idioma = selectorIdioma.selectedItem.toString().substring(0, 2).lowercase()
+               GestorDeVeu.objVeus.setIdioma(idioma)
+            }else {
+               idiomaItemSelected = true
+            }
+         }
+         override fun onNothingSelected(parent: AdapterView<*>) {}
       }
 
       botoDesar.setOnClickListener {
