@@ -31,9 +31,7 @@ class ConfiguracioFragment : Fragment() {
 
    private lateinit var formContainer: LinearLayout
    private val opcRegistre = (3..20).map { (it * 0.1).toString().substring(0,3) }.toTypedArray()
-   private var registreSelectedItem = ""
    private val opcVelocitat = Array<String>(6) { n -> (0.9f + (n+1).toFloat()/10).toString() }
-   private var velocitatSelectedItem = ""
    private lateinit var botoDesar: Button
    private lateinit var botoInstruccions: Button
    private lateinit var instruccions: TextView
@@ -46,8 +44,8 @@ class ConfiguracioFragment : Fragment() {
    data class VistaDadesActors(
       val actor: TextView,
       val seleccioVeu: Spinner,
-      val seleccioRegistre: NumberPicker,
-      val seleccioVelocitat: NumberPicker
+      val seleccioRegistre: Spinner,
+      val seleccioVelocitat: Spinner
    )
    private val formulariActors = mutableListOf<VistaDadesActors>()
 
@@ -93,13 +91,9 @@ class ConfiguracioFragment : Fragment() {
          for (camp in formulariActors) {
             val actor = camp.actor.text.toString()
             val veu = camp.seleccioVeu.selectedItem.toString()
-            camp.seleccioRegistre.setOnValueChangedListener { _, _, newVal ->
-               registreSelectedItem = opcRegistre[newVal]
-            }
-            camp.seleccioVelocitat.setOnValueChangedListener { _, _, newVal ->
-               velocitatSelectedItem = opcRegistre[newVal]
-            }
-            dadesActors.put(actor, mapOf("idioma" to idioma, "veu" to veu, "registre" to registreSelectedItem, "velocitat" to velocitatSelectedItem))
+            val registre = camp.seleccioRegistre.selectedItem.toString()
+            val velocitat = camp.seleccioVelocitat.selectedItem.toString()
+            dadesActors.put(actor, mapOf("idioma" to idioma, "veu" to veu, "registre" to registre, "velocitat" to velocitat))
          }
          Utilitats.objCompanyia.setDadesActors(dadesActors)
 
@@ -159,34 +153,30 @@ class ConfiguracioFragment : Fragment() {
       val seleccioVeu = fila.findViewById<Spinner>(R.id.selectorVeus)
       seleccioVeu.adapter = ArrayAdapter(context, R.layout.spinner, opcionsVeu)
       // Seleccionar, si existeix, l'opció previament desada
-      dades.value["veu"].let { veuDesada ->
-         val index = opcionsVeu.indexOf(veuDesada)
+      dades.value["veu"].let { elem ->
+         val index = opcionsVeu.indexOf(elem)
          if (index >= 0) { seleccioVeu.setSelection(index) }
       }
 
-      val seleccioRegistre = fila.findViewById<NumberPicker>(R.id.selectorRegistre)
-      seleccioRegistre.minValue = 1
-      seleccioRegistre.maxValue = opcVelocitat.size
-      seleccioRegistre.displayedValues = opcRegistre
-      seleccioRegistre.wrapSelectorWheel = false
-      dades.value["registre"].let { regDesat ->
-         seleccioRegistre.value = opcRegistre.indexOf(regDesat)
+      val seleccioRegistre = fila.findViewById<Spinner>(R.id.selectorRegistre)
+      seleccioRegistre.adapter = ArrayAdapter(context, R.layout.spinner, opcRegistre)
+      dades.value["registre"].let { elem ->
+         val index = opcionsVeu.indexOf(elem)
+         if (index >= 0) { seleccioRegistre.setSelection(index) }
       }
 
-      val seleccioVelocitat = fila.findViewById<NumberPicker>(R.id.selectorVelocitat)
-      seleccioVelocitat.minValue = 0
-      seleccioVelocitat.maxValue = opcVelocitat.size - 1
-      seleccioVelocitat.displayedValues = opcVelocitat
-      seleccioVelocitat.wrapSelectorWheel = false
-      dades.value["velocitat"].let { velDesat ->
-         seleccioRegistre.value = opcRegistre.indexOf(velDesat)
+      val seleccioVelocitat = fila.findViewById<Spinner>(R.id.selectorVelocitat)
+      seleccioVelocitat.adapter = ArrayAdapter(context, R.layout.spinner, opcVelocitat)
+      dades.value["registre"].let { elem ->
+         val index = opcionsVeu.indexOf(elem)
+         if (index >= 0) { seleccioVelocitat.setSelection(index) }
       }
 
       val botoPlay = fila.findViewById<ImageButton>(R.id.botoPlay)
       botoPlay.setOnClickListener {
          val veu = seleccioVeu.selectedItem.toString()
-         val registre = seleccioRegistre.value.toFloat()
-         val velocitat = seleccioVelocitat.value.toFloat()
+         val registre = seleccioRegistre.selectedItem.toString().toFloat()
+         val velocitat = seleccioVelocitat.selectedItem.toString().toFloat()
          val llengua = selectorIdioma.selectedItem.toString().substring(0, 2).lowercase()
          GestorDeVeu.canta(veu, registre, velocitat, llengua)
       }
