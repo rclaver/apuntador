@@ -3,41 +3,58 @@
    xmlns:android="http://schemas.android.com/apk/res/android"
    android:layout_width="match_parent"
    android:layout_height="wrap_content"
-   android:layout_marginLeft="4dp"
    android:layout_marginTop="8dp"
    android:layout_marginBottom="8dp"
+   android:gravity="center"
    android:orientation="horizontal" >
+      <TableRow
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:paddingTop="4dp"
+         android:paddingBottom="4dp" >
 
-   <TextView
-      android:id="@+id/actor"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/titol_actors"
-      android:textStyle="bold"
-      android:textSize="15sp"
-      android:paddingTop="4dp"
-      android:paddingBottom="4dp" />
+         <TextView
+            android:id="@+id/actor"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="@string/titol_actors"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:gravity="right"
+            android:layout_gravity="center_vertical" />
+         <Spinner
+            android:id="@+id/selectorVeus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_gravity="left|center_vertical" />
 
-   <Spinner
-      android:id="@+id/selectorVeus"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content" />
+         <ImageButton
+            android:id="@+id/botoPlay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical"
+            android:src="@android:drawable/ic_media_play"
+            android:background="@null" />
 
-   <ImageButton
-      android:id="@+id/botoPlay"
-      android:layout_width="30dp"
-      android:layout_height="30dp"
-      android:src="@android:drawable/ic_media_play"
-      android:background="@null" />
+         <NumberPicker
+            android:id="@+id/selectorRegistre"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:textSize="16sp" />
 
-   <NumberPicker
-      android:id="@+id/selectorRegistre"
-      android:layout_width="wrap_content"
-      android:layout_height="50dp" />
+         <NumberPicker
+            android:id="@+id/selectorVelocitat"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:paddingLeft="6dp"
+            android:paddingRight="4dp"
+            android:textSize="16sp"
+            android:divider="@null"
+            android:dividerPadding="30dp"/>
+      </TableRow>
 
-   <NumberPicker
-      android:id="@+id/selectorVelocitat"
-      android:layout_width="wrap_content"
-      android:layout_height="50dp" />
 
 </LinearLayout>
