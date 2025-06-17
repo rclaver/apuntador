@@ -58,7 +58,7 @@ class ConfiguracioFragment : Fragment() {
 
       viewLifecycleOwner.lifecycleScope.launchWhenStarted {
          espera.visibility = View.VISIBLE
-         Utilitats.verificaDadesCompanyia(requireContext(), binding)
+         Utilitats.verificaDadesCompanyia(requireContext())
          espera.visibility = View.INVISIBLE
 
          if (Utilitats.objCompanyia.getDisponible() and !Utilitats.objEnFagmentSeleccio.get()) {
@@ -159,14 +159,14 @@ class ConfiguracioFragment : Fragment() {
       val seleccioRegistre = fila.findViewById<Spinner>(R.id.selectorRegistre)
       seleccioRegistre.adapter = ArrayAdapter(context, R.layout.spinner, opcRegistre)
       dades.value["registre"].let { elem ->
-         val index = opcionsVeu.indexOf(elem)
+         val index = opcRegistre.indexOf(elem)
          if (index >= 0) { seleccioRegistre.setSelection(index) }
       }
 
       val seleccioVelocitat = fila.findViewById<Spinner>(R.id.selectorVelocitat)
       seleccioVelocitat.adapter = ArrayAdapter(context, R.layout.spinner, opcVelocitat)
       dades.value["registre"].let { elem ->
-         val index = opcionsVeu.indexOf(elem)
+         val index = opcVelocitat.indexOf(elem)
          if (index >= 0) { seleccioVelocitat.setSelection(index) }
       }
 
