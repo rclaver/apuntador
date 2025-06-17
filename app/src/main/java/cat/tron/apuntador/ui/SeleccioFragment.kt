@@ -36,7 +36,7 @@ class SeleccioFragment : Fragment() {
       initProperties()
 
       viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-         Utilitats.verificaDadesCompanyia(requireContext())
+         Utilitats.verificaDadesCompanyia(requireContext(), null)
       }
 
       creaBotonsDeRadio(requireContext(), radioGrupActors, getString(R.string.obra_sencera))

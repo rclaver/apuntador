@@ -4,9 +4,11 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
+import cat.tron.apuntador.databinding.FragmentConfiguracioBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -219,10 +221,6 @@ object Utilitats {
       aca.startActivityForResult(intent, REQUEST_CODE_OPEN_DIRECTORY)
    }
 
-   /*fun espera(l: Long = 10)  {
-      Thread.sleep(l)
-   }*/
-
    /*
    Obtenir les dades de l'obra a partir de la llista d'arxius del directori Apuntador
    */
@@ -261,11 +259,11 @@ object Utilitats {
    Verifica si existeix l'arxiu de dades de la Companyia.
    Si existeix el carrega. Si no existeix, obté les dades de la Companyia a partir dels arxius de text.
    */
-   suspend fun verificaDadesCompanyia(context: Context): JSONObject? {
+   suspend fun verificaDadesCompanyia(context: Context, frag: FragmentConfiguracioBinding?): JSONObject? {
       var dades: JSONObject? = null
       withContext(Dispatchers.IO) {
          if (File(context.filesDir, arxiuParametres).exists()) {
-            dades = llegeixJsonArxiu(arxiuParametres, context)
+            dades = llegeixJsonArxiu(arxiuParametres, context, frag!!)
          }
          if (dades == null) {
             obtenirDadesCompanyia()
@@ -295,11 +293,15 @@ object Utilitats {
    /*
    Llegeix l'arxiu de paràmetres per obtenir les dades en format JSON
    */
-   fun llegeixJsonArxiu(file: String?, context: Context): JSONObject? {
+   fun llegeixJsonArxiu(file: String?, context: Context, frag: FragmentConfiguracioBinding?): JSONObject? {
       return try {
          val arxiu = file ?: arxiuParametres  //  /data/data/cat.tron.apuntador/files/parametres.json
          //val jsonString = context.openFileInput(arxiu).bufferedReader().use { it.readText() }
          val jsonString = File(context.filesDir, arxiu).readText()
+         if (frag != null) {
+            frag.instruccions.visibility = View.VISIBLE
+            frag.instruccions.text = jsonString
+         }
          JSONObject(jsonString)
       } catch (e: Exception) {
          null

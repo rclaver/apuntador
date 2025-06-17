@@ -26,7 +26,7 @@ class BuitFragment : Fragment() {
       imatge = view.findViewById(R.id.img_teatre)
 
       viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-         Utilitats.verificaDadesCompanyia(requireContext())
+         Utilitats.verificaDadesCompanyia(requireContext(), null)
       }
 
       imatge.setOnClickListener {
