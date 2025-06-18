@@ -75,8 +75,8 @@ object GestorDeVeu {
             registre = veuActor["registre"] as Float
             velocitat = veuActor["velocitat"] as Float
          }
-         tts?.setPitch(registre.toString().toFloat())       // 1.0 = normal, >1 més agut, <1 més greu
-         tts?.setSpeechRate(velocitat.toString().toFloat()) // 1.0 = normal, >1 més ràpid, <1 més lent
+         tts?.setPitch(registre)       // 1.0 = normal, >1 més agut, <1 més greu
+         tts?.setSpeechRate(velocitat) // 1.0 = normal, >1 més ràpid, <1 més lent
          tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
          tts?.voice = veu
          while (tts?.isSpeaking==true) { true }
@@ -162,9 +162,9 @@ object GestorDeVeu {
    fun canta(veuSeleccionada: String, registre: Float, velocitat: Float, llengua: String) {
       val tts = objTTS.get()
       val text = mapOf(
-         "ca" to "Aquest és un text de prova que mostra el model de veu que es genera segons els paràmetres seleccionats.",
-         "en" to "This is a test text showing the voice model that is generated based on the selected parameters.",
-         "es" to "Este es un texto de prueba que muestra el modelo de voz que se genera según los parámetros seleccionados."
+         "ca" to "Aquest és un text de prova que mostra el model de veu generat segons els paràmetres seleccionats.",
+         "en" to "This is a test text showing the voice model generated according to the selected parameters.",
+         "es" to "Este es un texto de prueba que muestra el modelo de voz generado según los parámetros seleccionados."
       )
       tts?.setPitch(registre)
       tts?.setSpeechRate(velocitat)

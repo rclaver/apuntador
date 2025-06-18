@@ -118,7 +118,7 @@ class ConfiguracioFragment : Fragment() {
       // establir opcions pel selector d'idioma
       var idiomes: Array<String> = arrayOf()
       opcionsIdioma.forEach { idiomes += it.substring(0,2).lowercase() }
-      selectorIdioma.adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, opcionsIdioma)
+      selectorIdioma.adapter = ArrayAdapter(context, R.layout.spinner, opcionsIdioma)
       // Seleccionar, si existeix, l'opció previament desada
       val index = idiomes.indexOf(Utilitats.objCompanyia.getIdioma())
       if (index >= 0) { selectorIdioma.setSelection(index) }
