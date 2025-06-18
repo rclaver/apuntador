@@ -34,7 +34,7 @@
          android:orientation="horizontal" >
          <TextView
             android:id="@+id/titol_actors"
-            android:layout_width="80dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textSize="15sp"
@@ -44,7 +44,7 @@
             android:background="@color/blau_200" />
          <TextView
             android:id="@+id/titol_veus"
-            android:layout_width="90dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:gravity="center"
@@ -100,9 +100,10 @@
          android:layout_height="wrap_content"
          android:contentDescription="scroll"
          android:gravity="center"
-         android:layout_gravity="center"
+         android:layout_gravity="top|center_horizontal"
          android:orientation="vertical"
-         android:layout_marginTop="12dp"
+         android:layout_marginTop="16dp"
+         android:layout_marginBottom="146dp"
          android:layout_below="@id/grup_etiquetes" >
 
          <LinearLayout
@@ -174,8 +175,8 @@
       android:id="@+id/instruccions"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginStart="8dp"
-      android:layout_marginEnd="8dp"
+      android:layout_marginStart="4dp"
+      android:layout_marginEnd="4dp"
       app:layout_constraintBottom_toBottomOf="parent"
       android:layout_marginBottom="80dp"
       android:text="@string/instruccions"

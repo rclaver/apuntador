@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import cat.tron.apuntador.R
+import cat.tron.apuntador.activitat.GestorDeVeu
 import cat.tron.apuntador.activitat.Utilitats
 
 class BuitFragment : Fragment() {
@@ -31,6 +32,7 @@ class BuitFragment : Fragment() {
       imatge.setOnClickListener {
          if (Utilitats.objCompanyia.getDisponible()) {
             Utilitats.canviaIdioma(Utilitats.objCompanyia.getIdioma(), requireContext())
+            GestorDeVeu.objVeus.setIdioma(Utilitats.objCompanyia.getIdioma())
             findNavController().navigate(R.id.action_BuitFragment_to_SeleccioFragment)
          }else {
             findNavController().navigate(R.id.action_BuitFragment_to_ConfiguracioFragment)

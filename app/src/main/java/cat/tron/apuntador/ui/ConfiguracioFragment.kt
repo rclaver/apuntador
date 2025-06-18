@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import cat.tron.apuntador.R
-import cat.tron.apuntador.activitat.GestorDeVeu.objVeus
+import cat.tron.apuntador.activitat.GestorDeVeu
 import cat.tron.apuntador.activitat.Utilitats
 import cat.tron.apuntador.databinding.FragmentConfiguracioBinding
 
@@ -32,8 +32,9 @@ class ConfiguracioFragment : Fragment() {
    private lateinit var botoInstruccions: Button
    private lateinit var instruccions: TextView
    private lateinit var espera: ProgressBar
-   private val opcionsVeu = objVeus.getList()
+   private val opcionsVeu = GestorDeVeu.objVeus.getList()
    private val opcionsIdioma = arrayOf("Català", "English", "Español")
+   private var idiomaItemSelected = false
 
    data class VistaDadesActors(
       val actor: TextView,
@@ -64,17 +65,31 @@ class ConfiguracioFragment : Fragment() {
          }
       }
 
+      selectorIdioma.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+         override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+            if (idiomaItemSelected) {
+               idiomaItemSelected = false
+               val idioma = selectorIdioma.selectedItem.toString().substring(0, 2).lowercase()
+               GestorDeVeu.objVeus.setIdioma(idioma)
+            }else {
+               idiomaItemSelected = true
+            }
+         }
+         override fun onNothingSelected(parent: AdapterView<*>) {}
+      }
+
       botoDesar.setOnClickListener {
+         val idioma = selectorIdioma.selectedItem.toString().substring(0,2).lowercase()
          val dadesActors = mutableMapOf<String, String>()
-         for (camps in formulariActors) {
-            val actor = camps.actor.text.toString()
-            val veu = camps.seleccioVeu.selectedItem.toString()
+         for (camp in formulariActors) {
+            val actor = camp.actor.text.toString()
+            val veu = camp.seleccioVeu.selectedItem.toString()
             dadesActors.put(actor, veu)
          }
          Utilitats.objCompanyia.setDadesActors(dadesActors)
 
-         val idioma = selectorIdioma.selectedItem.toString().substring(0,2).lowercase()
          Utilitats.objCompanyia.setIdioma(idioma)
+         GestorDeVeu.objVeus.setIdioma(idioma)
          Utilitats.canviaIdioma(idioma, requireContext())
 
          if (Utilitats.desaJsonArxiu(null, null, requireContext())) {
@@ -83,11 +98,7 @@ class ConfiguracioFragment : Fragment() {
       }
 
       botoInstruccions.setOnClickListener {
-         if (instruccions.isVisible) {
-            instruccions.visibility = View.INVISIBLE
-         }else {
-            instruccions.visibility = View.VISIBLE
-         }
+         instruccions.visibility = if (instruccions.isVisible) View.INVISIBLE else View.VISIBLE
       }
 
    }
@@ -99,11 +110,8 @@ class ConfiguracioFragment : Fragment() {
    private fun creaFormulariConfiguracio(context: Context) {
       // establir opcions pel selector d'idioma
       var idiomes: Array<String> = arrayOf()
-      opcionsIdioma.forEach {
-         idiomes += it.substring(0,2).lowercase()
-      }
-      val adapter = ArrayAdapter(context, android.R.layout.simple_spinner_dropdown_item, opcionsIdioma)
-      selectorIdioma.adapter = adapter
+      opcionsIdioma.forEach { idiomes += it.substring(0,2).lowercase() }
+      selectorIdioma.adapter = ArrayAdapter(context, R.layout.spinner, opcionsIdioma)
       // Seleccionar, si existeix, l'opció previament desada
       val index = idiomes.indexOf(Utilitats.objCompanyia.getIdioma())
       if (index >= 0) { selectorIdioma.setSelection(index) }

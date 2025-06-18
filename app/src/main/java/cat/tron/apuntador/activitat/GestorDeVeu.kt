@@ -25,10 +25,26 @@ object GestorDeVeu {
    }
 
    object objVeus {
-      private val veu = Voice("ca-es-x-caf-local", Locale("ca_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
-      private val iVeus: Map<String, Array<Voice>> = mapOf(
-         "ca" to arrayOf(Voice("ca-es-x-caf-local", Locale("ca_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null))
+      private var idioma = "ca"
+      private val iVeus: Map<String, Map<String, Voice>> = mapOf(
+         "ca" to mapOf(
+            "dona" to Voice("ca-es-x-caf-local", Locale("ca_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
+         ),
+         "es" to mapOf(
+            "des0" to Voice("es-ES-language", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "des1" to Voice("es-es-x-eea-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "des2" to Voice("es-es-x-eec-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "hes3" to Voice("es-es-x-eed-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "hes4" to Voice("es-es-x-eef-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
+         ),
+         "us" to mapOf(
+            "dus0" to Voice("es-US-language", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "dus1" to Voice("es-us-x-sfb-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "hus2" to Voice("es-us-x-esd-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "hus3" to Voice("es-us-x-esf-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
+         )
       )
+      private val veu = Voice("ca-es-x-caf-local", Locale("ca_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
       private val aVeus: Map<String, Map<String, Any>> = mapOf(
          "Vukei"  to mapOf("veu" to veu, "velocitat" to 1.0, "registre" to 0.3),
          "Brasde" to mapOf("veu" to veu, "velocitat" to 1.1, "registre" to 0.6),
@@ -39,8 +55,18 @@ object GestorDeVeu {
          "Moani"  to mapOf("veu" to veu, "velocitat" to 1.3, "registre" to 1.8),
          "Sukele" to mapOf("veu" to veu, "velocitat" to 1.4, "registre" to 2.4)
       )
+      fun setIdioma(i: String) {idioma = i}
+      fun getVeu(elem: String, llengua: String?): Voice {
+         val veus = iVeus[llengua ?: idioma]!!
+         var ret = veus.values.toTypedArray()[0]
+         for (v in veus) {
+            if (v.key == elem) ret = v.value
+         }
+         return ret
+      }
+      fun getList(llengua: String?): Array<String> = iVeus[llengua ?: idioma]!!.keys.toTypedArray()
+      fun getVeuNarrador(): Map<String, Any> = mapOf("veu" to getVeu("", idioma), "registre" to 1.0, "velocitat" to 1.0)
       fun get(v: String?): Map<String, Any> = aVeus[v ?: 1]!!
-      fun getList(): Array<String> { return aVeus.keys.toTypedArray() }
       fun getNarrador(): String = "Narde"
    }
 
@@ -138,6 +164,20 @@ object GestorDeVeu {
       val segonsPerParaula = 1.5
       return (paraules * segonsPerParaula * 1000).toLong()*/
       return  (text.length * 100).toLong()
+   }
+
+   fun canta(veuSeleccionada: String, registre: Float, velocitat: Float, llengua: String) {
+      val tts = objTTS.get()
+      val text = mapOf(
+         "ca" to "Aquest és un text de prova que mostra el model de veu generat segons els paràmetres seleccionats.",
+         "en" to "This is a test text showing the voice model generated according to the selected parameters.",
+         "es" to "Este es un texto de prueba que muestra el modelo de voz generado según los parámetros seleccionados."
+      )
+      tts?.setPitch(registre)
+      tts?.setSpeechRate(velocitat)
+      tts?.speak(text[llengua], TextToSpeech.QUEUE_FLUSH, null, null)
+      tts?.voice = objVeus.getVeu(veuSeleccionada, llengua)
+      while (tts?.isSpeaking==true) { true }
    }
 
 }
