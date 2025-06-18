@@ -165,7 +165,7 @@ class ConfiguracioFragment : Fragment() {
 
       val seleccioVelocitat = fila.findViewById<Spinner>(R.id.selectorVelocitat)
       seleccioVelocitat.adapter = ArrayAdapter(context, R.layout.spinner, opcVelocitat)
-      dades.value["registre"].let { elem ->
+      dades.value["velocitat"].let { elem ->
          val index = opcVelocitat.indexOf(elem)
          if (index >= 0) { seleccioVelocitat.setSelection(index) }
       }
