@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.LinearLayout
@@ -32,7 +33,7 @@ class ConfiguracioFragment : Fragment() {
    private lateinit var botoInstruccions: Button
    private lateinit var instruccions: TextView
    private lateinit var espera: ProgressBar
-   private val opcionsVeu = GestorDeVeu.objVeus.getList()
+   private val opcionsVeu = GestorDeVeu.objVeus.getList(null)
    private val opcionsIdioma = arrayOf("Català", "English", "Español")
    private var idiomaItemSelected = false
 
