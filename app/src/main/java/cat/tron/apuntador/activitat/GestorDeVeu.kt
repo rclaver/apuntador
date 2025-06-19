@@ -65,18 +65,19 @@ object GestorDeVeu {
          var velocitat: Float
          val tts = objTTS.get()
          if (actor == "narrador") {
-            val veuN = objVeus.getVeuNarrador()
-            veu = veuN["veu"] as Voice
-            registre = veuN["registre"] as Float
-            velocitat = veuN["velocitat"] as Float
+            val veuNarrador = objVeus.getVeuNarrador()
+            veu = veuNarrador["veu"] as Voice
+            registre = veuNarrador["registre"] as Float
+            velocitat = veuNarrador["velocitat"] as Float
          }else {
             val veuActor = Utilitats.objCompanyia.getDadesActors()[actor]
             veu = objVeus.getVeu(veuActor!!["veu"].toString(), veuActor["idioma"].toString())
             registre = veuActor["registre"] as Float
             velocitat = veuActor["velocitat"] as Float
+            //ac.mostraError("actor\nveu: ") // + veuActor["veu"].toString() +"\nregistre: " + veuActor["registre"].toString())
          }
-         tts?.setPitch(registre)       // 1.0 = normal, >1 més agut, <1 més greu
-         tts?.setSpeechRate(velocitat) // 1.0 = normal, >1 més ràpid, <1 més lent
+         tts?.setPitch(registre.toString().toFloat())       // 1.0 = normal, >1 més agut, <1 més greu
+         tts?.setSpeechRate(velocitat.toString().toFloat()) // 1.0 = normal, >1 més ràpid, <1 més lent
          tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
          tts?.voice = veu
          while (tts?.isSpeaking==true) { true }

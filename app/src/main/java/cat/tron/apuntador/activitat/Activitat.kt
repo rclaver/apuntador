@@ -160,16 +160,16 @@ class Activitat : AppCompatActivity() {
       withContext(Dispatchers.Main) {
          if (esNarracio || ends == ":") {
             frgAssaig.narracio.text = ret
-            //delay(100)
+            delay(100)
          } else {
             frgAssaig.escenaActual.text = patroEscena.replace(ret, "")
          }
       }
-      //delay(100)
+      delay(100)
       return ret
    }
 
-   private suspend fun mostraError(text: String) {
+   suspend fun mostraError(text: String) {
       withContext(Dispatchers.Main) {
          frgAssaig.error.text = text
       }
