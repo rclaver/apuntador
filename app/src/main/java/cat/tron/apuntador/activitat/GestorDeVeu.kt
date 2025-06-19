@@ -54,30 +54,18 @@ object GestorDeVeu {
          return ret
       }
       fun getList(llengua: String?): Array<String> = iVeus[llengua ?: idioma]!!.keys.toTypedArray()
-      fun getVeuNarrador(): Map<String, Any> = mapOf("veu" to getVeu("", idioma), "registre" to 1.0, "velocitat" to 1.0)
+      fun getVeuNarrador(): Map<String, Any> = mapOf("idioma" to idioma, "veu" to getVeu("", idioma), "registre" to "1.0", "velocitat" to "1.0")
    }
 
-   suspend fun textToAudio(text: String, actor: String, ends: String, esNarracio: Boolean = false, esObraSencera: Boolean = false, ac: Activitat): String {
+   suspend fun textToAudio(text: String, veuActor: Map<String, Any>, ends: String, esNarracio: Boolean = false, esObraSencera: Boolean = false, ac: Activitat): String {
       ac.mostraSentencia(text, ends, esNarracio)
       if (esObraSencera or (ends != ":" && !esNarracio)) {
-         var veu: Voice
-         var registre: Float
-         var velocitat: Float
          val tts = objTTS.get()
-         if (actor == "narrador") {
-            val veuNarrador = objVeus.getVeuNarrador()
-            veu = veuNarrador["veu"] as Voice
-            registre = veuNarrador["registre"] as Float
-            velocitat = veuNarrador["velocitat"] as Float
-         }else {
-            val veuActor = Utilitats.objCompanyia.getDadesActors()[actor]
-            veu = objVeus.getVeu(veuActor!!["veu"].toString(), veuActor["idioma"].toString())
-            registre = veuActor["registre"] as Float
-            velocitat = veuActor["velocitat"] as Float
-            //ac.mostraError("actor\nveu: ") // + veuActor["veu"].toString() +"\nregistre: " + veuActor["registre"].toString())
-         }
-         tts?.setPitch(registre.toString().toFloat())       // 1.0 = normal, >1 més agut, <1 més greu
-         tts?.setSpeechRate(velocitat.toString().toFloat()) // 1.0 = normal, >1 més ràpid, <1 més lent
+         val veu = veuActor["veu"] as Voice
+         val registre = veuActor["registre"].toString().toFloat()
+         val velocitat = veuActor["velocitat"].toString().toFloat()
+         tts?.setPitch(registre)       // 1.0 = normal, >1 més agut, <1 més greu
+         tts?.setSpeechRate(velocitat) // 1.0 = normal, >1 més ràpid, <1 més lent
          tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
          tts?.voice = veu
          while (tts?.isSpeaking==true) { true }
@@ -160,15 +148,15 @@ object GestorDeVeu {
       return  (text.length * 100).toLong()
    }
 
-   fun canta(veuSeleccionada: String, registre: Float, velocitat: Float, llengua: String) {
+   fun canta(veuSeleccionada: String, registre: String, velocitat: String, llengua: String) {
       val tts = objTTS.get()
       val text = mapOf(
          "ca" to "Aquest és un text de prova que mostra el model de veu generat segons els paràmetres seleccionats.",
          "en" to "This is a test text showing the voice model generated according to the selected parameters.",
          "es" to "Este es un texto de prueba que muestra el modelo de voz generado según los parámetros seleccionados."
       )
-      tts?.setPitch(registre)
-      tts?.setSpeechRate(velocitat)
+      tts?.setPitch(registre.toFloat())
+      tts?.setSpeechRate(velocitat.toFloat())
       tts?.speak(text[llengua], TextToSpeech.QUEUE_FLUSH, null, null)
       tts?.voice = objVeus.getVeu(veuSeleccionada, llengua)
       while (tts?.isSpeaking==true) { true }

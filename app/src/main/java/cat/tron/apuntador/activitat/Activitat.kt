@@ -27,8 +27,8 @@ class Activitat : AppCompatActivity() {
    private val regexNarrador = """([^\(]*)(\(.*?\))(.*)""".toRegex()
    private val patroEscena = Regex("""\(.*\)""")
 
-   //private var personatges = mutableMapOf<String, String>()
-   private val narrador = "narrador"
+   private var personatges = mutableMapOf<String, Map<String,Any>>()
+   private val narrador = GestorDeVeu.objVeus.getVeuNarrador()
 
    object objActor {
       private var actor: String = ""
@@ -100,7 +100,7 @@ class Activitat : AppCompatActivity() {
                   val ma = regexPersonatge.find(sentencia)!!
                   val personatge = ma.groupValues[1]
                   nar = processaFragment(personatge, narrador, ":", true)
-                  val veu = personatge
+                  val veu = personatges[personatge] ?: narrador
                   try {
                      val mb = regexNarrador.find(ma.groupValues[3])!!
                      if (mb.groupValues[1].isNotEmpty() && mb.groupValues[2].isNotEmpty() && mb.groupValues[3].isNotEmpty()) {
@@ -137,7 +137,7 @@ class Activitat : AppCompatActivity() {
       }
    }
 
-   private suspend fun processaFragment(text: String, veu: String, ends: String, esNarracio: Boolean = false): String {
+   private suspend fun processaFragment(text: String, veu: Map<String, Any>, ends: String, esNarracio: Boolean = false): String {
       var ret = ""
       val subText = patroEscena.replace(text, "")
 
@@ -189,7 +189,7 @@ class Activitat : AppCompatActivity() {
       }
       if (encert < 80) {
          delay(100)
-         GestorDeVeu.textToAudio(originalText, actor, "\n", esNarracio, objActor.esObraSencera(), this)
+         GestorDeVeu.textToAudio(originalText, personatges[actor] ?: narrador, "\n", esNarracio, objActor.esObraSencera(), this)
          mostraError("")
       }
       return originalText
@@ -202,18 +202,19 @@ class Activitat : AppCompatActivity() {
 
       actor = objActor.get()
       titol = Utilitats.objCompanyia.getTitol()
-      /*val llista = Utilitats.objCompanyia.getDadesActors()
+      val llista = Utilitats.objCompanyia.getDadesActors()
       if (llista.isNotEmpty()) {
          personatges.clear()
          for ((actor, params) in llista) {
-            personatges.plus(actor to mapOf(
-               "veu" to GestorDeVeu.objVeus.getVeu(params["veu"].toString(), null),
-               "registre" to params["registre"],
-               "velocitat" to params["velocitat"]
-               )
-            )
+            val veu = GestorDeVeu.objVeus.getVeu(params["veu"].toString(), params["idioma"].toString())
+            val map = mapOf("idioma" to params["idioma"]!!,
+                            "veu" to veu!!,
+                            "registre" to params["registre"]!!,
+                            "velocitat" to params["velocitat"]!!)
+            personatges[actor] = map
          }
-      }*/
+      }
+      val pepe = "pepe"
    }
 
 }

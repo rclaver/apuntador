@@ -173,8 +173,8 @@ class ConfiguracioFragment : Fragment() {
       val botoPlay = fila.findViewById<ImageButton>(R.id.botoPlay)
       botoPlay.setOnClickListener {
          val veu = seleccioVeu.selectedItem.toString()
-         val registre = seleccioRegistre.selectedItem.toString().toFloat()
-         val velocitat = seleccioVelocitat.selectedItem.toString().toFloat()
+         val registre = seleccioRegistre.selectedItem.toString()
+         val velocitat = seleccioVelocitat.selectedItem.toString()
          val llengua = selectorIdioma.selectedItem.toString().substring(0, 2).lowercase()
          GestorDeVeu.canta(veu, registre, velocitat, llengua)
       }
