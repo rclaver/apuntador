@@ -57,10 +57,12 @@ object GestorDeVeu {
       )
       fun setIdioma(i: String) {idioma = i}
       fun getVeu(elem: String, llengua: String?): Voice {
-         val veus = iVeus[llengua ?: idioma]!!
-         var ret = veus.values.toTypedArray()[0]
-         for (v in veus) {
-            if (v.key == elem) ret = v.value
+         var ret: Voice = iVeus[idioma]!!.values.toTypedArray()[0]
+         val veus = iVeus[llengua ?: idioma]
+         if (veus != null) {
+            for (v in veus) {
+               if (v.key == elem) ret = v.value
+            }
          }
          return ret
       }
@@ -79,8 +81,8 @@ object GestorDeVeu {
          val velocitat = veuParams["velocitat"] ?: 1.0
          val registre = veuParams["registre"] ?: 1.0
 
-         tts?.setSpeechRate(velocitat.toString().toFloat()) // 1.0 = normal, >1 més ràpid, <1 més lent
          tts?.setPitch(registre.toString().toFloat())       // 1.0 = normal, >1 més agut, <1 més greu
+         tts?.setSpeechRate(velocitat.toString().toFloat()) // 1.0 = normal, >1 més ràpid, <1 més lent
          tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
          tts?.voice = veu
          while (tts?.isSpeaking==true) { true }
