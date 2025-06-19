@@ -27,7 +27,7 @@ class Activitat : AppCompatActivity() {
    private val regexNarrador = """([^\(]*)(\(.*?\))(.*)""".toRegex()
    private val patroEscena = Regex("""\(.*\)""")
 
-   private var personatges = mutableMapOf<String, String>()
+   //private var personatges = mutableMapOf<String, String>()
    private val narrador = "narrador"
 
    object objActor {
@@ -100,7 +100,7 @@ class Activitat : AppCompatActivity() {
                   val ma = regexPersonatge.find(sentencia)!!
                   val personatge = ma.groupValues[1]
                   nar = processaFragment(personatge, narrador, ":", true)
-                  val veu = personatges[personatge] ?: narrador
+                  val veu = personatge
                   try {
                      val mb = regexNarrador.find(ma.groupValues[3])!!
                      if (mb.groupValues[1].isNotEmpty() && mb.groupValues[2].isNotEmpty() && mb.groupValues[3].isNotEmpty()) {
@@ -189,7 +189,7 @@ class Activitat : AppCompatActivity() {
       }
       if (encert < 80) {
          delay(100)
-         GestorDeVeu.textToAudio(originalText, personatges[actor] ?: narrador, "\n", esNarracio, objActor.esObraSencera(), this)
+         GestorDeVeu.textToAudio(originalText, actor, "\n", esNarracio, objActor.esObraSencera(), this)
          mostraError("")
       }
       return originalText
@@ -202,7 +202,7 @@ class Activitat : AppCompatActivity() {
 
       actor = objActor.get()
       titol = Utilitats.objCompanyia.getTitol()
-      val llista = Utilitats.objCompanyia.getDadesActors()
+      /*val llista = Utilitats.objCompanyia.getDadesActors()
       if (llista.isNotEmpty()) {
          personatges.clear()
          for ((actor, params) in llista) {
@@ -213,7 +213,7 @@ class Activitat : AppCompatActivity() {
                )
             )
          }
-      }
+      }*/
    }
 
 }
