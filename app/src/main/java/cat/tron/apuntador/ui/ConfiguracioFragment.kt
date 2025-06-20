@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Spinner
@@ -28,18 +29,22 @@ class ConfiguracioFragment : Fragment() {
    private val binding get() = _binding!!
 
    private lateinit var formContainer: LinearLayout
-   private lateinit var selectorIdioma: Spinner
+   private val opcRegistre = (3..20).map { (it * 0.1).toString().substring(0,3) }.toTypedArray()
+   private val opcVelocitat = Array<String>(6) { n -> (0.9f + (n+1).toFloat()/10).toString() }
    private lateinit var botoDesar: Button
    private lateinit var botoInstruccions: Button
    private lateinit var instruccions: TextView
    private lateinit var espera: ProgressBar
    private val opcionsVeu = GestorDeVeu.objVeus.getList(null)
+   private lateinit var selectorIdioma: Spinner
    private val opcionsIdioma = arrayOf("Català", "English", "Español")
    private var idiomaItemSelected = false
 
    data class VistaDadesActors(
       val actor: TextView,
-      val seleccioVeu: Spinner
+      val seleccioVeu: Spinner,
+      val seleccioRegistre: Spinner,
+      val seleccioVelocitat: Spinner
    )
    private val formulariActors = mutableListOf<VistaDadesActors>()
 
@@ -81,11 +86,13 @@ class ConfiguracioFragment : Fragment() {
 
       botoDesar.setOnClickListener {
          val idioma = selectorIdioma.selectedItem.toString().substring(0,2).lowercase()
-         val dadesActors = mutableMapOf<String, String>()
+         val dadesActors = mutableMapOf<String, Map<String,Any>>()
          for (camp in formulariActors) {
             val actor = camp.actor.text.toString()
             val veu = camp.seleccioVeu.selectedItem.toString()
-            dadesActors.put(actor, veu)
+            val registre = camp.seleccioRegistre.selectedItem.toString()
+            val velocitat = camp.seleccioVelocitat.selectedItem.toString()
+            dadesActors.put(actor, mapOf("idioma" to idioma, "veu" to veu, "registre" to registre, "velocitat" to velocitat))
          }
          Utilitats.objCompanyia.setDadesActors(dadesActors)
 
@@ -109,7 +116,7 @@ class ConfiguracioFragment : Fragment() {
    els paràmetres de veu de cada actor
    */
    private fun creaFormulariConfiguracio(context: Context) {
-      // establir opcions pel selector d'idioma
+      // Establir opcions pel selector d'idioma
       var idiomes: Array<String> = arrayOf()
       opcionsIdioma.forEach { idiomes += it.substring(0,2).lowercase() }
       selectorIdioma.adapter = ArrayAdapter(context, R.layout.spinner, opcionsIdioma)
@@ -117,56 +124,70 @@ class ConfiguracioFragment : Fragment() {
       val index = idiomes.indexOf(Utilitats.objCompanyia.getIdioma())
       if (index >= 0) { selectorIdioma.setSelection(index) }
 
-      // crear els elements de formulari per a cada actor
+      // Crear els elements de formulari per a cada actor
       var llistaDadesActors = Utilitats.objCompanyia.getDadesActors()
       if (llistaDadesActors.isNotEmpty()) {
-         for ((actor, veu) in llistaDadesActors) { afegirCampsActor(mapOf("actor" to actor, "veu" to veu), context) }
+         for (dadesActor in llistaDadesActors) { afegirCampsActor(dadesActor, context) }
       }else {
          var llistaActors = Utilitats.objCompanyia.getActors()
          if (llistaActors?.size == 0) {
             Utilitats.obtenirDadesCompanyia()
             llistaActors = Utilitats.objCompanyia.getActors()
          }
-         llistaActors!!.forEach { afegirCampsActor(mapOf("actor" to it, "veu" to ""), context) }
+         var mapaTemp = mutableMapOf<String, Map<String,Any>>()
+         llistaActors!!.forEach { mapaTemp[it] = mapOf<String, Any>() }
+         if (mapaTemp.isNotEmpty()) {
+            for (dActor in mapaTemp) { afegirCampsActor(dActor, context) }
+         }
       }
    }
 
-   private fun afegirCampsActor(dades: Map<String, String>, context: Context) {
-      val alt = Utilitats.dpToPx(context, 30).toInt()
-      val actor = TextView(context).apply {
-         text = dades["actor"].toString().capitalize()
-         textSize = 16f
-         setTypeface(null, Typeface.BOLD)
-         setPadding(40, 2, 60, 2)
-         layoutParams = LinearLayout.LayoutParams(0, alt, 1f)
+   private fun afegirCampsActor(dades: MutableMap.MutableEntry<String, Map<String, Any>>, context: Context) {
+      val inflater = LayoutInflater.from(context)
+      val fila = inflater.inflate(R.layout.fila_formulari, formContainer, false)
+
+      val actor = fila.findViewById<TextView>(R.id.actor)
+      actor.text = dades.key.toString().capitalize()
+
+      val seleccioVeu = fila.findViewById<Spinner>(R.id.selectorVeus)
+      seleccioVeu.adapter = ArrayAdapter(context, R.layout.spinner, opcionsVeu)
+      // Seleccionar, si existeix, l'opció previament desada
+      dades.value["veu"].let { elem ->
+         val index = opcionsVeu.indexOf(elem)
+         if (index >= 0) { seleccioVeu.setSelection(index) }
       }
-      val seleccioVeu = Spinner(context).apply {
-         adapter = ArrayAdapter(context, R.layout.spinner, opcionsVeu)
-         setPadding(40, 2, 0, 2)
-         // Seleccionar, si existeix, l'opció previament desada
-         dades["veu"].let { veuDesada ->
-            val index = opcionsVeu.indexOf(veuDesada)
-            if (index >= 0) { setSelection(index) }
-         }
+
+      val seleccioRegistre = fila.findViewById<Spinner>(R.id.selectorRegistre)
+      seleccioRegistre.adapter = ArrayAdapter(context, R.layout.spinner, opcRegistre)
+      dades.value["registre"].let { elem ->
+         val index = opcRegistre.indexOf(elem)
+         if (index >= 0) { seleccioRegistre.setSelection(index) }
       }
-      val fila = LinearLayout(context).apply {
-         orientation = LinearLayout.HORIZONTAL
-         layoutParams = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-         ).apply {
-            setMargins(8, 2, 8, 2)
-            gravity = View.TEXT_ALIGNMENT_VIEW_START
-         }
-         addView(actor)
-         addView(seleccioVeu)
+
+      val seleccioVelocitat = fila.findViewById<Spinner>(R.id.selectorVelocitat)
+      seleccioVelocitat.adapter = ArrayAdapter(context, R.layout.spinner, opcVelocitat)
+      dades.value["velocitat"].let { elem ->
+         val index = opcVelocitat.indexOf(elem)
+         if (index >= 0) { seleccioVelocitat.setSelection(index) }
       }
+
+      val botoPlay = fila.findViewById<ImageButton>(R.id.botoPlay)
+      botoPlay.setOnClickListener {
+         val veu = seleccioVeu.selectedItem.toString()
+         val registre = seleccioRegistre.selectedItem.toString()
+         val velocitat = seleccioVelocitat.selectedItem.toString()
+         val llengua = selectorIdioma.selectedItem.toString().substring(0, 2).lowercase()
+         GestorDeVeu.canta(veu, registre, velocitat, llengua)
+      }
+
       formContainer.addView(fila)
 
       formulariActors.add(
          VistaDadesActors(
             actor = actor,
-            seleccioVeu = seleccioVeu
+            seleccioVeu = seleccioVeu,
+            seleccioRegistre = seleccioRegistre,
+            seleccioVelocitat = seleccioVelocitat
          )
       )
    }

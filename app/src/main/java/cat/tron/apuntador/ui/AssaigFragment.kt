@@ -39,8 +39,9 @@ class AssaigFragment : Fragment() {
 
       btnInici.setOnClickListener {
          var estat = estatIniciat ?: "primer_inici"
-         if (estatIniciat == null )
+         if (estatIniciat == null) {
             activitat.setUp(binding, view.context.applicationContext)
+         }
          estatIniciat = "inici"
          btnInici.visibility = View.INVISIBLE
          btnPausa.visibility = View.VISIBLE

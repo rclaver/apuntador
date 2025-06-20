@@ -27,8 +27,8 @@ class Activitat : AppCompatActivity() {
    private val regexNarrador = """([^\(]*)(\(.*?\))(.*)""".toRegex()
    private val patroEscena = Regex("""\(.*\)""")
 
-   private var personatges = mutableMapOf<String, String>()
-   private val narrador = GestorDeVeu.objVeus.getNarrador()
+   private var personatges = mutableMapOf<String, Map<String,Any>>()
+   private val narrador = GestorDeVeu.objVeus.getVeuNarrador()
 
    object objActor {
       private var actor: String = ""
@@ -127,17 +127,17 @@ class Activitat : AppCompatActivity() {
                      frgAssaig.narracio.text = nar
                   }
                }
-               delay(50) // Espera per donar temps a l'usuari (i a la UI)
+               delay(50) //espera per donar temps a l'usuari (i a la UI)
             }
             if (stop || (estat=="anterior" && i>0) || (estat=="següent" && i<nEscenes)) {
-               break  // detenir la lectura
+               break  //detenir la lectura
             }
-            while (enPausa) {delay(50) } // esperar mentre estigui en pausa
+            while (enPausa) {delay(50) } //esperar mentre estigui en pausa
          }
       }
    }
 
-   private suspend fun processaFragment(text: String, veu: String, ends: String, esNarracio: Boolean = false): String {
+   private suspend fun processaFragment(text: String, veu: Map<String, Any>, ends: String, esNarracio: Boolean = false): String {
       var ret = ""
       val subText = patroEscena.replace(text, "")
 
@@ -160,12 +160,12 @@ class Activitat : AppCompatActivity() {
       withContext(Dispatchers.Main) {
          if (esNarracio || ends == ":") {
             frgAssaig.narracio.text = ret
-            //delay(100)
+            delay(100)
          } else {
             frgAssaig.escenaActual.text = patroEscena.replace(ret, "")
          }
       }
-      //delay(100)
+      delay(100)
       return ret
    }
 
@@ -183,7 +183,6 @@ class Activitat : AppCompatActivity() {
          encert = Utilitats.comparaSequenciesDeText(originalText, nouText)
          if (encert < 80) {
             mostraError(String.format(cR.getString(R.string.encert), encert, originalText, nouText))
-            //Utilitats.espera(5000)
          }
       }else {
          mostraError(cR.getString(R.string.error_no_escolto_res))
@@ -206,8 +205,13 @@ class Activitat : AppCompatActivity() {
       val llista = Utilitats.objCompanyia.getDadesActors()
       if (llista.isNotEmpty()) {
          personatges.clear()
-         for ((actriu, veu) in llista) {
-            personatges.put(actriu, veu)
+         for ((actor, params) in llista) {
+            val veu = GestorDeVeu.objVeus.getVeu(params["veu"].toString(), params["idioma"].toString())
+            val map = mapOf("idioma" to params["idioma"]!!,
+                            "veu" to veu!!,
+                            "registre" to params["registre"]!!,
+                            "velocitat" to params["velocitat"]!!)
+            personatges[actor] = map
          }
       }
    }

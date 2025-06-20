@@ -19,7 +19,7 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
    private var tts: TextToSpeech? = null
    private val carpetaArxius = "carpeta_arxius"
    private val preferencies = "prefs"
-   private val engine = "com.google.android.tts" // Motor de Google TTS
+   private val engine = "com.google.android.tts" //motor de Google TTS
 
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
@@ -59,7 +59,7 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
       }
    }
 
-   //TextToSpeech.OnInitListener
+   // TextToSpeech.OnInitListener
    override fun onInit(status: Int) {
       if (status == TextToSpeech.SUCCESS) {
          tts?.setEngineByPackageName(engine)

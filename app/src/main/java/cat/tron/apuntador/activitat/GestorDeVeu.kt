@@ -57,32 +57,36 @@ object GestorDeVeu {
       )
       fun setIdioma(i: String) {idioma = i}
       fun getVeu(elem: String, llengua: String?): Voice {
-         var ret: Voice = iVeus[idioma]!!.values.toTypedArray()[0]
-         val veus = iVeus[llengua ?: idioma]
-         if (veus != null) {
-            for (v in veus) {
-               if (v.key == elem) ret = v.value
-            }
+         val veus = iVeus[llengua ?: idioma]!!
+         var ret = veus.values.toTypedArray()[0]
+         for (v in veus) {
+            if (v.key == elem) ret = v.value
          }
          return ret
       }
       fun getList(llengua: String?): Array<String> = iVeus[llengua ?: idioma]!!.keys.toTypedArray()
-      fun getVeuNarrador(): Map<String, Any> = mapOf("veu" to getVeu("", idioma), "registre" to 1.0, "velocitat" to 1.0)
-      fun get(v: String?): Map<String, Any> = aVeus[v ?: 1]!!
-      fun getNarrador(): String = "Narde"
+      fun getVeuNarrador(): Map<String, Any> = mapOf("idioma" to idioma, "veu" to getVeu("", idioma), "registre" to "1.0", "velocitat" to "1.0")
    }
 
-   suspend fun textToAudio(text: String, veuPersonatge: String, ends: String, esNarracio: Boolean = false, esObraSencera: Boolean = false, ac: Activitat): String {
+   /*
+   Genera un audio a partir del text i els paràmetres de veu de l'actor o el narrador
+   */
+   suspend fun textToAudio(text: String,
+                           veuActor: Map<String, Any>,
+                           ends: String,
+                           esNarracio: Boolean = false,
+                           esObraSencera: Boolean = false,
+                           ac: Activitat): String {
+
       ac.mostraSentencia(text, ends, esNarracio)
+
       if (esObraSencera or (ends != ":" && !esNarracio)) {
          val tts = objTTS.get()
-         val veuParams = objVeus.get(veuPersonatge)
-         val veu: Voice = veuParams["veu"] as Voice
-         val velocitat = veuParams["velocitat"] ?: 1.0
-         val registre = veuParams["registre"] ?: 1.0
-
-         tts?.setPitch(registre.toString().toFloat())       // 1.0 = normal, >1 més agut, <1 més greu
-         tts?.setSpeechRate(velocitat.toString().toFloat()) // 1.0 = normal, >1 més ràpid, <1 més lent
+         val veu = veuActor["veu"] as Voice
+         val registre = veuActor["registre"].toString().toFloat()
+         val velocitat = veuActor["velocitat"].toString().toFloat()
+         tts?.setPitch(registre)       // 1.0 = normal, >1 més agut, <1 més greu
+         tts?.setSpeechRate(velocitat) // 1.0 = normal, >1 més ràpid, <1 més lent
          tts?.speak(text, TextToSpeech.QUEUE_FLUSH, null, null)
          tts?.voice = veu
          while (tts?.isSpeaking==true) { true }
@@ -91,8 +95,8 @@ object GestorDeVeu {
    }
 
    /*
-   Aquesta funció activa el micròfon, recull l'audio amb detecció de veu i el transcriu a text
-    */
+   Activa el micròfon, recull l'audio amb detecció de veu i el transcriu a text
+   */
    fun iniciaReconeixement(context: Context,
                             tempsMaxim: Long,
                             onPreparat: () -> Unit = {},
@@ -162,21 +166,18 @@ object GestorDeVeu {
    }
 
    private fun calculaTemps(text: String): Long {
-      /*val paraules = text.trim().split("\\s+".toRegex()).size
-      val segonsPerParaula = 1.5
-      return (paraules * segonsPerParaula * 1000).toLong()*/
       return  (text.length * 100).toLong()
    }
 
-   fun canta(veuSeleccionada: String, registre: Float, velocitat: Float, llengua: String) {
+   fun canta(veuSeleccionada: String, registre: String, velocitat: String, llengua: String) {
       val tts = objTTS.get()
       val text = mapOf(
          "ca" to "Aquest és un text de prova que mostra el model de veu generat segons els paràmetres seleccionats.",
          "en" to "This is a test text showing the voice model generated according to the selected parameters.",
          "es" to "Este es un texto de prueba que muestra el modelo de voz generado según los parámetros seleccionados."
       )
-      tts?.setPitch(registre)
-      tts?.setSpeechRate(velocitat)
+      tts?.setPitch(registre.toFloat())
+      tts?.setSpeechRate(velocitat.toFloat())
       tts?.speak(text[llengua], TextToSpeech.QUEUE_FLUSH, null, null)
       tts?.voice = objVeus.getVeu(veuSeleccionada, llengua)
       while (tts?.isSpeaking==true) { true }
