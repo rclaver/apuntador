@@ -115,7 +115,7 @@ class ConfiguracioFragment : Fragment() {
    els paràmetres de veu de cada actor
    */
    private fun creaFormulariConfiguracio(context: Context) {
-      // establir opcions pel selector d'idioma
+      // Establir opcions pel selector d'idioma
       var idiomes: Array<String> = arrayOf()
       opcionsIdioma.forEach { idiomes += it.substring(0,2).lowercase() }
       selectorIdioma.adapter = ArrayAdapter(context, R.layout.spinner, opcionsIdioma)
@@ -123,7 +123,7 @@ class ConfiguracioFragment : Fragment() {
       val index = idiomes.indexOf(Utilitats.objCompanyia.getIdioma())
       if (index >= 0) { selectorIdioma.setSelection(index) }
 
-      // crear els elements de formulari per a cada actor
+      // Crear els elements de formulari per a cada actor
       var llistaDadesActors = Utilitats.objCompanyia.getDadesActors()
       if (llistaDadesActors.isNotEmpty()) {
          for (dadesActor in llistaDadesActors) { afegirCampsActor(dadesActor, context) }

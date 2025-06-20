@@ -57,8 +57,18 @@ object GestorDeVeu {
       fun getVeuNarrador(): Map<String, Any> = mapOf("idioma" to idioma, "veu" to getVeu("", idioma), "registre" to "1.0", "velocitat" to "1.0")
    }
 
-   suspend fun textToAudio(text: String, veuActor: Map<String, Any>, ends: String, esNarracio: Boolean = false, esObraSencera: Boolean = false, ac: Activitat): String {
+   /*
+   Genera un audio a partir del text i els paràmetres de veu de l'actor o el narrador
+   */
+   suspend fun textToAudio(text: String,
+                           veuActor: Map<String, Any>,
+                           ends: String,
+                           esNarracio: Boolean = false,
+                           esObraSencera: Boolean = false,
+                           ac: Activitat): String {
+
       ac.mostraSentencia(text, ends, esNarracio)
+
       if (esObraSencera or (ends != ":" && !esNarracio)) {
          val tts = objTTS.get()
          val veu = veuActor["veu"] as Voice
@@ -74,8 +84,8 @@ object GestorDeVeu {
    }
 
    /*
-   Aquesta funció activa el micròfon, recull l'audio amb detecció de veu i el transcriu a text
-    */
+   Activa el micròfon, recull l'audio amb detecció de veu i el transcriu a text
+   */
    fun iniciaReconeixement(context: Context,
                             tempsMaxim: Long,
                             onPreparat: () -> Unit = {},

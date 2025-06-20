@@ -294,7 +294,6 @@ object Utilitats {
    fun llegeixJsonArxiu(file: String?, context: Context): JSONObject? {
       return try {
          val arxiu = file ?: arxiuParametres  //  /data/data/cat.tron.apuntador/files/parametres.json
-         //val jsonString = context.openFileInput(arxiu).bufferedReader().use { it.readText() }
          val jsonString = File(context.filesDir, arxiu).readText()
          JSONObject(jsonString)
       } catch (e: Exception) {

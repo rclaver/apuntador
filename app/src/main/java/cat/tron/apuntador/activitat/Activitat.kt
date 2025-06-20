@@ -127,12 +127,12 @@ class Activitat : AppCompatActivity() {
                      frgAssaig.narracio.text = nar
                   }
                }
-               delay(50) // Espera per donar temps a l'usuari (i a la UI)
+               delay(50) //espera per donar temps a l'usuari (i a la UI)
             }
             if (stop || (estat=="anterior" && i>0) || (estat=="següent" && i<nEscenes)) {
-               break  // detenir la lectura
+               break  //detenir la lectura
             }
-            while (enPausa) {delay(50) } // esperar mentre estigui en pausa
+            while (enPausa) {delay(50) } //esperar mentre estigui en pausa
          }
       }
    }
@@ -169,7 +169,7 @@ class Activitat : AppCompatActivity() {
       return ret
    }
 
-   suspend fun mostraError(text: String) {
+   private suspend fun mostraError(text: String) {
       withContext(Dispatchers.Main) {
          frgAssaig.error.text = text
       }
@@ -214,7 +214,6 @@ class Activitat : AppCompatActivity() {
             personatges[actor] = map
          }
       }
-      val pepe = "pepe"
    }
 
 }
