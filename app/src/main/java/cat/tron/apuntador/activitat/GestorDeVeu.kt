@@ -52,25 +52,24 @@ object GestorDeVeu {
             "mes0" to Voice("es-ES-language", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
             "mes1" to Voice("es-es-x-eea-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
             "mes2" to Voice("es-es-x-eec-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "hes3" to Voice("es-es-x-eed-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "hes4" to Voice("es-es-x-eef-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
+            "hes0" to Voice("es-es-x-eed-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "hes1" to Voice("es-es-x-eef-local", Locale("es_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
          ),
          "us" to mapOf(
             "mus0" to Voice("es-US-language", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
             "mus1" to Voice("es-us-x-sfb-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "hus2" to Voice("es-us-x-esd-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "hus3" to Voice("es-us-x-esf-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
+            "hus0" to Voice("es-us-x-esd-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "hus1" to Voice("es-us-x-esf-local", Locale("es_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
          ),
          "en" to mapOf(
             "wen0" to Voice("en-US-language", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
             "wen1" to Voice("en-us-x-iob-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "wen2" to Voice("en-us-x-iog-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "wen3" to Voice("en-us-x-iol-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "wen4" to Voice("en-us-x-iom-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "wen5" to Voice("en-us-x-sfg-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "wen6" to Voice("en-us-x-tpc-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "wen7" to Voice("en-us-x-tpd-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
-            "wen8" to Voice("en-us-x-tpf-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
+            "wen2" to Voice("en-us-x-tpc-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "wen3" to Voice("en-us-x-sfg-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "wen4" to Voice("en-us-x-tpf-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "men0" to Voice("en-us-x-iol-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "men1" to Voice("en-us-x-iom-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null),
+            "men2" to Voice("en-us-x-tpd-local", Locale("en_US"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
          )
       )
       fun setIdioma(i: String) {idioma = i}

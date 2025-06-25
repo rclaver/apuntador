@@ -46,11 +46,8 @@ class BuitFragment : Fragment() {
    }
 
    private fun mostraVersio(): String {
-      val ctx = requireContext()
-      val pInfo = ctx.packageManager.getPackageInfo(ctx.packageName, 0)
-      return "versió Aplicació: ${pInfo.versionName}\n" +
-             "dispositiu: ${Build.MANUFACTURER} ${Build.MODEL}\n" +
-             "versió Android: ${Build.VERSION.RELEASE}"
+      return "${Build.MANUFACTURER} ${Build.MODEL}\n" +
+             "ver. Android: ${Build.VERSION.RELEASE}"
    }
 
 }

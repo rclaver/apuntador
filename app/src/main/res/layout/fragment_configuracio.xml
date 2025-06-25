@@ -44,7 +44,7 @@
             android:background="@color/blau_200" />
          <TextView
             android:id="@+id/titol_veus"
-            android:layout_width="80dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:gravity="center"
