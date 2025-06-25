@@ -92,7 +92,7 @@ class ConfiguracioFragment : Fragment() {
             val veu = camp.seleccioVeu.selectedItem.toString()
             val registre = camp.seleccioRegistre.selectedItem.toString()
             val velocitat = camp.seleccioVelocitat.selectedItem.toString()
-            dadesActors.put(actor, mapOf("idioma" to idioma, "veu" to veu, "registre" to registre, "velocitat" to velocitat))
+            dadesActors[actor] = mapOf("idioma" to idioma, "veu" to veu, "registre" to registre, "velocitat" to velocitat)
          }
          Utilitats.objCompanyia.setDadesActors(dadesActors)
 

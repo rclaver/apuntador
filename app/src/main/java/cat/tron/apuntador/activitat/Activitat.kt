@@ -204,7 +204,6 @@ class Activitat : AppCompatActivity() {
       titol = Utilitats.objCompanyia.getTitol()
       val llista = Utilitats.objCompanyia.getDadesActors()
       if (llista.isNotEmpty()) {
-         personatges.clear()
          for ((actor, params) in llista) {
             val veu = GestorDeVeu.objVeus.getVeu(params["veu"].toString(), params["idioma"].toString())
             val map = mapOf("idioma" to params["idioma"]!!,

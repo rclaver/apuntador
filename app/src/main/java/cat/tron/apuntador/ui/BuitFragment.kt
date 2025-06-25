@@ -1,10 +1,12 @@
 package cat.tron.apuntador.ui
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -15,6 +17,7 @@ import cat.tron.apuntador.activitat.Utilitats
 class BuitFragment : Fragment() {
 
    private lateinit var imatge: ImageView
+   private lateinit var notaVersio: TextView
 
    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
       return inflater.inflate(R.layout.fragment_buit, container, false)
@@ -24,8 +27,10 @@ class BuitFragment : Fragment() {
       super.onViewCreated(view, savedInstanceState)
 
       imatge = view.findViewById(R.id.img_teatre)
+      notaVersio = view.findViewById(R.id.notaVersio)
 
       viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+         notaVersio.text = mostraVersio()
          Utilitats.verificaDadesCompanyia(requireContext())
       }
 
@@ -38,6 +43,14 @@ class BuitFragment : Fragment() {
             findNavController().navigate(R.id.action_BuitFragment_to_ConfiguracioFragment)
          }
       }
+   }
+
+   private fun mostraVersio(): String {
+      val ctx = requireContext()
+      val pInfo = ctx.packageManager.getPackageInfo(ctx.packageName, 0)
+      return "versió Aplicació: ${pInfo.versionName}\n" +
+             "dispositiu: ${Build.MANUFACTURER} ${Build.MODEL}\n" +
+             "versió Android: ${Build.VERSION.RELEASE}"
    }
 
 }
