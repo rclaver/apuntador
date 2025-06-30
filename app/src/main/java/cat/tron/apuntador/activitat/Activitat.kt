@@ -70,18 +70,14 @@ class Activitat : AppCompatActivity() {
             ).sortedBy { it.name }
             val nEscenes = escenes.size
             var i = 0
-            while (i <= nEscenes) {
-               if (stop) {
-                  break
-               } else if (estat == "anterior" && i > 0) {
-                  i--
-                  estat = "inici"
-               } else if (estat == "següent" && i < nEscenes) {
-                  i++
-                  estat = "inici"
-               }
+            while (i <= nEscenes && ! stop) {
                processaEscena(escenes[i], i, nEscenes)
-               i++
+               if (estat == "anterior" ) {
+                  if (i > 0) i--
+               }else if (i < nEscenes) {
+                  i++
+               }
+               estat = "inici"
             }
          }
       }
@@ -130,7 +126,7 @@ class Activitat : AppCompatActivity() {
                delay(50) //espera per donar temps a l'usuari (i a la UI)
             }
             if (stop || (estat=="anterior" && i>0) || (estat=="següent" && i<nEscenes)) {
-               break  //detenir la lectura
+               break  //sortir del bucle de sentències d'aquesta escena
             }
             while (enPausa) {delay(50) } //esperar mentre estigui en pausa
          }
