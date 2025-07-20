@@ -6,11 +6,14 @@ plugins {
 android {
     namespace = "cat.tron.apuntador"
     compileSdk = 35
+    //compileSdk = 28
 
     defaultConfig {
         applicationId = "cat.tron.apuntador"
         minSdk = 24
-        targetSdk = 35
+        //targetSdk = 35
+        //noinspection ExpiredTargetSdkVersion
+        targetSdk = 28  //sin problema si no se publica en Google Play
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -42,6 +45,7 @@ android {
             excludes += "META-INF/DEPENDENCIES"
         }
     }
+
 }
 
 dependencies {

@@ -203,7 +203,7 @@ class Activitat : AppCompatActivity() {
          for ((actor, params) in llista) {
             val veu = GestorDeVeu.objVeus.getVeu(params["veu"].toString(), params["idioma"].toString())
             val map = mapOf("idioma" to params["idioma"]!!,
-                            "veu" to veu!!,
+                            "veu" to veu,
                             "registre" to params["registre"]!!,
                             "velocitat" to params["velocitat"]!!)
             personatges[actor] = map

@@ -1,7 +1,6 @@
 package cat.tron.apuntador.ui
 
 import android.content.Context
-import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -125,7 +124,7 @@ class ConfiguracioFragment : Fragment() {
       if (index >= 0) { selectorIdioma.setSelection(index) }
 
       // Crear els elements de formulari per a cada actor
-      var llistaDadesActors = Utilitats.objCompanyia.getDadesActors()
+      val llistaDadesActors = Utilitats.objCompanyia.getDadesActors()
       if (llistaDadesActors.isNotEmpty()) {
          for (dadesActor in llistaDadesActors) { afegirCampsActor(dadesActor, context) }
       }else {
@@ -134,7 +133,7 @@ class ConfiguracioFragment : Fragment() {
             Utilitats.obtenirDadesCompanyia()
             llistaActors = Utilitats.objCompanyia.getActors()
          }
-         var mapaTemp = mutableMapOf<String, Map<String,Any>>()
+         val mapaTemp = mutableMapOf<String, Map<String,Any>>()
          llistaActors!!.forEach { mapaTemp[it] = mapOf<String, Any>() }
          if (mapaTemp.isNotEmpty()) {
             for (dActor in mapaTemp) { afegirCampsActor(dActor, context) }
