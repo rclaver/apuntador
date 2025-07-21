@@ -146,7 +146,7 @@ class ConfiguracioFragment : Fragment() {
       val fila = inflater.inflate(R.layout.fila_formulari, formContainer, false)
 
       val actor = fila.findViewById<TextView>(R.id.actor)
-      actor.text = dades.key.toString().capitalize()
+      actor.text = dades.key.capitalize()
 
       val seleccioVeu = fila.findViewById<Spinner>(R.id.selectorVeus)
       seleccioVeu.adapter = ArrayAdapter(context, R.layout.spinner, opcionsVeu)

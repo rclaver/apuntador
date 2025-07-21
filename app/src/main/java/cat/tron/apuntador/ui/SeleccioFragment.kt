@@ -76,7 +76,7 @@ class SeleccioFragment : Fragment() {
          var i = 180
          llistaActors.forEach { actor ->
             val radioButton = RadioButton(context).apply {
-               text = actor.toString().capitalize(Locale.ROOT)
+               text = actor.capitalize(Locale.ROOT)
                id = i++
                height = alt
                textSize = 14f
