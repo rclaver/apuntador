@@ -226,12 +226,12 @@ object Utilitats {
       // Obtenir el titol de l'obra
       var titol = ""
       var arxius: List<DocumentFile> = listOf<DocumentFile>()
-      val patroTitol = Regex("""[a-z]+?-?(?=[a-z]*?-?[0-9]*?)\.txt""")
+      val patroTitol = Regex("""[a-z_A-Z]+?-?(?=[a-z_A-Z]*?-?[0-9]*?)\.txt""")
       val arxiusTitol = llistaDirectoriDescarregues(patroTitol)
 
       for (arxiuT in arxiusTitol) {
          val t = arxiuT.name!!.replace(".txt", "")
-         val patroArxius = Regex("""${t}-[a-z]+?-[0-9]+?\.txt""")
+         val patroArxius = Regex("""${t}-[a-z_A-Z]+?-[0-9]+?\.txt""")
          arxius = llistaDirectoriDescarregues(patroArxius)
          if (arxius.isNotEmpty()) {
             titol = t
@@ -240,7 +240,7 @@ object Utilitats {
       }
       // Obtenir la llista d'actors
       if (titol != "") {
-         val patroActor = """[a-z]+?-([a-z]+?)-[0-9]+?\.txt""".toRegex()
+         val patroActor = """[a-z_A-Z]+?-([a-z_A-Z]+?)-[0-9]+?\.txt""".toRegex()
          var llistaActors: Array<String> = arrayOf()
          for (arxiu in arxius) {
             val m = patroActor.find(arxiu.name.toString())
