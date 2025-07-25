@@ -17,7 +17,7 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
    private lateinit var binding: ActivityMainBinding
    private val idioma: Locale = Locale("ca", "ES")
    private var tts: TextToSpeech? = null
-   private val carpetaArxius = "carpeta_arxius"
+   private val carpetaArxius = "app_apuntador"
    private val preferencies = "prefs"
    private val engine = "com.google.android.tts" //motor de Google TTS
 
