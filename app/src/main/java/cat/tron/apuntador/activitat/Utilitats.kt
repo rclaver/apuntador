@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
@@ -190,22 +191,25 @@ object Utilitats {
    }
 
    fun demanaPermissos(cntx: Context, aca: AppCompatActivity) {
-      try {
-         val noPermis = cntx.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ||
-               cntx.checkSelfPermission(Manifest.permission.MANAGE_DOCUMENTS) != PackageManager.PERMISSION_GRANTED ||
-               cntx.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-         if (noPermis) {
-            ActivityCompat.requestPermissions(aca,
-               arrayOf(
-                  Manifest.permission.RECORD_AUDIO,
-                  Manifest.permission.MANAGE_DOCUMENTS,
-                  Manifest.permission.READ_EXTERNAL_STORAGE
-               ),
-               STORAGE_PERMISSION_CODE
-            )
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+         //VERSION_CODES.M es igual a 23, o sea Android 6.0
+         try {
+            val noPermis = cntx.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ||
+                  cntx.checkSelfPermission(Manifest.permission.MANAGE_DOCUMENTS) != PackageManager.PERMISSION_GRANTED ||
+                  cntx.checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+            if (noPermis) {
+               ActivityCompat.requestPermissions(aca,
+                  arrayOf(
+                     Manifest.permission.RECORD_AUDIO,
+                     Manifest.permission.MANAGE_DOCUMENTS,
+                     Manifest.permission.READ_EXTERNAL_STORAGE
+                  ),
+                  STORAGE_PERMISSION_CODE
+               )
+            }
+         }catch(e: UnknownError) {
+            println(e)
          }
-      }catch(e: UnknownError) {
-         println(e)
       }
    }
 
