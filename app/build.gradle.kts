@@ -11,8 +11,7 @@ android {
         applicationId = "cat.tron.apuntador"
         minSdk = 22
         //noinspection ExpiredTargetSdkVersion
-        targetSdk = 22  // 28: sin problema si no se publica en Google Play
-        //targetSdk = 35
+        targetSdk = 22  // sin problema si no se publica en Google Play // 35->Android-15 # 28->Android-9 # 22->Android-5.1
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
