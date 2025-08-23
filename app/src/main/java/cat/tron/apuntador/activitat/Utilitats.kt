@@ -162,7 +162,7 @@ object Utilitats {
       for ((i, s1) in a1.withIndex()) {
          if (s1 != a2[i]) { error++ }
       }
-      return (100 - (error * 100 / a1.size)).toInt()
+      return (100 - (error * 100 / a1.size))
    }
 
    private fun comparaPerDesplacament(a1: List<String>, a2: List<String>): Int {
@@ -187,7 +187,7 @@ object Utilitats {
             }
          }
       }
-      return (encert * 100 / arr1.size).toInt()
+      return (encert * 100 / arr1.size)
    }
 
    fun demanaPermissos(cntx: Context, aca: AppCompatActivity) {
