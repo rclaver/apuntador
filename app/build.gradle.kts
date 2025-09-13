@@ -57,4 +57,5 @@ dependencies {
     implementation(libs.google.cloud.speech)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.documentfile)
 }

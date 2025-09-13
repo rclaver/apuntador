@@ -17,6 +17,7 @@ googleCloudSpeech = "4.69.0"
 #credentialsPlayServicesAuth = "1.5.0"
 kotlinxCoroutinesCore = "1.10.2"
 kotlinxCoroutinesAndroid = "1.10.2"
+documentfile = "1.1.0"
 #googleAuthLibraryOauth2Http = "1.33.1"
 #grpcOkhttp = "1.71.0"
 #protoGoogleCloudSpeechV1 = "4.55.0"
@@ -38,6 +39,7 @@ google-cloud-speech = { group = "com.google.cloud", name = "google-cloud-speech"
 ###androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
 ###google-auth-library-oauth2-http = { group = "com.google.auth", name = "google-auth-library-oauth2-http", version.ref = "googleAuthLibraryOauth2Http" }
 ###grpc-okhttp = { group = "io.grpc", name = "grpc-okhttp", version.ref = "grpcOkhttp" }
 #proto-google-cloud-speech-v1 = { group = "com.google.api.grpc", name = "proto-google-cloud-speech-v1", version.ref = "protoGoogleCloudSpeechV1" }
