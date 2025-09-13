@@ -70,18 +70,15 @@ class Activitat : AppCompatActivity() {
             ).sortedBy { it.name }
             val nEscenes = escenes.size
             var i = 0
-            while (i <= nEscenes) {
-               if (stop) {
-                  break
-               } else if (estat == "anterior" && i > 0) {
-                  i--
-                  estat = "inici"
-               } else if (estat == "següent" && i < nEscenes) {
+            while (i <= nEscenes && ! stop) {
+               processaEscena(escenes[i], i, nEscenes)
+               if (estat == "anterior" ) {
+                  if (i > 0) i--
+               }else if (i < nEscenes) {
                   i++
                   estat = "inici"
                }
-               processaEscena(escenes[i], i, nEscenes)
-               i++
+               estat = "inici"
             }
          }
       }
@@ -130,7 +127,7 @@ class Activitat : AppCompatActivity() {
                delay(50) //espera per donar temps a l'usuari (i a la UI)
             }
             if (stop || (estat=="anterior" && i>0) || (estat=="següent" && i<nEscenes)) {
-               break  //detenir la lectura
+               break  //sortir del bucle de sentències d'aquesta escena
             }
             while (enPausa) {delay(50) } //esperar mentre estigui en pausa
          }
@@ -208,7 +205,7 @@ class Activitat : AppCompatActivity() {
          for ((actor, params) in llista) {
             val veu = GestorDeVeu.objVeus.getVeu(params["veu"].toString(), params["idioma"].toString())
             val map = mapOf("idioma" to params["idioma"]!!,
-                            "veu" to veu!!,
+                            "veu" to veu,
                             "registre" to params["registre"]!!,
                             "velocitat" to params["velocitat"]!!)
             personatges[actor] = map

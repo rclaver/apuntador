@@ -91,7 +91,7 @@ class ConfiguracioFragment : Fragment() {
             val veu = camp.seleccioVeu.selectedItem.toString()
             val registre = camp.seleccioRegistre.selectedItem.toString()
             val velocitat = camp.seleccioVelocitat.selectedItem.toString()
-            dadesActors.put(actor, mapOf("idioma" to idioma, "veu" to veu, "registre" to registre, "velocitat" to velocitat))
+            dadesActors[actor] = mapOf("idioma" to idioma, "veu" to veu, "registre" to registre, "velocitat" to velocitat)
          }
          Utilitats.objCompanyia.setDadesActors(dadesActors)
 
@@ -133,7 +133,7 @@ class ConfiguracioFragment : Fragment() {
             Utilitats.obtenirDadesCompanyia()
             llistaActors = Utilitats.objCompanyia.getActors()
          }
-         var mapaTemp = mutableMapOf<String, Map<String,Any>>()
+         val mapaTemp = mutableMapOf<String, Map<String,Any>>()
          llistaActors!!.forEach { mapaTemp[it] = mapOf<String, Any>() }
          if (mapaTemp.isNotEmpty()) {
             for (dActor in mapaTemp) { afegirCampsActor(dActor, context) }
