@@ -38,7 +38,7 @@ class AssaigFragment : Fragment() {
       escenaActual.text = String.format(getString(R.string.inici_assaig), Activitat.objActor.get())
 
       btnInici.setOnClickListener {
-         var estat = estatIniciat ?: "primer_inici"
+         val estat = estatIniciat ?: "primer_inici"
          if (estatIniciat == null) {
             activitat.setUp(binding, view.context.applicationContext)
          }

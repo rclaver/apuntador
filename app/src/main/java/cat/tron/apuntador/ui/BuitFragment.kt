@@ -1,20 +1,25 @@
 package cat.tron.apuntador.ui
 
+import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import cat.tron.apuntador.R
 import cat.tron.apuntador.activitat.GestorDeVeu
 import cat.tron.apuntador.activitat.Utilitats
+import java.io.File
 
 class BuitFragment : Fragment() {
 
    private lateinit var imatge: ImageView
+   private lateinit var notaVersio: TextView
 
    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
       return inflater.inflate(R.layout.fragment_buit, container, false)
@@ -24,8 +29,10 @@ class BuitFragment : Fragment() {
       super.onViewCreated(view, savedInstanceState)
 
       imatge = view.findViewById(R.id.img_teatre)
+      notaVersio = view.findViewById(R.id.notaVersio)
 
       viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+         notaVersio.text = mostraVersio()
          Utilitats.verificaDadesCompanyia(requireContext())
       }
 
@@ -40,4 +47,14 @@ class BuitFragment : Fragment() {
       }
    }
 
+   private fun mostraVersio(): String {
+      val downloadsDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+      var listDir = ""
+      downloadsDir.listFiles()!!.forEach { file ->
+         listDir += "${file}\n"
+      }
+      return "directori downloads: ${downloadsDir}\n" + listDir
+            "${Build.MANUFACTURER} ${Build.MODEL}\n" +
+            "ver. Android: ${Build.VERSION.RELEASE}"
+   }
 }

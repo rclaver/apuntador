@@ -9,8 +9,8 @@ android {
 
     defaultConfig {
         applicationId = "cat.tron.apuntador"
-        minSdk = 24
-        targetSdk = 35
+        minSdk = 22
+        targetSdk = 22  //sin problema si no se publica en Google Play #35->Android-15 #28->Android-9 #22->Android-5.1
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

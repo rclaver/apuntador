@@ -2,6 +2,7 @@ package cat.tron.apuntador
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
 import android.speech.tts.TextToSpeech
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
@@ -10,6 +11,7 @@ import androidx.documentfile.provider.DocumentFile
 import cat.tron.apuntador.activitat.GestorDeVeu
 import cat.tron.apuntador.activitat.Utilitats
 import cat.tron.apuntador.databinding.ActivityMainBinding
+import java.io.File
 import java.util.Locale
 
 open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
@@ -33,6 +35,8 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
       val uriDesada = prefs.getString(carpetaArxius, null)
       if (uriDesada != null) {
          val uri = uriDesada.toUri()
+         val downloadsDir2: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+         val dirUri = downloadsDir2.toUri()
          Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, uri))
       } else {
          Utilitats.demanaAccessDescarregues(this)
@@ -54,6 +58,8 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
          val prefs = getSharedPreferences(preferencies, MODE_PRIVATE)
          prefs.edit { putString(carpetaArxius, treeUri.toString()) }
 
+         val downloadsDir1: DocumentFile? = DocumentFile.fromTreeUri(this, treeUri)
+         val downloadsDir2: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
          // Desa el directori perquè sigui accessible des d'altres llocs
          Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, treeUri))
       }
