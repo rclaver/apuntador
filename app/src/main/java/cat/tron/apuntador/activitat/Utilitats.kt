@@ -29,9 +29,12 @@ object Utilitats {
    }
 
    object DirectoriDescarregues {
+      //private lateinit var mainContext: Context
       private var dir: DocumentFile? = null
       fun set(d: DocumentFile?) { dir = d }
       fun get(): DocumentFile? = dir
+      //fun setContext(c: Context) { mainContext = c }
+      //fun getContext(): Context = mainContext
    }
 
    object objCompanyia {
@@ -112,25 +115,55 @@ object Utilitats {
    }
 
    fun llistaFragmentsObra(patroBase: String, patroActor: String, omissio: String): List<DocumentFile>  {
-      val arxius = llistaDirectoriDescarregues(patroBase.toRegex())
-      var ret = arxius.filter { it.name.toString().matches(Regex(patroActor)) }
+      val arxius = llistaDirectoriArxius(patroBase.toRegex())
+      var ret = arxius.filter { it.name!!.matches(Regex(patroActor)) }
       if (ret.isEmpty()) {
-         ret = arxius.filter { it.name.toString().matches(Regex(omissio)) }
+         ret = arxius.filter { it.name!!.matches(Regex(omissio)) }
       }
       return ret
    }
 
-   fun llistaDirectoriDescarregues(patro: Regex): List<DocumentFile> {
-      var llistaArxiusDescarregues = mutableListOf<DocumentFile>()
-      val dir = DirectoriDescarregues.get()
+   fun llistaDirectoriArxius(patro: Regex): List<DocumentFile> {
+      return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+         llistaDirectori6(patro)
+      } else {
+         // compatible Android 5.1
+         llistaDirectoriLollipop(patro)
+      }
+   }
+
+   fun llistaDirectoriLollipop(patro: Regex): List<DocumentFile> {
+      val llistaArxius = mutableListOf<DocumentFile>()
+      val dir = DirectoriDescarregues.get() ?: return emptyList()
+      if (!dir.exists()) { return emptyList() }
+      try {
+         val files = dir.listFiles()
+         for (file in files) {
+            // Verificación más robusta para Android 5.1
+            if (file != null && file.isFile && file.name != null) {
+               if (patro.containsMatchIn(file.name!!)) {
+                  llistaArxius.add(file)
+               }
+            }
+         }
+      } catch (e: Exception) {
+         println("Utilitats: Error listando archivos en Android 5.1: ${e.message}")
+      }
+
+      return llistaArxius
+   }
+
+   fun llistaDirectori6(patro: Regex): List<DocumentFile> {
+      var llistaArxius = mutableListOf<DocumentFile>()
+      val dir = DirectoriDescarregues.get() ?: return emptyList()
       if (dir?.exists() == true) {
          dir.listFiles().forEach { file ->
-            if (file.isFile && patro.containsMatchIn(file.name.toString())) {
-               llistaArxiusDescarregues.add(file)
+            if (file.isFile && patro.containsMatchIn(file.name!!)) {
+               llistaArxius.add(file)
             }
          }
       }
-      return llistaArxiusDescarregues
+      return llistaArxius
    }
 
    fun llegeixArxiu(context: Context, document: DocumentFile): String {
@@ -192,7 +225,7 @@ object Utilitats {
 
    fun demanaPermissos(cntx: Context, aca: AppCompatActivity) {
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-         //VERSION_CODES.M es igual a 23, o sea Android 6.0
+         //VERSION_CODES.M és igual a 23 - Android 6.0
          try {
             val noPermis = cntx.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ||
                   cntx.checkSelfPermission(Manifest.permission.MANAGE_DOCUMENTS) != PackageManager.PERMISSION_GRANTED ||
@@ -231,12 +264,12 @@ object Utilitats {
       var titol = ""
       var arxius: List<DocumentFile> = listOf<DocumentFile>()
       val patroTitol = Regex("""[a-z_A-Z]+?-?(?=[a-z_A-Z]*?-?[0-9]*?)\.txt""")
-      val arxiusTitol = llistaDirectoriDescarregues(patroTitol)
+      val arxiusTitol = llistaDirectoriArxius(patroTitol)
 
       for (arxiuT in arxiusTitol) {
          val t = arxiuT.name!!.replace(".txt", "")
          val patroArxius = Regex("""${t}-[a-z_A-Z]+?-[0-9]+?\.txt""")
-         arxius = llistaDirectoriDescarregues(patroArxius)
+         arxius = llistaDirectoriArxius(patroArxius)
          if (arxius.isNotEmpty()) {
             titol = t
             break
@@ -247,7 +280,7 @@ object Utilitats {
          val patroActor = """[a-z_A-Z]+?-([a-z_A-Z]+?)-[0-9]+?\.txt""".toRegex()
          var llistaActors: Array<String> = arrayOf()
          for (arxiu in arxius) {
-            val m = patroActor.find(arxiu.name.toString())
+            val m = patroActor.find(arxiu.name!!)
             if (m != null) {
                llistaActors += m.groupValues[1]
             }

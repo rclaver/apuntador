@@ -19,7 +19,7 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
    private lateinit var binding: ActivityMainBinding
    private val idioma: Locale = Locale("ca", "ES")
    private var tts: TextToSpeech? = null
-   private val carpetaArxius = "app_apuntador"
+   private val carpetaArxius = "app_apuntador_lollipop"
    private val preferencies = "prefs"
    private val engine = "com.google.android.tts" //motor de Google TTS
 
@@ -31,12 +31,13 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
       //actualitzaConfiguracio(applicationContext)
       Utilitats.demanaPermissos(applicationContext, this)
+      //Utilitats.DirectoriDescarregues.setContext(applicationContext)
       val prefs = getSharedPreferences(preferencies, MODE_PRIVATE)
       val uriDesada = prefs.getString(carpetaArxius, null)
       if (uriDesada != null) {
          val uri = uriDesada.toUri()
-         val downloadsDir2: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
-         val dirUri = downloadsDir2.toUri()
+         val docsDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+         val dirUri = docsDir.toUri()
          Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, uri))
       } else {
          Utilitats.demanaAccessDescarregues(this)
@@ -50,16 +51,21 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
       if (requestCode == Utilitats.REQUEST_CODE_OPEN_DIRECTORY && resultCode == RESULT_OK) {
          val treeUri = data?.data ?: return
          // Agafem el permís permanent
-         contentResolver.takePersistableUriPermission(
-            treeUri,
-            Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-         )
+         try {
+            contentResolver.takePersistableUriPermission(
+               treeUri,
+               Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
+         } catch (e: SecurityException) {
+            // En Android 5.1, a veces falla takePersistableUriPermission
+            print("MainActivity: No se pudieron obtener permisos persistentes: ${e.message}")
+         }
          // Desa l'URI com a string
          val prefs = getSharedPreferences(preferencies, MODE_PRIVATE)
          prefs.edit { putString(carpetaArxius, treeUri.toString()) }
 
-         val downloadsDir1: DocumentFile? = DocumentFile.fromTreeUri(this, treeUri)
-         val downloadsDir2: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+         val downloadsDir: DocumentFile? = DocumentFile.fromTreeUri(this, treeUri)
+         val docsDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
          // Desa el directori perquè sigui accessible des d'altres llocs
          Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, treeUri))
       }

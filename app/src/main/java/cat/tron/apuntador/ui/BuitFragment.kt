@@ -48,7 +48,7 @@ class BuitFragment : Fragment() {
    }
 
    private fun mostraVersio(): String {
-      val downloadsDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+      val downloadsDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
       var listDir = ""
       downloadsDir.listFiles()!!.forEach { file ->
          listDir += "${file}\n"
