@@ -1,6 +1,7 @@
 build/
 local.properties
-*.apk
+mou_apk.sh
+
 *.jar
 *.log
 *.iml
