@@ -1,6 +1,7 @@
 build/
 local.properties
 mou_apk.sh
+apuntador-lollipop.apk
 
 *.jar
 *.log
