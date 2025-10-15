@@ -1,29 +1,29 @@
 [versions]
 agp = "8.13.0"
-kotlin = "2.0.21"
-coreKtx = "1.16.0"
+kotlin = "2.2.20"
+coreKtx = "1.17.0"
 #junit = "4.13.2"
 #junitVersion = "1.2.1"
 #espressoCore = "3.6.1"
 appcompat = "1.7.1"
 material = "1.13.0"
 constraintlayout = "2.2.1"
-lifecycleLivedataKtx = "2.9.3"
-lifecycleViewmodelKtx = "2.9.3"
-navigationFragmentKtx = "2.9.4"
-navigationUiKtx = "2.9.4"
-googleCloudSpeech = "4.69.0"
-#credentials = "1.5.0"
-#credentialsPlayServicesAuth = "1.5.0"
+lifecycleLivedataKtx = "2.9.4"
+lifecycleViewmodelKtx = "2.9.4"
+navigationFragmentKtx = "2.9.5"
+navigationUiKtx = "2.9.5"
+googleCloudSpeech = "4.72.0"
 kotlinxCoroutinesCore = "1.10.2"
 kotlinxCoroutinesAndroid = "1.10.2"
 documentfile = "1.1.0"
+#credentials = "1.5.0"
+#credentialsPlayServicesAuth = "1.5.0"
 #googleAuthLibraryOauth2Http = "1.33.1"
 #grpcOkhttp = "1.71.0"
 #protoGoogleCloudSpeechV1 = "4.55.0"
 
 [libraries]
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version = "1.17.0" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 #junit = { group = "junit", name = "junit", version.ref = "junit" }
 #androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 #androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
