@@ -22,6 +22,7 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
    private val carpetaArxius = "app_apuntador_lollipop"
    private val preferencies = "prefs"
    private val engine = "com.google.android.tts" //motor de Google TTS
+   var directoriDocuments: String = ""
 
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
@@ -31,14 +32,13 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
       //actualitzaConfiguracio(applicationContext)
       Utilitats.demanaPermissos(applicationContext, this)
-      //Utilitats.DirectoriDescarregues.setContext(applicationContext)
       val prefs = getSharedPreferences(preferencies, MODE_PRIVATE)
       val uriDesada = prefs.getString(carpetaArxius, null)
       if (uriDesada != null) {
-         val uri = uriDesada.toUri()
-         val docsDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-         val dirUri = docsDir.toUri()
-         Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, uri))
+         //val uri = uriDesada.toUri()
+         //Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, uri))
+         val downloadsDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+         Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, downloadsDir.toUri()))
       } else {
          Utilitats.demanaAccessDescarregues(this)
       }
@@ -57,17 +57,19 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
             )
          } catch (e: SecurityException) {
-            // En Android 5.1, a veces falla takePersistableUriPermission
+            // En Android 5.1, a veces 'takePersistableUriPermission' falla
             print("MainActivity: No se pudieron obtener permisos persistentes: ${e.message}")
          }
          // Desa l'URI com a string
          val prefs = getSharedPreferences(preferencies, MODE_PRIVATE)
          prefs.edit { putString(carpetaArxius, treeUri.toString()) }
+         directoriDocuments = "treeUri:\n" + treeUri.toString() + "\n"
 
-         val downloadsDir: DocumentFile? = DocumentFile.fromTreeUri(this, treeUri)
-         val docsDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
          // Desa el directori perquè sigui accessible des d'altres llocs
-         Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, treeUri))
+         //val downloadsDir: DocumentFile? = DocumentFile.fromTreeUri(this, treeUri)
+         //Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, treeUri))
+         val downloadsDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+         Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, downloadsDir.toUri()))
       }
    }
 
@@ -78,11 +80,12 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
          val result = tts?.setLanguage(idioma)
          if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
             print(R.string.idioma_no_soportat)
-            // L'usuari haurà d'instal·lar l'enginy Google TTS
+            /*// L'usuari hauria d'instal·lar l'enginy Google TTS
             val installIntent = Intent().apply {
                action = TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA
             }
-            startActivity(installIntent)         }
+            startActivity(installIntent)*/
+         }
       } else {
          print(R.string.error_inici_TTS)
       }
@@ -90,7 +93,7 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
    /*
    fun actualitzaConfiguracio(ctx: Context) {
-      if (idioma != Locale("") &&  idioma != Locale("ca")) {
+      if (idioma != Locale("") && idioma != Locale("ca")) {
          Locale.setDefault(idioma)
          val configuration = resources.configuration
          configuration.setLocale(idioma)
