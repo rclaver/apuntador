@@ -31,8 +31,14 @@ object Utilitats {
    object DirectoriDescarregues {
       //private lateinit var mainContext: Context
       private var dir: DocumentFile? = null
+      private var dirTreeUri: DocumentFile? = null
+      private var dirDoc: DocumentFile? = null
       fun set(d: DocumentFile?) { dir = d }
       fun get(): DocumentFile? = dir
+      fun setTreeUri(d: DocumentFile) { dirTreeUri = d }
+      fun getTreeUri(): DocumentFile? = dirTreeUri
+      fun setDirDoc(d: DocumentFile) { dirDoc = d }
+      fun getDirDoc(): DocumentFile? = dirDoc
       //fun setContext(c: Context) { mainContext = c }
       //fun getContext(): Context = mainContext
    }
@@ -104,7 +110,7 @@ object Utilitats {
    }
 
    fun obraSencera(nomArxiu: String): DocumentFile? {
-      val dir = DirectoriDescarregues.get()
+      val dir = DirectoriDescarregues.getDirDoc()
       if (dir?.exists() == true) {
          dir.listFiles().forEach { file ->
             if (file.isFile && file.name == nomArxiu)
@@ -134,7 +140,7 @@ object Utilitats {
 
    fun llistaDirectoriLollipop(patro: Regex): List<DocumentFile> {
       val llistaArxius = mutableListOf<DocumentFile>()
-      val dir = DirectoriDescarregues.get() ?: return emptyList()
+      val dir = DirectoriDescarregues.getDirDoc() ?: return emptyList()
       if (!dir.exists()) { return emptyList() }
       try {
          val files = dir.listFiles()
@@ -155,7 +161,7 @@ object Utilitats {
 
    fun llistaDirectori6(patro: Regex): List<DocumentFile> {
       var llistaArxius = mutableListOf<DocumentFile>()
-      val dir = DirectoriDescarregues.get() ?: return emptyList()
+      val dir = DirectoriDescarregues.getTreeUri() ?: return emptyList()
       if (dir?.exists() == true) {
          dir.listFiles().forEach { file ->
             if (file.isFile && patro.containsMatchIn(file.name!!)) {

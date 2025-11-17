@@ -34,6 +34,7 @@ class ConfiguracioFragment : Fragment() {
    private lateinit var botoInstruccions: Button
    private lateinit var instruccions: TextView
    private lateinit var espera: ProgressBar
+   private lateinit var notes: TextView
    private val opcionsVeu = GestorDeVeu.objVeus.getList(null)
    private lateinit var selectorIdioma: Spinner
    private val opcionsIdioma = arrayOf("Català", "English", "Español")
@@ -60,6 +61,8 @@ class ConfiguracioFragment : Fragment() {
          espera.visibility = View.VISIBLE
          Utilitats.verificaDadesCompanyia(requireContext())
          espera.visibility = View.INVISIBLE
+         notes.text = "TreeUri:\n" + Utilitats.DirectoriDescarregues.getTreeUri().toString() +
+                      "\nDirDoc:\n" + Utilitats.DirectoriDescarregues.getDirDoc().toString()
 
          if (Utilitats.objCompanyia.getDisponible() and !Utilitats.objEnFagmentSeleccio.get()) {
             Utilitats.canviaIdioma(Utilitats.objCompanyia.getIdioma(), requireContext())
@@ -198,6 +201,7 @@ class ConfiguracioFragment : Fragment() {
       botoInstruccions = binding.botoInstruccions
       instruccions = binding.instruccions
       espera = binding.espera
+      notes  = binding.notes
    }
 
    override fun onDestroyView() {

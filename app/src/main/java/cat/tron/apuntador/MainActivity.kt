@@ -22,7 +22,6 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
    private val carpetaArxius = "app_apuntador_lollipop"
    private val preferencies = "prefs"
    private val engine = "com.google.android.tts" //motor de Google TTS
-   var directoriDocuments: String = ""
 
    override fun onCreate(savedInstanceState: Bundle?) {
       super.onCreate(savedInstanceState)
@@ -35,10 +34,9 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
       val prefs = getSharedPreferences(preferencies, MODE_PRIVATE)
       val uriDesada = prefs.getString(carpetaArxius, null)
       if (uriDesada != null) {
-         //val uri = uriDesada.toUri()
-         //Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, uri))
-         val downloadsDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-         Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, downloadsDir.toUri()))
+         Utilitats.DirectoriDescarregues.setTreeUri(DocumentFile.fromTreeUri(this, uriDesada.toUri())!!)
+         val directoriDocuments: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+         Utilitats.DirectoriDescarregues.setDirDoc(DocumentFile.fromTreeUri(this, directoriDocuments.toUri())!!)
       } else {
          Utilitats.demanaAccessDescarregues(this)
       }
@@ -63,13 +61,11 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
          // Desa l'URI com a string
          val prefs = getSharedPreferences(preferencies, MODE_PRIVATE)
          prefs.edit { putString(carpetaArxius, treeUri.toString()) }
-         directoriDocuments = "treeUri:\n" + treeUri.toString() + "\n"
 
          // Desa el directori perquè sigui accessible des d'altres llocs
-         //val downloadsDir: DocumentFile? = DocumentFile.fromTreeUri(this, treeUri)
-         //Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, treeUri))
-         val downloadsDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-         Utilitats.DirectoriDescarregues.set(DocumentFile.fromTreeUri(this, downloadsDir.toUri()))
+         Utilitats.DirectoriDescarregues.setTreeUri(DocumentFile.fromTreeUri(this, treeUri)!!)
+         val directoriDocuments: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+         Utilitats.DirectoriDescarregues.setDirDoc(DocumentFile.fromTreeUri(this, directoriDocuments.toUri())!!)
       }
    }
 

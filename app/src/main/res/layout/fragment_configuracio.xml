@@ -98,7 +98,6 @@
          android:id="@+id/grup_scroll"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:contentDescription="scroll"
          android:gravity="center"
          android:layout_gravity="top|center_horizontal"
          android:orientation="vertical"
@@ -122,6 +121,13 @@
          android:layout_height="wrap_content"
          android:layout_below="@id/grup_scroll"
          android:layout_marginTop="40dp" />
+      <TextView
+         android:id="@+id/notes"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:text="@string/blanc"
+         android:textSize="14sp"
+         android:layout_centerVertical="true"/>
 
       <LinearLayout
          android:id="@+id/formIdioma"
