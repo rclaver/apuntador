@@ -33,12 +33,19 @@ object Utilitats {
       private var dir: DocumentFile? = null
       private var dirTreeUri: DocumentFile? = null
       private var dirDoc: DocumentFile? = null
+      private var dirTreeUriText: String = ""
+      private var dirDocText: String = ""
       fun set(d: DocumentFile?) { dir = d }
       fun get(): DocumentFile? = dir
       fun setTreeUri(d: DocumentFile) { dirTreeUri = d }
       fun getTreeUri(): DocumentFile? = dirTreeUri
       fun setDirDoc(d: DocumentFile) { dirDoc = d }
       fun getDirDoc(): DocumentFile? = dirDoc
+
+      fun setTreeUriText(d: String) { dirTreeUriText = d }
+      fun getTreeUriText(): String = dirTreeUriText
+      fun setDirDocText(d: String) { dirDocText = d }
+      fun getDirDocText(): String = dirDocText
       //fun setContext(c: Context) { mainContext = c }
       //fun getContext(): Context = mainContext
    }

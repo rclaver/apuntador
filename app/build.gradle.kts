@@ -54,7 +54,11 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.google.cloud.speech)
+    implementation(libs.google.cloud.speech) {
+        exclude(group = "org.apache.httpcomponents", module = "httpclient")
+        /*exclude(group = "org.apache.httpcomponents", module = "httpcore")*/
+        /*exclude(group = "commons-logging", module = "commons-logging")*/
+    }
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.androidx.documentfile)

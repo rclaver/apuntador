@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -22,6 +23,7 @@ class SeleccioFragment : Fragment() {
    private var _binding: FragmentSeleccioBinding? = null
    private val binding get() = _binding!!
 
+   private lateinit var notes: TextView
    private lateinit var radioGrupActors: RadioGroup
    private lateinit var botoConfigurar: Button
    private lateinit var botoTancar: Button
@@ -37,6 +39,8 @@ class SeleccioFragment : Fragment() {
 
       viewLifecycleOwner.lifecycleScope.launchWhenStarted {
          Utilitats.verificaDadesCompanyia(requireContext())
+         notes.text = "TreeUri:\n" + Utilitats.DirectoriDescarregues.getTreeUri().toString() +
+               "\nDirDoc:\n" + Utilitats.DirectoriDescarregues.getDirDoc().toString()
       }
 
       creaBotonsDeRadio(requireContext(), radioGrupActors, getString(R.string.obra_sencera))
@@ -90,6 +94,7 @@ class SeleccioFragment : Fragment() {
       radioGrupActors = binding.rgActors
       botoConfigurar = binding.botoConfigurar
       botoTancar = binding.botoTancar
+      notes = binding.notes
    }
 
    override fun onDestroyView() {

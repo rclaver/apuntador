@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.speech.tts.TextToSpeech
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.net.toUri
@@ -35,11 +36,13 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
       val uriDesada = prefs.getString(carpetaArxius, null)
       if (uriDesada != null) {
          Utilitats.DirectoriDescarregues.setTreeUri(DocumentFile.fromTreeUri(this, uriDesada.toUri())!!)
-         val directoriDocuments: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-         Utilitats.DirectoriDescarregues.setDirDoc(DocumentFile.fromTreeUri(this, directoriDocuments.toUri())!!)
       } else {
          Utilitats.demanaAccessDescarregues(this)
       }
+      val directoriDocuments: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+      //Utilitats.DirectoriDescarregues.setDirDoc(DocumentFile.fromTreeUri(this, directoriDocuments.toUri())!!)
+      Toast.makeText(this, "dirDoc:"+directoriDocuments.toString(), Toast.LENGTH_LONG).show()
+
       GestorDeVeu.objTTS.set(TextToSpeech(this, this, engine))
       tts = GestorDeVeu.objTTS.get()
    }
@@ -65,7 +68,11 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
          // Desa el directori perquè sigui accessible des d'altres llocs
          Utilitats.DirectoriDescarregues.setTreeUri(DocumentFile.fromTreeUri(this, treeUri)!!)
          val directoriDocuments: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-         Utilitats.DirectoriDescarregues.setDirDoc(DocumentFile.fromTreeUri(this, directoriDocuments.toUri())!!)
+         //Utilitats.DirectoriDescarregues.setDirDoc(DocumentFile.fromTreeUri(this, directoriDocuments.toUri())!!)
+
+         Toast.makeText(this, "treeUri:"+treeUri.toString(), Toast.LENGTH_LONG).show()
+         Utilitats.DirectoriDescarregues.setTreeUriText(treeUri.toString())
+         Utilitats.DirectoriDescarregues.setDirDocText(directoriDocuments.toString())
       }
    }
 

@@ -32,6 +32,17 @@
       android:textSize="16sp"
       android:textStyle="bold" />
 
+   <TextView
+      android:id="@+id/notes"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="8dp"
+      android:layout_marginTop="5dp"
+      android:layout_marginEnd="8dp"
+      android:gravity="center"
+      android:hint="@string/blanc"
+      android:textSize="14sp" />
+
    <RadioGroup
       android:id="@+id/rg_actors"
       android:layout_width="wrap_content"
