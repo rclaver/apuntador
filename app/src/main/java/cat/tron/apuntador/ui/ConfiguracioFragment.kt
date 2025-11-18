@@ -61,8 +61,8 @@ class ConfiguracioFragment : Fragment() {
          espera.visibility = View.VISIBLE
          Utilitats.verificaDadesCompanyia(requireContext())
          espera.visibility = View.INVISIBLE
-         notes.text = "TreeUri:\n" + Utilitats.DirectoriDescarregues.getTreeUriText() +
-                      "\nDirDoc:\n" + Utilitats.DirectoriDescarregues.getDirDocText()
+         notes.text = "dirDocs:\n" + Utilitats.DirectoriDocuments.get() +
+                      "\nlist:\n" + Utilitats.DirectoriDocuments.getList()
 
          if (Utilitats.objCompanyia.getDisponible() and !Utilitats.objEnFagmentSeleccio.get()) {
             Utilitats.canviaIdioma(Utilitats.objCompanyia.getIdioma(), requireContext())

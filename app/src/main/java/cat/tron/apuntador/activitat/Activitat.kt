@@ -3,7 +3,6 @@ package cat.tron.apuntador.activitat
 import android.content.Context
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
-import androidx.documentfile.provider.DocumentFile
 import cat.tron.apuntador.R
 import cat.tron.apuntador.databinding.FragmentAssaigBinding
 import kotlinx.coroutines.CoroutineScope
@@ -11,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class Activitat : AppCompatActivity() {
    private lateinit var ctxAssaig: Context
@@ -84,7 +84,7 @@ class Activitat : AppCompatActivity() {
       }
    }
 
-   private suspend fun processaEscena(fitxerEscena: DocumentFile? = null, i: Int = 0, nEscenes:Int = 0) {
+   private suspend fun processaEscena(fitxerEscena: File? = null, i: Int = 0, nEscenes:Int = 0) {
 
       if (fitxerEscena?.exists() == true ) {
          val sentencies = Utilitats.llegeixArxiu(ctxAssaig, fitxerEscena).split('\n')

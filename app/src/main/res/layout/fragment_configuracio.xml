@@ -121,13 +121,23 @@
          android:layout_height="wrap_content"
          android:layout_below="@id/grup_scroll"
          android:layout_marginTop="40dp" />
-      <TextView
-         android:id="@+id/notes"
+      <ScrollView
+         android:id="@+id/notes_scroll"
          android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:text="@string/blanc"
-         android:textSize="14sp"
-         android:layout_centerVertical="true"/>
+         android:layout_height="300dp"
+         android:gravity="left"
+         android:layout_gravity="top"
+         android:orientation="vertical"
+         android:layout_marginTop="1dp"
+         android:layout_marginBottom="46dp"
+         android:layout_below="@id/espera" >
+         <TextView
+            android:id="@+id/notes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/blanc"
+            android:textSize="14sp"/>
+      </ScrollView>
 
       <LinearLayout
          android:id="@+id/formIdioma"

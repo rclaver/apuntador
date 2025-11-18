@@ -2,7 +2,6 @@ package cat.tron.apuntador.ui
 
 import android.os.Build
 import android.os.Bundle
-//import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,11 +13,8 @@ import androidx.navigation.fragment.findNavController
 import cat.tron.apuntador.R
 import cat.tron.apuntador.activitat.GestorDeVeu
 import cat.tron.apuntador.activitat.Utilitats
-//import java.io.File
-
 
 class BuitFragment : Fragment() {
-
    private lateinit var imatge: ImageView
    private lateinit var notaVersio: TextView
 
@@ -34,7 +30,8 @@ class BuitFragment : Fragment() {
 
       viewLifecycleOwner.lifecycleScope.launchWhenStarted {
          notaVersio.text = mostraVersio()
-         Utilitats.verificaDadesCompanyia(requireContext())
+         //Utilitats.verificaDadesCompanyia(requireContext())
+         Utilitats._obtenirDadesCompanyia()
       }
 
       imatge.setOnClickListener {
@@ -50,12 +47,6 @@ class BuitFragment : Fragment() {
 
    fun mostraVersio(): String {
       var ret = ""
-      /*val documentsDir: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-      var listDir = ""
-      documentsDir.listFiles()!!.forEach { file ->
-         listDir += "${file}\n"
-      }
-      ret += "directori documents: ${documentsDir}\n" + listDir*/
       ret += "${Build.MANUFACTURER} ${Build.MODEL}\n" +
              "ver. Android: ${Build.VERSION.RELEASE}"
       return ret

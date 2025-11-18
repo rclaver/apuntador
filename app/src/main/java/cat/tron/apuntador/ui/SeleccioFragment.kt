@@ -38,9 +38,7 @@ class SeleccioFragment : Fragment() {
       initProperties()
 
       viewLifecycleOwner.lifecycleScope.launchWhenStarted {
-         Utilitats.verificaDadesCompanyia(requireContext())
-         notes.text = "TreeUri:\n" + Utilitats.DirectoriDescarregues.getTreeUri().toString() +
-               "\nDirDoc:\n" + Utilitats.DirectoriDescarregues.getDirDoc().toString()
+         //Utilitats.verificaDadesCompanyia(requireContext())
       }
 
       creaBotonsDeRadio(requireContext(), radioGrupActors, getString(R.string.obra_sencera))

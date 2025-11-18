@@ -35,13 +35,12 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
       val prefs = getSharedPreferences(preferencies, MODE_PRIVATE)
       val uriDesada = prefs.getString(carpetaArxius, null)
       if (uriDesada != null) {
-         Utilitats.DirectoriDescarregues.setTreeUri(DocumentFile.fromTreeUri(this, uriDesada.toUri())!!)
+         Utilitats.DirectoriDocuments.setTreeUri(DocumentFile.fromTreeUri(this, uriDesada.toUri())!!)
       } else {
          Utilitats.demanaAccessDescarregues(this)
       }
-      val directoriDocuments: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-      //Utilitats.DirectoriDescarregues.setDirDoc(DocumentFile.fromTreeUri(this, directoriDocuments.toUri())!!)
-      Toast.makeText(this, "dirDoc:"+directoriDocuments.toString(), Toast.LENGTH_LONG).show()
+      val dirDocs: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+      Utilitats.DirectoriDocuments.set(dirDocs)
 
       GestorDeVeu.objTTS.set(TextToSpeech(this, this, engine))
       tts = GestorDeVeu.objTTS.get()
@@ -66,13 +65,8 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
          prefs.edit { putString(carpetaArxius, treeUri.toString()) }
 
          // Desa el directori perquè sigui accessible des d'altres llocs
-         Utilitats.DirectoriDescarregues.setTreeUri(DocumentFile.fromTreeUri(this, treeUri)!!)
-         val directoriDocuments: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
-         //Utilitats.DirectoriDescarregues.setDirDoc(DocumentFile.fromTreeUri(this, directoriDocuments.toUri())!!)
-
-         Toast.makeText(this, "treeUri:"+treeUri.toString(), Toast.LENGTH_LONG).show()
-         Utilitats.DirectoriDescarregues.setTreeUriText(treeUri.toString())
-         Utilitats.DirectoriDescarregues.setDirDocText(directoriDocuments.toString())
+         Utilitats.DirectoriDocuments.setTreeUri(DocumentFile.fromTreeUri(this, treeUri)!!)
+         Toast.makeText(this, "treeUri:$treeUri", Toast.LENGTH_LONG).show()
       }
    }
 
