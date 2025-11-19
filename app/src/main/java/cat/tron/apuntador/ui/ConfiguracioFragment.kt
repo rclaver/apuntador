@@ -61,8 +61,8 @@ class ConfiguracioFragment : Fragment() {
          espera.visibility = View.VISIBLE
          Utilitats.verificaDadesCompanyia(requireContext())
          espera.visibility = View.INVISIBLE
-         notes.text = "dirDocs:\n" + Utilitats.DirectoriDocuments.get() +
-                      "\nlist:\n" + Utilitats.DirectoriDocuments.getList()
+         //notes.text = "dirDocs:\n" + Utilitats.DirectoriDocuments.get() +
+         //             "\nlist:\n" + Utilitats.DirectoriDocuments.getList()
 
          if (Utilitats.objCompanyia.getDisponible() and !Utilitats.objEnFagmentSeleccio.get()) {
             Utilitats.canviaIdioma(Utilitats.objCompanyia.getIdioma(), requireContext())
@@ -132,12 +132,12 @@ class ConfiguracioFragment : Fragment() {
          for (dadesActor in llistaDadesActors) { afegirCampsActor(dadesActor, context) }
       }else {
          var llistaActors = Utilitats.objCompanyia.getActors()
-         if (llistaActors?.size == 0) {
-            Utilitats.obtenirDadesCompanyia()
+         if (llistaActors.isEmpty()) {
+            Utilitats.obtenirDades()
             llistaActors = Utilitats.objCompanyia.getActors()
          }
          val mapaTemp = mutableMapOf<String, Map<String,Any>>()
-         llistaActors!!.forEach { mapaTemp[it] = mapOf<String, Any>() }
+         llistaActors.forEach { mapaTemp[it] = mapOf<String, Any>() }
          if (mapaTemp.isNotEmpty()) {
             for (dActor in mapaTemp) { afegirCampsActor(dActor, context) }
          }

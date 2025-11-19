@@ -29,19 +29,8 @@
       android:layout_marginEnd="8dp"
       android:gravity="center"
       android:hint="@string/titol_seleccio"
-      android:textSize="16sp"
+      android:textSize="18sp"
       android:textStyle="bold" />
-
-   <TextView
-      android:id="@+id/notes"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginStart="8dp"
-      android:layout_marginTop="5dp"
-      android:layout_marginEnd="8dp"
-      android:gravity="center"
-      android:hint="@string/blanc"
-      android:textSize="14sp" />
 
    <RadioGroup
       android:id="@+id/rg_actors"
@@ -70,7 +59,7 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:text="@string/boto_configurar"
-         android:layout_marginTop="40dp"
+         android:layout_marginTop="30dp"
          android:layout_marginRight="20dp"
          app:layout_constraintLeft_toLeftOf="parent"
          app:layout_constraintTop_toTopOf="parent" />
@@ -80,7 +69,7 @@
          android:layout_width="wrap_content"
          android:layout_height="wrap_content"
          android:text="@string/boto_sortir"
-         android:layout_marginLeft="40dp"
+         android:layout_marginLeft="30dp"
          app:layout_constraintLeft_toRightOf="@id/boto_configurar"
          app:layout_constraintTop_toTopOf="@id/boto_configurar" />
    </androidx.constraintlayout.widget.ConstraintLayout>

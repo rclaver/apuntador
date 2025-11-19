@@ -34,10 +34,10 @@ object Utilitats {
 
       fun set(d: File?) { dir = d }
       fun get(): File? = dir
-      fun getList(): String {
-         var listDir = ""
+      fun getList(): List<File> {
+         val listDir = mutableListOf<File>()
          dir?.listFiles()!!.forEach { file ->
-            listDir += "${file}\n"
+            listDir.add(file)
          }
          return listDir
       }
@@ -264,7 +264,7 @@ object Utilitats {
    /*
    Obtenir les dades de l'obra a partir de la llista d'arxius del directori Apuntador
    */
-   fun obtenirDadesCompanyia() {
+   fun obtenirDades() {
       // Obtenir el titol de l'obra
       var titol = ""
       var arxius: List<File> = listOf<File>()
@@ -298,9 +298,9 @@ object Utilitats {
    /*
    Obté les dades de la Companyia a partir dels arxius de text.
    */
-   suspend fun _obtenirDadesCompanyia() {
+   suspend fun obtenirDadesCompanyia() {
       withContext(Dispatchers.IO) {
-         obtenirDadesCompanyia()
+         obtenirDades()
       }
    }
 
@@ -314,8 +314,11 @@ object Utilitats {
          if (File(context.filesDir, arxiuParametres).exists()) {
             dades = llegeixJsonArxiu(arxiuParametres, context)
          }
-         if (dades == null) {
+         val t = dades?.getString("titolDeLobra")
+         val l = dades?.getString("llistatDactors")
+         if (dades == null || t == null || l == null) {
             obtenirDadesCompanyia()
+            desaJsonArxiu(null, objCompanyia.get(), context)
          } else {
             objCompanyia.set(dades)
          }

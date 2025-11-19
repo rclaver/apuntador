@@ -126,10 +126,8 @@
          android:layout_width="match_parent"
          android:layout_height="300dp"
          android:gravity="left"
-         android:layout_gravity="top"
          android:orientation="vertical"
          android:layout_marginTop="1dp"
-         android:layout_marginBottom="46dp"
          android:layout_below="@id/espera" >
          <TextView
             android:id="@+id/notes"

@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -23,7 +22,6 @@ class SeleccioFragment : Fragment() {
    private var _binding: FragmentSeleccioBinding? = null
    private val binding get() = _binding!!
 
-   private lateinit var notes: TextView
    private lateinit var radioGrupActors: RadioGroup
    private lateinit var botoConfigurar: Button
    private lateinit var botoTancar: Button
@@ -69,10 +67,10 @@ class SeleccioFragment : Fragment() {
    de fragments corresponents a cada actor o l'obra sencera
    */
    private fun creaBotonsDeRadio(context: Context, radioGrupActors: RadioGroup, obra: String) {
-      val alt = Utilitats.dpToPx(context, 44).toInt()
-      var llistaActors = Utilitats.objCompanyia.getActors()
+      val alt = Utilitats.dpToPx(context, 42).toInt()
+      val llistaActors = Utilitats.objCompanyia.getActors()
 
-      if (llistaActors != null) {
+      if (llistaActors.isNotEmpty()) {
          llistaActors.add(obra)
 
          var i = 180
@@ -92,7 +90,6 @@ class SeleccioFragment : Fragment() {
       radioGrupActors = binding.rgActors
       botoConfigurar = binding.botoConfigurar
       botoTancar = binding.botoTancar
-      notes = binding.notes
    }
 
    override fun onDestroyView() {
