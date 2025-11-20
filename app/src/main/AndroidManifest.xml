@@ -33,12 +33,14 @@
 
       <provider
          android:name="androidx.core.content.FileProvider"
-         android:authorities="${applicationId}.provider"
+         android:authorities="${applicationId}.fileprovider"
          android:exported="false"
          android:grantUriPermissions="true" >
          <meta-data
             android:name="android.support.FILE_PROVIDER_PATHS"
             android:resource="@xml/file_paths" />
+         <grant-uri-permission android:path="content://com.android.storage.documentstor" />
+         <grant-uri-permission android:path="content://com.android.externalstorage.documents/tree/primary:Documents" />
          <grant-uri-permission android:path="content://com.android.externalstorage.documents/tree/primary:Download" />
          <grant-uri-permission android:path="content://com.android.providers.downloads.documents/tree/downloads/Apuntador" />
       </provider>

@@ -30,8 +30,7 @@ class BuitFragment : Fragment() {
 
       viewLifecycleOwner.lifecycleScope.launchWhenStarted {
          notaVersio.text = mostraVersio()
-         //Utilitats.verificaDadesCompanyia(requireContext())
-         Utilitats.obtenirDadesCompanyia()
+         Utilitats.verificaDadesCompanyia(requireContext())
       }
 
       imatge.setOnClickListener {

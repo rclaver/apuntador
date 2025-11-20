@@ -172,15 +172,17 @@ object Utilitats {
    }
 
    fun llegeixArxiu(context: Context, document: File): String {
-      return try {
-         context.openFileInput(document.path)?.use { inputStream ->
-            inputStream.bufferedReader().use { reader ->
-               reader.readText()
+      try {
+         val dir = DirectoriDocuments.get() ?: return ""
+         dir.listFiles()!!.forEach { file ->
+            if (file.isFile && file.name == document.name) {
+               return file.readText()
             }
-         } ?: "No he pogut obrir el fitxer"
+         }
       } catch (e: Exception) {
-         "Error llegint el fitxer: ${e.message}"
+         return "Error llegint el fitxer: ${e.message}"
       }
+      return ""
    }
 
    fun comparaSequenciesDeText(text1: String, text2: String): Int {
@@ -308,22 +310,19 @@ object Utilitats {
    Verifica si existeix l'arxiu de dades de la Companyia.
    Si existeix el carrega. Si no existeix, obté les dades de la Companyia a partir dels arxius de text.
    */
-   suspend fun verificaDadesCompanyia(context: Context): JSONObject? {
+   suspend fun verificaDadesCompanyia(context: Context) {
       var dades: JSONObject? = null
       withContext(Dispatchers.IO) {
          if (File(context.filesDir, arxiuParametres).exists()) {
             dades = llegeixJsonArxiu(arxiuParametres, context)
          }
-         val t = dades?.getString("titolDeLobra")
-         val l = dades?.getString("llistatDactors")
-         if (dades == null || t == null || l == null) {
+         if (dades == null || dades.getString("titolDeLobra").isEmpty() || dades.getString("llistatDactors").isEmpty()) {
             obtenirDadesCompanyia()
             desaJsonArxiu(null, objCompanyia.get(), context)
          } else {
             objCompanyia.set(dades)
          }
       }
-      return dades
    }
 
    /*

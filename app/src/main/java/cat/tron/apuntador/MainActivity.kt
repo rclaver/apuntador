@@ -20,8 +20,8 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
    private lateinit var binding: ActivityMainBinding
    private val idioma: Locale = Locale("ca", "ES")
    private var tts: TextToSpeech? = null
-   private val carpetaArxius = "app_apuntador_lollipop"
-   private val preferencies = "prefs"
+   private val directoriEscenes = "apuntador_lollipop"
+   private val arxiuPreferencies = "preferencies"
    private val engine = "com.google.android.tts" //motor de Google TTS
 
    override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,8 +32,8 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
       //actualitzaConfiguracio(applicationContext)
       Utilitats.demanaPermissos(applicationContext, this)
-      val prefs = getSharedPreferences(preferencies, MODE_PRIVATE)
-      val uriDesada = prefs.getString(carpetaArxius, null)
+      val prefs = getSharedPreferences(arxiuPreferencies, MODE_PRIVATE)
+      val uriDesada = prefs.getString(directoriEscenes, null)
       if (uriDesada != null) {
          Utilitats.DirectoriDocuments.setTreeUri(DocumentFile.fromTreeUri(this, uriDesada.toUri())!!)
       } else {
@@ -61,9 +61,11 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
             print("MainActivity: No se pudieron obtener permisos persistentes: ${e.message}")
          }
          // Desa l'URI com a string
-         val prefs = getSharedPreferences(preferencies, MODE_PRIVATE)
-         prefs.edit { putString(carpetaArxius, treeUri.toString()) }
-
+         val prefs = getSharedPreferences(arxiuPreferencies, MODE_PRIVATE)
+         prefs.edit {
+            putString(directoriEscenes, treeUri.toString())
+            apply()
+         }
          // Desa el directori perquè sigui accessible des d'altres llocs
          Utilitats.DirectoriDocuments.setTreeUri(DocumentFile.fromTreeUri(this, treeUri)!!)
          Toast.makeText(this, "treeUri:$treeUri", Toast.LENGTH_LONG).show()
