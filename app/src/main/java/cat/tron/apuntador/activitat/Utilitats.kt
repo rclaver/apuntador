@@ -17,7 +17,6 @@ import java.io.IOException
 import java.util.Locale
 
 object Utilitats {
-
    const val REQUEST_CODE_OPEN_DIRECTORY = 101
    private const val STORAGE_PERMISSION_CODE = 100
    private const val arxiuParametres = "parametres.json"
@@ -171,7 +170,7 @@ object Utilitats {
       return llistaArxius
    }
 
-   fun llegeixArxiu(context: Context, document: File): String {
+   fun llegeixArxiu(document: File): String {
       try {
          val dir = DirectoriDocuments.get() ?: return ""
          dir.listFiles()!!.forEach { file ->

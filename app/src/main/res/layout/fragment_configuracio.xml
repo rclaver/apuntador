@@ -121,21 +121,6 @@
          android:layout_height="wrap_content"
          android:layout_below="@id/grup_scroll"
          android:layout_marginTop="40dp" />
-      <ScrollView
-         android:id="@+id/notes_scroll"
-         android:layout_width="match_parent"
-         android:layout_height="300dp"
-         android:gravity="left"
-         android:orientation="vertical"
-         android:layout_marginTop="1dp"
-         android:layout_below="@id/espera" >
-         <TextView
-            android:id="@+id/notes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/blanc"
-            android:textSize="14sp"/>
-      </ScrollView>
 
       <LinearLayout
          android:id="@+id/formIdioma"
@@ -197,6 +182,6 @@
       android:textSize="15sp"
       android:visibility="invisible"
       android:background="@drawable/rounded_corner"
-      android:backgroundTint="@color/blau_200" />
+      android:backgroundTint="@color/teal_200" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

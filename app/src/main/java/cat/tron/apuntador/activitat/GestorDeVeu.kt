@@ -85,6 +85,13 @@ object GestorDeVeu {
       fun getVeuNarrador(): Map<String, Any> = mapOf("idioma" to idioma, "veu" to getVeu("", idioma), "registre" to "1.0", "velocitat" to "1.0")
    }
 
+   // Función para inicializar el TTS (debe llamarse desde tu Activity)
+   fun inicialitzarTTS(context: Context, onInitListener: TextToSpeech.OnInitListener) {
+      if (objTTS.get() == null) {
+         objTTS.set(TextToSpeech(context, onInitListener))
+      }
+   }
+
    /*
    Genera un audio a partir del text i els paràmetres de veu de l'actor o el narrador
    */
@@ -195,8 +202,20 @@ object GestorDeVeu {
       )
       tts?.setPitch(registre.toFloat())
       tts?.setSpeechRate(velocitat.toFloat())
+      // Para Android 5.1, usa setLanguage en lugar de voice
+      val idioma = when (llengua) {
+                      "ca" -> Locale("ca", "ES")
+                      "en" -> Locale.ENGLISH
+                      "es" -> Locale("es", "ES")
+                   else -> Locale.getDefault()
+      }
       tts?.speak(text[llengua], TextToSpeech.QUEUE_FLUSH, null, null)
-      tts?.voice = objVeus.getVeu(veuSeleccionada, llengua)
+      //tts?.voice = objVeus.getVeu(veuSeleccionada, llengua)
+      val result = tts?.setLanguage(idioma)
+      if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+         // Idioma no soportado, usar idioma por defecto
+         tts.language = Locale.ENGLISH //Locale.getDefault()
+      }
       while (tts?.isSpeaking==true) { true }
    }
 

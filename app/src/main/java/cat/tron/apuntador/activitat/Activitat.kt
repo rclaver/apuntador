@@ -87,7 +87,7 @@ class Activitat : AppCompatActivity() {
    private suspend fun processaEscena(fitxerEscena: File? = null, i: Int = 0, nEscenes:Int = 0) {
 
       if (fitxerEscena?.exists() == true ) {
-         val sentencies = Utilitats.llegeixArxiu(ctxAssaig, fitxerEscena).split('\n')
+         val sentencies = Utilitats.llegeixArxiu(fitxerEscena).split('\n')
 
          for (sentencia in sentencies) {
             var ret = ""
