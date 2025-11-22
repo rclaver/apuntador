@@ -16,6 +16,17 @@
       android:text="@string/titol"
       android:textStyle="bold" />
 
+   <TextView
+      android:id="@+id/notes"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="top"
+      android:layout_marginTop="20dp"
+      android:layout_marginStart="10dp"
+      android:lines="10"
+      android:text="@string/blanc"
+      android:textSize="14sp" />
+
    <ImageView
       android:id="@+id/img_teatre"
       android:layout_width="wrap_content"
@@ -30,11 +41,11 @@
       android:id="@+id/notaVersio"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
       android:layout_marginStart="20dp"
       android:layout_marginBottom="40dp"
-      android:layout_gravity="bottom"
-      android:textSize="14sp"
+      android:lines="10"
       android:text="@string/blanc"
-      android:lines="10" />
+      android:textSize="14sp" />
 
 </FrameLayout>

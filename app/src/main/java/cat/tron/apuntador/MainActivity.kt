@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.edit
 import androidx.core.net.toUri
 import androidx.documentfile.provider.DocumentFile
+import androidx.lifecycle.ViewModelProvider
 import cat.tron.apuntador.activitat.GestorDeVeu
+import cat.tron.apuntador.activitat.SharedViewModel
 import cat.tron.apuntador.activitat.Utilitats
 import cat.tron.apuntador.databinding.ActivityMainBinding
 import java.io.File
@@ -20,6 +22,7 @@ const val REQUEST_CODE_INSTALL_TTS = 1002
 
 open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
    private lateinit var binding: ActivityMainBinding
+   private lateinit var comparticio: SharedViewModel
    private val idioma: Locale = Locale("ca", "ES")
    private var tts: TextToSpeech? = null
    private val directoriEscenes = "apuntador_lollipop"
@@ -31,6 +34,8 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
       binding = ActivityMainBinding.inflate(layoutInflater)
       setContentView(binding.root)
+
+      comparticio = ViewModelProvider(this).get(SharedViewModel::class.java)
 
       inicialitzarTTS()
       //actualitzaConfiguracio(applicationContext)
@@ -62,20 +67,24 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                TextToSpeech.Engine.CHECK_VOICE_DATA_PASS -> {
                   // Datos de voz disponibles, inicializar con motor de Google
                   tts = TextToSpeech(this, this, engine)
+                  comparticio.enviaNota("Datos de voz disponibles, inicializar con motor de Google\n$tts")
                }
                TextToSpeech.Engine.CHECK_VOICE_DATA_FAIL,
                TextToSpeech.Engine.CHECK_VOICE_DATA_MISSING_DATA -> {
                   // Datos de voz no disponibles, instalar
+                  comparticio.enviaNota("Datos de voz no disponibles, instalar")
                   instalarDadesTTS()
                }
                else -> {
                   // Usar TTS por defecto como fallback
                   tts = TextToSpeech(this, this)
+                  comparticio.enviaNota("Usar TTS por defecto\n$tts")
                }
             }
          }
          REQUEST_CODE_INSTALL_TTS -> {
             // Después de intentar instalar, verificar nuevamente
+            comparticio.enviaNota("Después de intentar instalar, inicialitzarTTS nuevamente")
             inicialitzarTTS()
          }
          Utilitats.REQUEST_CODE_OPEN_DIRECTORY -> {
@@ -111,15 +120,17 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
          tts?.setEngineByPackageName(engine)
          val result = tts?.setLanguage(idioma)
          if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+            comparticio.enviaNota(R.string.idioma_no_soportat.toString())
             Toast.makeText(this, R.string.idioma_no_soportat, Toast.LENGTH_LONG).show()
+            // L'usuari hauria d'instal·lar l'enginy Google TTS
             instalarDadesTTS()
-            /* L'usuari hauria d'instal·lar l'enginy Google TTS
-            val installIntent = Intent().apply {
+            /*val installIntent = Intent().apply {
                action = TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA
             }
             startActivity(installIntent)*/
          }
       } else {
+         comparticio.enviaNota(R.string.error_inici_TTS.toString())
          Toast.makeText(this, R.string.error_inici_TTS, Toast.LENGTH_LONG).show()
       }
    }
@@ -129,9 +140,11 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
          // Verificar si el motor de Google TTS está disponible
          val checkIntent = Intent(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA)
          startActivityForResult(checkIntent, REQUEST_CODE_CHECK_TTS)
+         comparticio.enviaNota("motor de Google TTS disponible")
       } catch (e: Exception) {
          // Si no está disponible, usar TTS por defecto
          tts = TextToSpeech(this, this)
+         comparticio.enviaNota("motor de Google TTS no está disponible, usar TTS por defecto\n$tts")
       }
    }
 
@@ -142,6 +155,7 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
          startActivityForResult(installIntent, REQUEST_CODE_INSTALL_TTS)
       } catch (e: Exception) {
          // Si falla, redirigir a Google Play
+         comparticio.enviaNota("Ha fallat la instal·lació de dades TTS. visitaGooglePlay()")
          visitaGooglePlay()
       }
    }

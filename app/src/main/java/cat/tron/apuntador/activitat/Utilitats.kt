@@ -8,6 +8,9 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.documentfile.provider.DocumentFile
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
@@ -366,4 +369,13 @@ object Utilitats {
       return valor * context.resources.displayMetrics.density
    }
 
+}
+
+class SharedViewModel : ViewModel() {
+   private val _nota = MutableLiveData<String>()
+   val nota: LiveData<String> = _nota
+
+   fun enviaNota(nota: String) {
+      _nota.value = nota
+   }
 }
