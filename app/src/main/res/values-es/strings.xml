@@ -32,9 +32,9 @@
    <string name="titol_velocitat">velocidad</string>
    <string name="titol_seleccio_idioma">Selección de idioma:</string>
    <string name="error_llegint_arxiu">No he podido leer el archivo %s</string>
-   <string name="error_desconegut_arxiu">Error leyendo el archivo %s - %s</string>
    <string name="idioma_no_soportat">TTS: Idioma no soportado</string>
    <string name="error_inici_TTS">TTS: Inicialización fallida</string>
+   <string name="error_reconeixement_no_disponible">Error: reconocimiento de voz no disponible</string>
    <string name="titol_play">toca</string>
    <string name="titol_registre">registro</string>
 </resources>

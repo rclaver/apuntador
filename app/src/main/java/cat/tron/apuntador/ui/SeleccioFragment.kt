@@ -71,7 +71,9 @@ class SeleccioFragment : Fragment() {
       val llistaActors = Utilitats.objCompanyia.getActors()
 
       if (llistaActors.isNotEmpty()) {
-         llistaActors.add(obra)
+         if (obra !in llistaActors) {
+            llistaActors.add(obra)
+         }
 
          var i = 180
          llistaActors.forEach { actor ->

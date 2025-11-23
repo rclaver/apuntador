@@ -21,6 +21,8 @@
       android:theme="@style/Theme.ApuntadorDeTeatre"
       tools:targetApi="31">
 
+      <uses-library android:name="com.google.android.speech" android:required="false" />
+
       <activity
          android:name=".MainActivity"
          android:exported="true">
@@ -42,7 +44,7 @@
          <grant-uri-permission android:path="content://com.android.storage.documentstor" />
          <grant-uri-permission android:path="content://com.android.externalstorage.documents/tree/primary:Documents" />
          <grant-uri-permission android:path="content://com.android.externalstorage.documents/tree/primary:Download" />
-         <grant-uri-permission android:path="content://com.android.providers.downloads.documents/tree/downloads/Apuntador" />
+         <grant-uri-permission android:path="content://com.android.providers.documents/tree/Apuntador" />
       </provider>
 
    </application>

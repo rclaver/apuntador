@@ -144,7 +144,9 @@ class Activitat : AppCompatActivity() {
       } else if (pendentEscolta) {
          pendentEscolta = false
          frgAssaig.escenaActual.text = subText  //mostra el text de l'actor
-         ret = escoltaActor(subText, esNarracio)
+         escoltaActor(subText, esNarracio) { resultat ->
+            ret = resultat
+         }
       } else {
          ret += GestorDeVeu.textToAudio(subText, veu, ends, esNarracio, objActor.esObraSencera(), this)
          delay(100)
@@ -172,12 +174,29 @@ class Activitat : AppCompatActivity() {
       }
    }
 
-   private suspend fun escoltaActor(text: String, esNarracio: Boolean = false): String {
+   private suspend fun escoltaActor(text: String, esNarracio: Boolean = false, callback: (String) -> Unit) {
       val originalText = patroEscena.replace(text, "")
-      val nouText = GestorDeVeu.preparaReconeixementDeVeu(ctxAssaig, originalText, frgAssaig)
+      val nouText = GestorDeVeu.preparaReconeixementDeVeu(
+         this,
+         originalText,
+         frgAssaig,
+         onResultat = { resultat ->
+            if (resultat.isEmpty()) {
+               frgAssaig.error.text = cR.getString(R.string.error_no_escolto_res)
+               //mostraError(cR.getString(R.string.error_no_escolto_res))
+            }
+            callback(resultat)
+         },
+         onError = { error ->
+            frgAssaig.error.text = error
+            //mostraError(error)
+            callback("")
+         }
+      )
+
       var encert = 0
-      if (nouText.isNotEmpty()) {
-         encert = Utilitats.comparaSequenciesDeText(originalText, nouText)
+      if (nouText.toString().isNotEmpty()) {
+         encert = Utilitats.comparaSequenciesDeText(originalText, nouText.toString())
          if (encert < 80) {
             mostraError(String.format(cR.getString(R.string.encert), encert, originalText, nouText))
          }
@@ -189,7 +208,7 @@ class Activitat : AppCompatActivity() {
          GestorDeVeu.textToAudio(originalText, personatges[actor] ?: narrador, "\n", esNarracio, objActor.esObraSencera(), this)
          mostraError("")
       }
-      return originalText
+      return nouText
    }
 
    fun setUp(fragmentAssaig: FragmentAssaigBinding, contextAssaig: Context) {

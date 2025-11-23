@@ -36,8 +36,8 @@
    <string name="error_no_escolto_res">No he sentit cap veu</string>
    <string name="error_desconegut" translatable="false">Error: %d</string>
    <string name="error_llegint_arxiu">No he pogut obrir el fitxer %s</string>
-   <string name="error_desconegut_arxiu">Error llegint el fitxer %s - %s</string>
    <string name="idioma_no_soportat">TTS: Idioma no soportat</string>
    <string name="error_inici_TTS">TTS: Inicialització fallida</string>
+   <string name="error_reconeixement_no_disponible">Error: reconeixement de veu no disponible</string>
    <string name="titol_play">toca</string>
 </resources>

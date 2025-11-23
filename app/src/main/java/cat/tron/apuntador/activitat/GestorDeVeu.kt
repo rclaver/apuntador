@@ -3,8 +3,6 @@ package cat.tron.apuntador.activitat
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
@@ -12,7 +10,6 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.Voice
 import cat.tron.apuntador.R
 import cat.tron.apuntador.databinding.FragmentAssaigBinding
-import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.Locale
 
 object GestorDeVeu {
@@ -22,26 +19,6 @@ object GestorDeVeu {
       fun set(t: TextToSpeech?) { tts = t }
       fun get(): TextToSpeech? = tts
       fun inici() { tts?.language = Locale("ca_ES") }
-      /*fun llistaNomsDeVeus(local: String): Array<String> {
-         var llista: Array<String> = arrayOf()
-         tts?.voices?.forEach {
-            if (it.locale.toString() == local) {
-               llista += it.name
-            }
-         }
-         return llista
-      }
-      */
-      /*fun llistaDeVeus(local: String): Array<Voice> {
-         var llista: Array<Voice> = arrayOf()
-         tts?.voices?.forEach {
-            if (it.locale.toString() == local) {
-               llista += it
-            }
-         }
-         return llista
-      }
-      */
    }
 
    object objVeus {
@@ -131,31 +108,40 @@ object GestorDeVeu {
                             onResultat: (String) -> Unit,
                             onError: (String) -> Unit) {
 
+      if (!SpeechRecognizer.isRecognitionAvailable(context)) {
+         onError(context.resources.getString(R.string.error_reconeixement_no_disponible))
+         return
+      }
       val recognizer = SpeechRecognizer.createSpeechRecognizer(context)
 
       val intent = Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH).apply {
          putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM)
          putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ca-ES")
          putExtra(RecognizerIntent.EXTRA_PARTIAL_RESULTS, true) // opcional, per tenir text parcial
+         putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_MINIMUM_LENGTH_MILLIS, tempsMaxim+1000L) // Mínimo en milisegundos
+         putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS, 1500L) // 1,5 segundos de silencio para terminar
+         putExtra(RecognizerIntent.EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS, 2000L)
       }
-
       val cR = context.resources
-      val handler = Handler(Looper.getMainLooper())
-      val cancelRunnable = Runnable { recognizer.stopListening() }
+      //val handler = Handler(Looper.getMainLooper())
+      //var cancelRunnable = Runnable { recognizer.stopListening() }
 
       recognizer.setRecognitionListener(object : RecognitionListener {
          override fun onReadyForSpeech(params: Bundle?) {
             onPreparat() // L'usuari pot començar a parlar
-            handler.postDelayed(cancelRunnable, tempsMaxim) // inicia el compte enrere
+            /*cancelRunnable = Runnable {
+               recognizer.stopListening()
+            }
+            handler.postDelayed(cancelRunnable, tempsMaxim) // inicia el compte enrere*/
          }
          override fun onResults(results: Bundle?) {
-            handler.removeCallbacks(cancelRunnable)
+            //handler.removeCallbacks(cancelRunnable)
             val paraules = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
             val text = paraules?.get(0) ?: ""
             onResultat(text)
          }
          override fun onError(error: Int) {
-            handler.removeCallbacks(cancelRunnable)
+            //handler.removeCallbacks(cancelRunnable)
             val missatge = when (error) {
                SpeechRecognizer.ERROR_AUDIO -> cR.getString(R.string.error_audio)
                SpeechRecognizer.ERROR_NO_MATCH -> cR.getString(R.string.error_no_escolto_res)
@@ -167,7 +153,7 @@ object GestorDeVeu {
             onParlant()
          }
          override fun onEndOfSpeech() {
-            handler.removeCallbacks(cancelRunnable)
+            //handler.removeCallbacks(cancelRunnable)
             onFiDeParla()
          }
          override fun onRmsChanged(rmsdB: Float) {}
@@ -178,16 +164,21 @@ object GestorDeVeu {
       recognizer.startListening(intent)
    }
 
-   suspend fun preparaReconeixementDeVeu(context: Context, text: String, frgAssaig: FragmentAssaigBinding): String = suspendCancellableCoroutine {
-      cont ->
+   suspend fun preparaReconeixementDeVeu(
+         context: Context,
+         text: String,
+         frgAssaig: FragmentAssaigBinding,
+         onResultat: (String) -> Unit,
+         onError: (String) -> Unit
+      ) {
       iniciaReconeixement(
          context,
          calculaTemps(text),
          onPreparat = {frgAssaig.narracio.text = context.resources.getString(R.string.escoltant)},
          onParlant = {frgAssaig.error.text = ""},
          onFiDeParla = {frgAssaig.narracio.text = ""},
-         onResultat = { cont.resume(it) { cause, _, _ -> } },
-         onError = { cont.resume("") { cause, _, _ -> } }
+         onResultat = onResultat,
+         onError = onError
       )
    }
 
