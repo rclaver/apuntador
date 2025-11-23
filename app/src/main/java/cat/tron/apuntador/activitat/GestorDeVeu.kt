@@ -22,7 +22,7 @@ object GestorDeVeu {
       fun set(t: TextToSpeech?) { tts = t }
       fun get(): TextToSpeech? = tts
       fun inici() { tts?.language = Locale("ca_ES") }
-      fun llistaNomsDeVeus(local: String): Array<String> {
+      /*fun llistaNomsDeVeus(local: String): Array<String> {
          var llista: Array<String> = arrayOf()
          tts?.voices?.forEach {
             if (it.locale.toString() == local) {
@@ -31,7 +31,8 @@ object GestorDeVeu {
          }
          return llista
       }
-      fun llistaDeVeus(local: String): Array<Voice> {
+      */
+      /*fun llistaDeVeus(local: String): Array<Voice> {
          var llista: Array<Voice> = arrayOf()
          tts?.voices?.forEach {
             if (it.locale.toString() == local) {
@@ -40,6 +41,7 @@ object GestorDeVeu {
          }
          return llista
       }
+      */
    }
 
    object objVeus {
@@ -202,20 +204,22 @@ object GestorDeVeu {
       )
       tts?.setPitch(registre.toFloat())
       tts?.setSpeechRate(velocitat.toFloat())
-      // Para Android 5.1, usa setLanguage en lugar de voice
-      val idioma = when (llengua) {
-                      "ca" -> Locale("ca", "ES")
-                      "en" -> Locale.ENGLISH
-                      "es" -> Locale("es", "ES")
-                   else -> Locale.getDefault()
-      }
       tts?.speak(text[llengua], TextToSpeech.QUEUE_FLUSH, null, null)
-      //tts?.voice = objVeus.getVeu(veuSeleccionada, llengua)
+      tts?.voice = objVeus.getVeu(veuSeleccionada, llengua)
+      // Para Android 5.1, usa setLanguage en lugar de voice
+      /*
+      val idioma = when (llengua) {
+         "ca" -> Locale("ca", "ES")
+         "en" -> Locale.ENGLISH
+         "es" -> Locale("es", "ES")
+         else -> Locale.getDefault()
+      }
       val result = tts?.setLanguage(idioma)
       if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
          // Idioma no soportado, usar idioma por defecto
-         tts.language = Locale.ENGLISH //Locale.getDefault()
+         tts.language = Locale.getDefault()
       }
+      */
       while (tts?.isSpeaking==true) { true }
    }
 

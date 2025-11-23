@@ -1,7 +1,7 @@
 <paths>
    <external-path name="external_files" path="." />
    <external-files-path name="external_files" path="." />
-   <external-storage-path name="external_storage" path="." />
+   <!--external-storage-path name="external_storage" path="." /-->
    <files-path name="files" path="." />
 </paths>
 <!--

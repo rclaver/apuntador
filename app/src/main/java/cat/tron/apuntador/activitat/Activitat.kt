@@ -138,7 +138,7 @@ class Activitat : AppCompatActivity() {
       var ret = ""
       val subText = patroEscena.replace(text, "")
 
-      if (subText.lowercase() == actor.lowercase()) {
+      if (subText.equals(actor, ignoreCase = true)) {
          pendentEscolta = !objActor.esObraSencera()
          ret = mostraSentencia(subText, ends, esNarracio)
       } else if (pendentEscolta) {

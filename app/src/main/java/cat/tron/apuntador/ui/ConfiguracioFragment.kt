@@ -21,6 +21,7 @@ import cat.tron.apuntador.R
 import cat.tron.apuntador.activitat.GestorDeVeu
 import cat.tron.apuntador.activitat.Utilitats
 import cat.tron.apuntador.databinding.FragmentConfiguracioBinding
+import java.util.Locale
 
 class ConfiguracioFragment : Fragment() {
 
@@ -146,7 +147,7 @@ class ConfiguracioFragment : Fragment() {
       val fila = inflater.inflate(R.layout.fila_formulari, formContainer, false)
 
       val actor = fila.findViewById<TextView>(R.id.actor)
-      actor.text = dades.key.capitalize()
+      actor.text = dades.key.capitalize(Locale.ROOT)
 
       val seleccioVeu = fila.findViewById<Spinner>(R.id.selectorVeus)
       seleccioVeu.adapter = ArrayAdapter(context, R.layout.spinner, opcionsVeu)

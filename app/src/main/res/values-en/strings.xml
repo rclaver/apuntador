@@ -30,8 +30,8 @@
    <string name="titol_veus">voices</string>
    <string name="titol_velocitat">speed</string>
    <string name="titol_seleccio_idioma">Language selection:</string>
-   <string name="error_document_llegint">I have not been able to read the file %s</string>
-   <string name="error_document_desconegut">Error reading file %s - %s</string>
+   <string name="error_llegint_arxiu">I have not been able to read the file %s</string>
+   <string name="error_desconegut_arxiu">Error reading file %s - %s</string>
    <string name="idioma_no_soportat">TTS: Language not supported</string>
    <string name="error_inici_TTS">TTS: Initialization failed</string>
    <string name="titol_play">play</string>
