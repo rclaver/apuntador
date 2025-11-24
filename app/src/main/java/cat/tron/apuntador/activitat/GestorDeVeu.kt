@@ -74,7 +74,7 @@ object GestorDeVeu {
    /*
    Genera un audio a partir del text i els paràmetres de veu de l'actor o el narrador
    */
-   suspend fun textToAudio(text: String,
+   fun textToAudio(text: String,
                            veuActor: Map<String, Any>,
                            ends: String,
                            esNarracio: Boolean = false,
@@ -164,7 +164,7 @@ object GestorDeVeu {
       recognizer.startListening(intent)
    }
 
-   suspend fun preparaReconeixementDeVeu(
+   fun preparaReconeixementDeVeu(
          context: Context,
          text: String,
          frgAssaig: FragmentAssaigBinding,

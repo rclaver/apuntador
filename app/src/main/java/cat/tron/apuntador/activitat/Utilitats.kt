@@ -110,15 +110,18 @@ object Utilitats {
       fun getDisponible(): Boolean = dadesActors.isNotEmpty()
    }
 
-   fun obraSencera(nomArxiu: String): File? {
+   fun obraSencera(nomArxiu: String): List<File> {
+      val llistaArxius = mutableListOf<File>()
       val dir: File? = DirectoriDocuments.get()
       if (dir?.exists() == true) {
-         dir.listFiles()!!.forEach { file ->
-            if (file.isFile && file.name == nomArxiu)
-               return file
+         for (file in dir.listFiles()!!) {
+            if (file.isFile && file.name == nomArxiu) {
+               llistaArxius.add(file)
+               break
+            }
          }
       }
-      return null
+      return llistaArxius
    }
 
    fun llistaFragmentsObra(patroBase: String, patroActor: String, omissio: String): List<File>  {

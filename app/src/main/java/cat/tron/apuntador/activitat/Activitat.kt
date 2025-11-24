@@ -5,11 +5,9 @@ import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import cat.tron.apuntador.R
 import cat.tron.apuntador.databinding.FragmentAssaigBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+//import kotlinx.coroutines.Dispatchers
+//import kotlinx.coroutines.delay
+//import kotlinx.coroutines.withContext
 import java.io.File
 
 class Activitat : AppCompatActivity() {
@@ -53,39 +51,34 @@ class Activitat : AppCompatActivity() {
    fun iniciAssaig() {
       GestorDeVeu.objTTS.inici()
 
-      CoroutineScope(Dispatchers.Main).launch {
-         withContext(Dispatchers.Main) {
-            frgAssaig.escenaActual.text = ""
-            frgAssaig.narracio.text = ""
-         }
+      frgAssaig.escenaActual.text = ""
+      frgAssaig.narracio.text = ""
 
-         if (objActor.esObraSencera()) {
-            val escena = Utilitats.obraSencera("${titol}.txt")
-            processaEscena(escena)
-         } else {
-            val escenes = Utilitats.llistaFragmentsObra(
-               "${titol}.*\\.txt",
-               "${titol}-${actor.lowercase()}-[0-9]*.txt",
-               "${titol}.txt"
-            ).sortedBy { it.name }
-            val nEscenes = escenes.size
-            var i = 0
-            while (i <= nEscenes && ! stop) {
-               processaEscena(escenes[i], i, nEscenes)
-               if (estat == "anterior" ) {
-                  if (i > 0) i--
-               }else if (i < nEscenes) {
-                  i++
-                  estat = "inici"
-               }
+      if (objActor.esObraSencera()) {
+         val escenes = Utilitats.obraSencera("${titol}.txt")
+         processaEscena(escenes[0])
+      } else {
+         val escenes = Utilitats.llistaFragmentsObra(
+            "${titol}.*\\.txt",
+            "${titol}-${actor.lowercase()}-[0-9]*.txt",
+            "${titol}.txt"
+         ).sortedBy { it.name }
+         val nEscenes = escenes.size
+         var i = 0
+         while (i <= nEscenes && ! stop) {
+            processaEscena(escenes[i], i, nEscenes)
+            if (estat == "anterior" ) {
+               if (i > 0) i--
+            }else if (i < nEscenes) {
+               i++
                estat = "inici"
             }
+            estat = "inici"
          }
       }
    }
 
-   private suspend fun processaEscena(fitxerEscena: File? = null, i: Int = 0, nEscenes:Int = 0) {
-
+   private fun processaEscena(fitxerEscena:File? = null, i:Int = 0, nEscenes:Int = 0) {
       if (fitxerEscena?.exists() == true ) {
          val sentencies = Utilitats.llegeixArxiu(fitxerEscena).split('\n')
 
@@ -117,64 +110,54 @@ class Activitat : AppCompatActivity() {
                } catch (e: Exception) {
                   nar += processaFragment(sentencia, narrador, "\n", true)
                }
-               withContext(Dispatchers.Main) {
-                  if (nar.isEmpty()) {
-                     frgAssaig.escenaActual.text = ret
-                  }else {
-                     frgAssaig.narracio.text = nar
-                  }
+               if (nar.isEmpty()) {
+                  frgAssaig.escenaActual.text = ret
+               }else {
+                  frgAssaig.narracio.text = nar
                }
-               delay(50) //espera per donar temps a l'usuari (i a la UI)
             }
             if (stop || (estat=="anterior" && i>0) || (estat=="següent" && i<nEscenes)) {
                break  //sortir del bucle de sentències d'aquesta escena
             }
-            while (enPausa) {delay(50) } //esperar mentre estigui en pausa
+            while (enPausa) {true} //esperar mentre estigui en pausa
          }
       }
    }
 
-   private suspend fun processaFragment(text: String, veu: Map<String, Any>, ends: String, esNarracio: Boolean = false): String {
+   private fun processaFragment(text:String, veu:Map<String, Any>, ends:String, esNarracio:Boolean = false): String {
       var ret = ""
       val subText = patroEscena.replace(text, "")
 
       if (subText.equals(actor, ignoreCase = true)) {
          pendentEscolta = !objActor.esObraSencera()
          ret = mostraSentencia(subText, ends, esNarracio)
-      } else if (pendentEscolta) {
+      }else if (pendentEscolta) {
          pendentEscolta = false
          frgAssaig.escenaActual.text = subText  //mostra el text de l'actor
          escoltaActor(subText, esNarracio) { resultat ->
-            ret = resultat
+            while (resultat.isEmpty()) {ret = resultat}
          }
-      } else {
+      }else {
          ret += GestorDeVeu.textToAudio(subText, veu, ends, esNarracio, objActor.esObraSencera(), this)
-         delay(100)
       }
       return ret
    }
 
-   suspend fun mostraSentencia(text: String, ends: String, esNarracio: Boolean = false): String {
+   fun mostraSentencia(text:String, ends:String, esNarracio:Boolean = false): String {
       val ret = "${text}${ends}"
-      withContext(Dispatchers.Main) {
-         if (esNarracio || ends == ":") {
-            frgAssaig.narracio.text = ret
-            delay(100)
-         } else {
-            frgAssaig.escenaActual.text = patroEscena.replace(ret, "")
-         }
+      if (esNarracio || ends == ":") {
+         frgAssaig.narracio.text = ret
+      } else {
+         frgAssaig.escenaActual.text = patroEscena.replace(ret, "")
       }
-      delay(100)
       return ret
    }
 
-   private suspend fun mostraError(text: String) {
-      withContext(Dispatchers.Main) {
-         frgAssaig.error.text = text
-      }
+   private fun mostraError(text: String) {
+      frgAssaig.error.text = text
    }
 
-   private suspend fun escoltaActor(text: String, esNarracio: Boolean = false, callback: (String) -> Unit) {
+   private fun escoltaActor(text: String, esNarracio: Boolean = false, callback: (String) -> Unit) {
       val originalText = patroEscena.replace(text, "")
       val nouText = GestorDeVeu.preparaReconeixementDeVeu(
          this,
@@ -182,14 +165,12 @@ class Activitat : AppCompatActivity() {
          frgAssaig,
          onResultat = { resultat ->
             if (resultat.isEmpty()) {
-               frgAssaig.error.text = cR.getString(R.string.error_no_escolto_res)
-               //mostraError(cR.getString(R.string.error_no_escolto_res))
+               mostraError(cR.getString(R.string.error_no_escolto_res))
             }
             callback(resultat)
          },
          onError = { error ->
-            frgAssaig.error.text = error
-            //mostraError(error)
+            mostraError(error)
             callback("")
          }
       )
@@ -204,7 +185,6 @@ class Activitat : AppCompatActivity() {
          mostraError(cR.getString(R.string.error_no_escolto_res))
       }
       if (encert < 80) {
-         delay(100)
          GestorDeVeu.textToAudio(originalText, personatges[actor] ?: narrador, "\n", esNarracio, objActor.esObraSencera(), this)
          mostraError("")
       }
