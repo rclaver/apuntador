@@ -1,13 +1,13 @@
 package cat.tron.apuntador.activitat
 
+//import kotlinx.coroutines.Dispatchers
+//import kotlinx.coroutines.delay
+//import kotlinx.coroutines.withContext
 import android.content.Context
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import cat.tron.apuntador.R
 import cat.tron.apuntador.databinding.FragmentAssaigBinding
-//import kotlinx.coroutines.Dispatchers
-//import kotlinx.coroutines.delay
-//import kotlinx.coroutines.withContext
 import java.io.File
 
 class Activitat : AppCompatActivity() {
@@ -38,6 +38,13 @@ class Activitat : AppCompatActivity() {
       fun get(): String = actor
       fun esObraSencera(): Boolean = sencera
    }
+   
+   object objSentencia {
+      private var sentencies = mutableListOf<String>()
+      fun set(e: MutableList<String>) {sentencies = e}
+      fun get(i: Int): String = sentencies[i]
+      fun getSize(): Int = sentencies.size
+   }
 
    fun canviEstat(stat: String) {
       estat = stat
@@ -66,7 +73,7 @@ class Activitat : AppCompatActivity() {
          val nEscenes = escenes.size
          var i = 0
          while (i <= nEscenes && ! stop) {
-            processaEscena(escenes[i], i, nEscenes)
+            processaEscena(escenes[i])
             if (estat == "anterior" ) {
                if (i > 0) i--
             }else if (i < nEscenes) {
@@ -78,117 +85,121 @@ class Activitat : AppCompatActivity() {
       }
    }
 
-   private fun processaEscena(fitxerEscena:File? = null, i:Int = 0, nEscenes:Int = 0) {
-      if (fitxerEscena?.exists() == true ) {
+   private fun processaEscena(fitxerEscena:File? = null) {
+      if (fitxerEscena?.exists() == true) {
          val sentencies = Utilitats.llegeixArxiu(fitxerEscena).split('\n')
-
-         for (sentencia in sentencies) {
-            var ret = ""
-            var nar = ""
-            if (sentencia.isNotEmpty()) {
-               try {
-                  val ma = regexPersonatge.find(sentencia)!!
-                  val personatge = ma.groupValues[1]
-                  nar = processaFragment(personatge, narrador, ":", true)
-                  val veu = personatges[personatge] ?: narrador
-                  try {
-                     val mb = regexNarrador.find(ma.groupValues[3])!!
-                     if (mb.groupValues[1].isNotEmpty() && mb.groupValues[2].isNotEmpty() && mb.groupValues[3].isNotEmpty()) {
-                        ret += processaFragment(mb.groupValues[1], veu, " ")
-                        nar += processaFragment(mb.groupValues[2], narrador, " ", true)
-                        ret += processaFragment(mb.groupValues[3], veu, "\n")
-                     } else if (mb.groupValues[1].isNotEmpty() && mb.groupValues[2].isNotEmpty()) {
-                        ret += processaFragment(mb.groupValues[1], veu, " ")
-                        nar += processaFragment(mb.groupValues[2], narrador, "\n", true)
-                     } else if (mb.groupValues[2].isNotEmpty() && mb.groupValues[3].isNotEmpty()) {
-                        nar += processaFragment(mb.groupValues[2], narrador, " ", true)
-                        ret += processaFragment(mb.groupValues[3], veu, "\n")
-                     }
-                  } catch (e: Exception) {
-                     ret += processaFragment(ma.groupValues[3], veu, "\n")
-                  }
-               } catch (e: Exception) {
-                  nar += processaFragment(sentencia, narrador, "\n", true)
-               }
-               if (nar.isEmpty()) {
-                  frgAssaig.escenaActual.text = ret
-               }else {
-                  frgAssaig.narracio.text = nar
-               }
-            }
-            if (stop || (estat=="anterior" && i>0) || (estat=="següent" && i<nEscenes)) {
-               break  //sortir del bucle de sentències d'aquesta escena
-            }
-            while (enPausa) {true} //esperar mentre estigui en pausa
-         }
+         objSentencia.set(sentencies as MutableList<String>)
+         processaSentencies(0)
       }
    }
 
-   private fun processaFragment(text:String, veu:Map<String, Any>, ends:String, esNarracio:Boolean = false): String {
+   private fun processaSentencies(i: Int = 0) {
+      if (objSentencia.getSize() < i) {
+         return
+      }
+      val sentencia = objSentencia.get(i)
       var ret = ""
+      var nar = ""
+      if (sentencia.isNotEmpty()) {
+         try {
+            val ma = regexPersonatge.find(sentencia)!!
+            val personatge = ma.groupValues[1]
+            processaFragment(personatge, narrador, ":", true) {r -> nar = r}
+            val veu = personatges[personatge] ?: narrador
+            try {
+               val mb = regexNarrador.find(ma.groupValues[3])!!
+               if (mb.groupValues[1].isNotEmpty() && mb.groupValues[2].isNotEmpty() && mb.groupValues[3].isNotEmpty()) {
+                  processaFragment(mb.groupValues[1], veu, " ") {r -> ret += r}
+                  processaFragment(mb.groupValues[2], narrador, " ", true) {r -> nar += r}
+                  processaFragment(mb.groupValues[3], veu, "\n") {r -> ret += r}
+               } else if (mb.groupValues[1].isNotEmpty() && mb.groupValues[2].isNotEmpty()) {
+                  processaFragment(mb.groupValues[1], veu, " ") {r -> ret += r}
+                  processaFragment(mb.groupValues[2], narrador, "\n", true) {r -> nar += r}
+               } else if (mb.groupValues[2].isNotEmpty() && mb.groupValues[3].isNotEmpty()) {
+                  processaFragment(mb.groupValues[2], narrador, " ", true) {r -> nar += r}
+                  processaFragment(mb.groupValues[3], veu, "\n") {r -> ret += r}
+               }
+            } catch (e: Exception) {
+               processaFragment(ma.groupValues[3], veu, "\n") {r -> ret += r}
+            }
+         } catch (e: Exception) {
+            processaFragment(sentencia, narrador, "\n", true) {r -> nar += r}
+         }
+         if (nar.isEmpty()) {
+            frgAssaig.escenaActual.text = ret
+         }else {
+            frgAssaig.narracio.text = nar
+         }
+      }
+      processaSentencies(i+1)
+   }
+
+   private fun processaFragment(text:String, veu:Map<String, Any>, ends:String, esNarracio:Boolean = false, onFinish: (String) -> Unit) {
       val subText = patroEscena.replace(text, "")
 
       if (subText.equals(actor, ignoreCase = true)) {
          pendentEscolta = !objActor.esObraSencera()
-         ret = mostraSentencia(subText, ends, esNarracio)
+         mostraSentencia(subText, ends, esNarracio) { resultat ->
+            onFinish(resultat)
+         }
       }else if (pendentEscolta) {
          pendentEscolta = false
          frgAssaig.escenaActual.text = subText  //mostra el text de l'actor
-         escoltaActor(subText, esNarracio) { resultat ->
-            while (resultat.isEmpty()) {ret = resultat}
+         val originalText = patroEscena.replace(subText, "")
+         escoltaActor(originalText) { resultat ->
+            onFinish(evaluaActor(originalText, resultat, esNarracio) {}.toString())
          }
       }else {
-         ret += GestorDeVeu.textToAudio(subText, veu, ends, esNarracio, objActor.esObraSencera(), this)
+         val ret = GestorDeVeu.textToAudio(subText, veu, ends, esNarracio, objActor.esObraSencera(), this)
+         onFinish(ret)
       }
-      return ret
    }
 
-   fun mostraSentencia(text:String, ends:String, esNarracio:Boolean = false): String {
+   private fun escoltaActor(text: String, onFinish: (String) -> Unit) {
+      GestorDeVeu.preparaReconeixementDeVeu(
+         this, text, frgAssaig,
+         onResultat = { resultat ->
+            if (resultat.isEmpty()) {
+               mostraError(cR.getString(R.string.error_no_escolto_res)) {}
+            }
+            onFinish(resultat)
+         },
+         onError = { error ->
+            mostraError(error) {}
+            onFinish("")
+         }
+      )
+   }
+   private fun evaluaActor(originalText: String, nouText: String, esNarracio: Boolean = false, onFinish: (String) -> Unit) {
+      var encert = 0
+      if (nouText.isNotEmpty()) {
+         encert = Utilitats.comparaSequenciesDeText(originalText, nouText)
+         if (encert < 80) {
+            mostraError(String.format(cR.getString(R.string.encert), encert, originalText, nouText)){}
+         }
+      }else {
+         mostraError(cR.getString(R.string.error_no_escolto_res)) {}
+      }
+      if (encert < 80) {
+         GestorDeVeu.textToAudio(originalText, personatges[actor] ?: narrador, "\n", esNarracio, objActor.esObraSencera(), this)
+         mostraError {}
+      }
+      onFinish(originalText)
+   }
+
+   fun mostraSentencia(text:String, ends:String, esNarracio:Boolean = false, onFinish: (String) -> Unit) {
       val ret = "${text}${ends}"
       if (esNarracio || ends == ":") {
          frgAssaig.narracio.text = ret
       } else {
          frgAssaig.escenaActual.text = patroEscena.replace(ret, "")
       }
-      return ret
+      onFinish(ret)
    }
 
-   private fun mostraError(text: String) {
+   private fun mostraError(text: String = "", onFinish: () -> Unit) {
       frgAssaig.error.text = text
-   }
-
-   private fun escoltaActor(text: String, esNarracio: Boolean = false, callback: (String) -> Unit) {
-      val originalText = patroEscena.replace(text, "")
-      val nouText = GestorDeVeu.preparaReconeixementDeVeu(
-         this,
-         originalText,
-         frgAssaig,
-         onResultat = { resultat ->
-            if (resultat.isEmpty()) {
-               mostraError(cR.getString(R.string.error_no_escolto_res))
-            }
-            callback(resultat)
-         },
-         onError = { error ->
-            mostraError(error)
-            callback("")
-         }
-      )
-
-      var encert = 0
-      if (nouText.toString().isNotEmpty()) {
-         encert = Utilitats.comparaSequenciesDeText(originalText, nouText.toString())
-         if (encert < 80) {
-            mostraError(String.format(cR.getString(R.string.encert), encert, originalText, nouText))
-         }
-      }else {
-         mostraError(cR.getString(R.string.error_no_escolto_res))
-      }
-      if (encert < 80) {
-         GestorDeVeu.textToAudio(originalText, personatges[actor] ?: narrador, "\n", esNarracio, objActor.esObraSencera(), this)
-         mostraError("")
-      }
-      return nouText
+      onFinish()  //modelo asíncrono: espera a que el proceso finalice
    }
 
    fun setUp(fragmentAssaig: FragmentAssaigBinding, contextAssaig: Context) {

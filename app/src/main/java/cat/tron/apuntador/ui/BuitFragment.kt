@@ -34,11 +34,9 @@ class BuitFragment : Fragment() {
 
       imatge = view.findViewById(R.id.img_teatre)
       notaVersio = view.findViewById(R.id.notaVersio)
-      //notes = view.findViewById(R.id.notes)
       /*
-      comparticio.nota.observe(viewLifecycleOwner) { nota ->
-         notes.text = notes.toString() + "\n" + nota
-      }
+      notes = view.findViewById(R.id.notes)
+      comparticio.nota.observe(viewLifecycleOwner) { nota -> notes.text = notes.toString() + "\n" + nota }
       */
       viewLifecycleOwner.lifecycleScope.launchWhenStarted {
          notaVersio.text = mostraVersio()

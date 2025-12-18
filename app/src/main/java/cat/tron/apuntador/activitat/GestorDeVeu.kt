@@ -81,7 +81,7 @@ object GestorDeVeu {
                            esObraSencera: Boolean = false,
                            ac: Activitat): String {
 
-      ac.mostraSentencia(text, ends, esNarracio)
+      ac.mostraSentencia(text, ends, esNarracio) {}
 
       if (esObraSencera or (ends != ":" && !esNarracio)) {
          val tts = objTTS.get()

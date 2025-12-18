@@ -31,21 +31,9 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
 
       binding = ActivityMainBinding.inflate(layoutInflater)
       setContentView(binding.root)
-
       //comparticio = ViewModelProvider(this).get(SharedViewModel::class.java)
 
       inicialitzarTTS()
-      //actualitzaConfiguracio(applicationContext)
-      /*
-      Utilitats.demanaPermissos(applicationContext, this)
-      val prefs = getSharedPreferences(arxiuPreferencies, MODE_PRIVATE)
-      val uriDesada = prefs.getString(directoriEscenes, null)
-      if (uriDesada != null) {
-         Utilitats.DirectoriDocuments.setTreeUri(DocumentFile.fromTreeUri(this, uriDesada.toUri())!!)
-      } else {
-         Utilitats.demanaAccessDescarregues(this)
-      }
-      */
       val dirDocs: File = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
       Utilitats.DirectoriDocuments.set(dirDocs)
       GestorDeVeu.objTTS.set(tts)
@@ -96,20 +84,8 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
                      Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                   )
                } catch (e: SecurityException) {
-                  // En Android 5.1, a veces 'takePersistableUriPermission' falla
                   //Toast.makeText(this, "MainActivity: No se pudieron obtener permisos persistentes: ${e.message}", Toast.LENGTH_LONG).show()
                }
-               // Desa l'URI com a string
-               /*
-               val prefs = getSharedPreferences(arxiuPreferencies, MODE_PRIVATE)
-               prefs.edit {
-                  putString(directoriEscenes, treeUri.toString())
-                  apply()
-               }
-               // Desa el directori perquè sigui accessible des d'altres llocs
-               Utilitats.DirectoriDocuments.setTreeUri(DocumentFile.fromTreeUri(this, treeUri)!!)
-               //Toast.makeText(this, "treeUri:$treeUri", Toast.LENGTH_LONG).show()
-               */
             }
          }
       }
@@ -123,12 +99,7 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
          if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
             //comparticio.enviaNota(R.string.idioma_no_soportat.toString())
             //Toast.makeText(this, R.string.idioma_no_soportat, Toast.LENGTH_LONG).show()
-            // L'usuari hauria d'instal·lar l'enginy Google TTS
             instalarDadesTTS()
-            /*val installIntent = Intent().apply {
-               action = TextToSpeech.Engine.ACTION_INSTALL_TTS_DATA
-            }
-            startActivity(installIntent)*/
          }
       } else {
          //comparticio.enviaNota(R.string.error_inici_TTS.toString())
@@ -181,16 +152,6 @@ open class MainActivity : AppCompatActivity(), TextToSpeech.OnInitListener {
       }
    }
 
-   /*
-   fun actualitzaConfiguracio(ctx: Context) {
-      if (idioma != Locale("") && idioma != Locale("ca")) {
-         Locale.setDefault(idioma)
-         val configuration = resources.configuration
-         configuration.setLocale(idioma)
-         ctx.resources.updateConfiguration(configuration, ctx.resources.displayMetrics)
-      }
-   }
-   */
    override fun onDestroy() {
       tts?.stop()
       tts?.shutdown()
