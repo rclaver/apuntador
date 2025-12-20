@@ -1,5 +1,5 @@
 <paths>
    <external-path name="external_files" path="." />
-   <external-downloads-path name="downloads" path="Apuntador/" />
-   <external-public-path name="external_public" path="Download/Apuntador/" />
+   <!--external-downloads-path name="downloads" path="Apuntador/" /-->
+   <!--external-public-path name="external_public" path="Download/Apuntador/" /-->
 </paths>

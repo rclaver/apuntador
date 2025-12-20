@@ -1,29 +1,23 @@
 [versions]
-agp = "8.13.0"
-kotlin = "2.2.20"
+agp = "8.13.2"
+kotlin = "2.3.0"
 coreKtx = "1.17.0"
 appcompat = "1.7.1"
+documentfile = "1.1.0"
 material = "1.13.0"
 constraintlayout = "2.2.1"
-lifecycleLivedataKtx = "2.9.4"
-lifecycleViewmodelKtx = "2.9.4"
-navigationFragmentKtx = "2.9.5"
-navigationUiKtx = "2.9.5"
-googleCloudSpeech = "4.72.0"
+lifecycleLivedataKtx = "2.10.0"
+lifecycleViewmodelKtx = "2.10.0"
+navigationFragmentKtx = "2.9.6"
+navigationUiKtx = "2.9.6"
+googleCloudSpeech = "4.76.0"
 kotlinxCoroutinesCore = "1.10.2"
 kotlinxCoroutinesAndroid = "1.10.2"
-#junit = "4.13.2"
-#junitVersion = "1.2.1"
-#espressoCore = "3.6.1"
-#credentials = "1.5.0"
-#credentialsPlayServicesAuth = "1.5.0"
-#googleAuthLibraryOauth2Http = "1.33.1"
-#grpcOkhttp = "1.71.0"
-#protoGoogleCloudSpeechV1 = "4.55.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "documentfile" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycleLivedataKtx" }
@@ -33,14 +27,6 @@ androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation
 google-cloud-speech = { group = "com.google.cloud", name = "google-cloud-speech", version.ref = "googleCloudSpeech" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
-#junit = { group = "junit", name = "junit", version.ref = "junit" }
-#androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-#androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-###androidx-credentials = { group = "androidx.credentials", name = "credentials", version.ref = "credentials" }
-###androidx-credentials-play-services-auth = { group = "androidx.credentials", name = "credentials-play-services-auth", version.ref = "credentialsPlayServicesAuth" }
-###google-auth-library-oauth2-http = { group = "com.google.auth", name = "google-auth-library-oauth2-http", version.ref = "googleAuthLibraryOauth2Http" }
-###grpc-okhttp = { group = "io.grpc", name = "grpc-okhttp", version.ref = "grpcOkhttp" }
-#proto-google-cloud-speech-v1 = { group = "com.google.api.grpc", name = "proto-google-cloud-speech-v1", version.ref = "protoGoogleCloudSpeechV1" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

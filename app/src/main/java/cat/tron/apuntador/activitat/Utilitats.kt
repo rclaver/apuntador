@@ -90,7 +90,7 @@ object Utilitats {
 
       fun getTitol(): String = titol.orEmpty()
       fun getIdioma(): String = idioma
-      fun getActors(): MutableList<String>? {
+      fun getActors(): MutableList<String> {
          if (llistaActors.isEmpty()) {
             dadesActors.forEach { llistaActors.add(it.key) }
          }
