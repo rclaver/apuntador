@@ -55,6 +55,7 @@ class Activitat : AppCompatActivity() {
 
       CoroutineScope(Dispatchers.Main).launch {
          withContext(Dispatchers.Main) {
+            delay(300)
             frgAssaig.escenaActual.text = ""
             frgAssaig.narracio.text = ""
          }

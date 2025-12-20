@@ -5,13 +5,14 @@ plugins {
 
 android {
     namespace = "cat.tron.apuntador"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "cat.tron.apuntador"
-        minSdk = 22
+        minSdk = 23
+        targetSdk = 28
         //noinspection ExpiredTargetSdkVersion
-        targetSdk = 22  //sin problema si no se publica en Google Play #35->Android-15 #28->Android-9 #22->Android-5.1
+        //sin problema si no se publica en Google Play #35->Android-15 #28->Android-9 #22->Android-5.1
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -27,11 +28,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     buildFeatures {
         viewBinding = true
@@ -49,6 +47,7 @@ android {
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.documentfile)
     implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.lifecycle.livedata.ktx)
