@@ -85,7 +85,6 @@ class Activitat : AppCompatActivity() {
    }
 
    private suspend fun processaEscena(fitxerEscena: DocumentFile? = null, i: Int = 0, nEscenes:Int = 0) {
-
       if (fitxerEscena?.exists() == true ) {
          val sentencies = Utilitats.llegeixArxiu(ctxAssaig, fitxerEscena).split('\n')
 
@@ -138,7 +137,7 @@ class Activitat : AppCompatActivity() {
       var ret = ""
       val subText = patroEscena.replace(text, "")
 
-      if (subText.lowercase() == actor.lowercase()) {
+      if (subText.equals(actor, ignoreCase = true)) { //subText.lowercase() == actor.lowercase()
          pendentEscolta = !objActor.esObraSencera()
          ret = mostraSentencia(subText, ends, esNarracio)
       } else if (pendentEscolta) {
@@ -166,12 +165,6 @@ class Activitat : AppCompatActivity() {
       return ret
    }
 
-   private suspend fun mostraError(text: String) {
-      withContext(Dispatchers.Main) {
-         frgAssaig.error.text = text
-      }
-   }
-
    private suspend fun escoltaActor(text: String, esNarracio: Boolean = false): String {
       val originalText = patroEscena.replace(text, "")
       val nouText = GestorDeVeu.preparaReconeixementDeVeu(ctxAssaig, originalText, frgAssaig)
@@ -190,6 +183,12 @@ class Activitat : AppCompatActivity() {
          mostraError("")
       }
       return originalText
+   }
+
+   private suspend fun mostraError(text: String) {
+      withContext(Dispatchers.Main) {
+         frgAssaig.error.text = text
+      }
    }
 
    fun setUp(fragmentAssaig: FragmentAssaigBinding, contextAssaig: Context) {

@@ -3,8 +3,6 @@ package cat.tron.apuntador.activitat
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.speech.RecognitionListener
 import android.speech.RecognizerIntent
 import android.speech.SpeechRecognizer
@@ -135,22 +133,22 @@ object GestorDeVeu {
       }
 
       val cR = context.resources
-      val handler = Handler(Looper.getMainLooper())
-      val cancelRunnable = Runnable { recognizer.stopListening() }
+      //val handler = Handler(Looper.getMainLooper())
+      //val cancelRunnable = Runnable { recognizer.stopListening() }
 
       recognizer.setRecognitionListener(object : RecognitionListener {
          override fun onReadyForSpeech(params: Bundle?) {
             onPreparat() // L'usuari pot començar a parlar
-            handler.postDelayed(cancelRunnable, tempsMaxim) // inicia el compte enrere
+            //handler.postDelayed(cancelRunnable, tempsMaxim) // inicia el compte enrere
          }
          override fun onResults(results: Bundle?) {
-            handler.removeCallbacks(cancelRunnable)
+            //handler.removeCallbacks(cancelRunnable)
             val paraules = results?.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION)
             val text = paraules?.get(0) ?: ""
             onResultat(text)
          }
          override fun onError(error: Int) {
-            handler.removeCallbacks(cancelRunnable)
+            //handler.removeCallbacks(cancelRunnable)
             val missatge = when (error) {
                SpeechRecognizer.ERROR_AUDIO -> cR.getString(R.string.error_audio)
                SpeechRecognizer.ERROR_NO_MATCH -> cR.getString(R.string.error_no_escolto_res)
@@ -162,7 +160,7 @@ object GestorDeVeu {
             onParlant()
          }
          override fun onEndOfSpeech() {
-            handler.removeCallbacks(cancelRunnable)
+            //handler.removeCallbacks(cancelRunnable)
             onFiDeParla()
          }
          override fun onRmsChanged(rmsdB: Float) {}
