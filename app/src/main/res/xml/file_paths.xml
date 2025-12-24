@@ -4,7 +4,3 @@
    <!--external-storage-path name="external_storage" path="." /-->
    <files-path name="files" path="." />
 </paths>
-<!--
-   <external-downloads-path name="downloads" path="Apuntador/" />
-   <external-public-path name="external_public" path="Download/Apuntador/" />
-</paths -->
