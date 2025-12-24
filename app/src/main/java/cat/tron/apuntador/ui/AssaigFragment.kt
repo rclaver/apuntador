@@ -19,7 +19,7 @@ class AssaigFragment : Fragment() {
    private lateinit var activitat: Activitat
    private var estatIniciat: String? = null
 
-   lateinit var escenaActual: TextView
+   lateinit var narracio: TextView
    lateinit var btnInici: ImageView
    lateinit var btnPausa: ImageView
    lateinit var btnStop: ImageView
@@ -35,7 +35,7 @@ class AssaigFragment : Fragment() {
       super.onViewCreated(view, savedInstanceState)
       initProperties()
 
-      escenaActual.text = String.format(getString(R.string.inici_assaig), Activitat.objActor.get())
+      narracio.text = String.format(getString(R.string.inici_assaig), Activitat.objActor.get())
 
       btnInici.setOnClickListener {
          val estat = estatIniciat ?: "primer_inici"
@@ -72,7 +72,7 @@ class AssaigFragment : Fragment() {
 
    private fun initProperties() {
       activitat = Activitat()
-      escenaActual = binding.escenaActual
+      narracio = binding.narracio
       btnInici = binding.inici
       btnPausa = binding.pausa
       btnStop = binding.stop

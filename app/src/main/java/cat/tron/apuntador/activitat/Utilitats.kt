@@ -28,7 +28,7 @@ object Utilitats {
       fun get(): Boolean = estat
    }
 
-   object DirectoriDescarregues {
+   object directoriDocuments {
       private var dir: DocumentFile? = null
       fun set(d: DocumentFile?) { dir = d }
       fun get(): DocumentFile? = dir
@@ -100,19 +100,20 @@ object Utilitats {
       fun getDisponible(): Boolean = dadesActors.isNotEmpty()
    }
 
-   fun obraSencera(nomArxiu: String): DocumentFile? {
-      val dir = DirectoriDescarregues.get()
+   fun obraSencera(nomArxiu: String): List<DocumentFile> {
+      val llistaArxius = mutableListOf<DocumentFile>()
+      val dir = directoriDocuments.get()
       if (dir?.exists() == true) {
          dir.listFiles().forEach { file ->
             if (file.isFile && file.name == nomArxiu)
-               return file
+               llistaArxius.add(file)
          }
       }
-      return null
+      return llistaArxius
    }
 
    fun llistaFragmentsObra(patroBase: String, patroActor: String, omissio: String): List<DocumentFile>  {
-      val arxius = llistaDirectoriDescarregues(patroBase.toRegex())
+      val arxius = llistaDirectoriDocuments(patroBase.toRegex())
       var ret = arxius.filter { it.name.toString().matches(Regex(patroActor)) }
       if (ret.isEmpty()) {
          ret = arxius.filter { it.name.toString().matches(Regex(omissio)) }
@@ -120,9 +121,9 @@ object Utilitats {
       return ret
    }
 
-   fun llistaDirectoriDescarregues(patro: Regex): List<DocumentFile> {
+   fun llistaDirectoriDocuments(patro: Regex): List<DocumentFile> {
       var llistaArxiusDescarregues = mutableListOf<DocumentFile>()
-      val dir = DirectoriDescarregues.get()
+      val dir = directoriDocuments.get()
       if (dir?.exists() == true) {
          dir.listFiles().forEach { file ->
             if (file.isFile && patro.containsMatchIn(file.name.toString())) {
@@ -214,7 +215,7 @@ object Utilitats {
    }
 
    // Sol·licitar permisos persistents per accedir als arxius contínuament.
-   fun demanaAccessDescarregues(aca: AppCompatActivity) {
+   fun demanaAccessDocuments(aca: AppCompatActivity) {
       val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE).apply {
          flags = Intent.FLAG_GRANT_READ_URI_PERMISSION or
                  Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION or
@@ -231,12 +232,12 @@ object Utilitats {
       var titol = ""
       var arxius: List<DocumentFile> = listOf<DocumentFile>()
       val patroTitol = Regex("""[a-z_A-Z]+?-?(?=[a-z_A-Z]*?-?[0-9]*?)\.txt""")
-      val arxiusTitol = llistaDirectoriDescarregues(patroTitol)
+      val arxiusTitol = llistaDirectoriDocuments(patroTitol)
 
       for (arxiuT in arxiusTitol) {
          val t = arxiuT.name!!.replace(".txt", "")
          val patroArxius = Regex("""${t}-[a-z_A-Z]+?-[0-9]+?\.txt""")
-         arxius = llistaDirectoriDescarregues(patroArxius)
+         arxius = llistaDirectoriDocuments(patroArxius)
          if (arxius.isNotEmpty()) {
             titol = t
             break

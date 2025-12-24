@@ -10,7 +10,6 @@ import android.speech.tts.TextToSpeech
 import android.speech.tts.Voice
 import cat.tron.apuntador.R
 import cat.tron.apuntador.databinding.FragmentAssaigBinding
-import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.Locale
 
 object GestorDeVeu {
@@ -83,17 +82,24 @@ object GestorDeVeu {
       fun getVeuNarrador(): Map<String, Any> = mapOf("idioma" to idioma, "veu" to getVeu("", idioma), "registre" to "1.0", "velocitat" to "1.0")
    }
 
+   // Función para inicializar el TTS (debe llamarse desde tu Activity)
+   fun inicialitzarTTS(context: Context, onInitListener: TextToSpeech.OnInitListener) {
+      if (objTTS.get() == null) {
+         objTTS.set(TextToSpeech(context, onInitListener))
+      }
+   }
+
    /*
    Genera un audio a partir del text i els paràmetres de veu de l'actor o el narrador
    */
-   suspend fun textToAudio(text: String,
-                           veuActor: Map<String, Any>,
-                           ends: String,
-                           esNarracio: Boolean = false,
-                           esObraSencera: Boolean = false,
-                           ac: Activitat): String {
+   fun textToAudio(text: String,
+                   veuActor: Map<String, Any>,
+                   ends: String,
+                   esNarracio: Boolean = false,
+                   esObraSencera: Boolean = false,
+                   ac: Activitat): String {
 
-      ac.mostraSentencia(text, ends, esNarracio)
+      ac.mostraSentencia(text, ends, esNarracio) {}
 
       if (esObraSencera or (ends != ":" && !esNarracio)) {
          val tts = objTTS.get()
@@ -171,16 +177,19 @@ object GestorDeVeu {
       recognizer.startListening(intent)
    }
 
-   suspend fun preparaReconeixementDeVeu(context: Context, text: String, frgAssaig: FragmentAssaigBinding): String = suspendCancellableCoroutine {
-      cont ->
+   fun preparaReconeixementDeVeu(context: Context,
+                                 text: String,
+                                 frgAssaig: FragmentAssaigBinding,
+                                 onResultat: (String) -> Unit,
+                                 onError: (String) -> Unit ) {
       iniciaReconeixement(
          context,
          calculaTemps(text),
          onPreparat = {frgAssaig.narracio.text = context.resources.getString(R.string.escoltant)},
          onParlant = {frgAssaig.error.text = ""},
          onFiDeParla = {frgAssaig.narracio.text = ""},
-         onResultat = { cont.resume(it) { cause, _, _ -> } },
-         onError = { cont.resume("") { cause, _, _ -> } }
+         onResultat = onResultat,
+         onError = onError
       )
    }
 

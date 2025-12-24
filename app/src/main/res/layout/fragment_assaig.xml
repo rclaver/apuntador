@@ -31,7 +31,7 @@
       android:textSize="14sp"
       android:text="@string/blanc"
       android:visibility="visible"
-      android:lines="4"
+      android:lines="6"
       android:gravity="bottom|left"
       app:layout_constraintTop_toBottomOf="@id/titol_assaig" />
 
@@ -47,7 +47,7 @@
       android:background="@drawable/rounded_corner"
       android:textSize="16sp"
       android:text="@string/blanc"
-      android:lines="20"
+      android:lines="19"
       app:layout_constraintTop_toBottomOf="@id/narracio" />
 
    <ImageView

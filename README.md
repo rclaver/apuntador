@@ -1,5 +1,5 @@
 # apuntador
-<p><b>L'apuntador del teatre</b>. Aplicació Android per a mòbils.</p>
+<p><b>L'apuntador del teatre</b>. Aplicació Android per a mòbils (versió Android 9 Pie).</p>
 <p>Els arxius corresponents als fragments de l'obra per a cada actor i l'arxiu de l'obra sencera s'han de desar a una carpeta accessible, per exemple: 'Downloads/Apuntador'</p>
 <p>Vegeu els exemples a la carpeta sampledata<p>
 <p><b>El nom dels arxius</b> ha de tenir el següent format:<br>
@@ -10,7 +10,7 @@
 <b>- Text del narrador i situació:</b> Qualsevol text que no comenci amb el nom d'un actor seguit de dos punts (:)</p>
 <hr>
 <p><b>Español</b></p>
-<p><b>El apuntador del teatro</b>. Aplicación Android para móviles.</p>
+<p><b>El apuntador del teatro</b>. Aplicación Android para móviles (versión Android 9 Pie).</p>
 <p>Los archivos correspondientes a los fragmentos de la obra para cada actor y el archivo de la obra entera deben guardarse en una carpeta accesible, por ejemplo: 'Downloads/Apuntador'</p>
 <p>Ver los ejemplos en la carpeta sampledata<p>
 <p><b>El nombre de los archivos</b> debe tener el siguiente formato:<br>
@@ -21,7 +21,7 @@
 <b>- Texto del narrador y situación:</b> Cualquier texto que no comience con el nombre de un actor seguido de dos puntos (:)</p>
 <hr>
 <p><b>English</b></p>
-<p><b>The Theatre Prompter</b>. Android mobile application.</p>
+<p><b>The Theatre Prompter</b>. Android mobile application (Android 9 Pie version).</p>
 <p>The files corresponding to the fragments of the play for each actor and the file of the entire play must be saved in a accessible folder, example: 'Downloads/Prompter'</p>
 <p>See the examples in the sampledata folder<p>
 <p><b>The file names</b> must have the following format:<br>
