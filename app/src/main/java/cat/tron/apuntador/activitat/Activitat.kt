@@ -25,7 +25,7 @@ class Activitat : AppCompatActivity() {
    private var pendentEscolta = false
    private val regexPersonatge = """^(\w*?\s?)(:\s?)(.*$)""".toRegex()
    private val regexNarrador = """([^\(]*)(\(.*?\))(.*)""".toRegex()
-   private val patroEscena = Regex("""\(.*\)""")
+   private val patroEscena = Regex("""\(.*?\)""")
 
    private var personatges = mutableMapOf<String, Map<String,Any>>()
    private val narrador = GestorDeVeu.objVeus.getVeuNarrador()
@@ -138,7 +138,7 @@ class Activitat : AppCompatActivity() {
       var ret = ""
       val subText = patroEscena.replace(text, "")
 
-      if (subText.lowercase() == actor.lowercase()) {
+      if (subText.equals(actor, ignoreCase = true)) {    //subText.lowercase() == actor.lowercase()
          pendentEscolta = !objActor.esObraSencera()
          ret = mostraSentencia(subText, ends, esNarracio)
       } else if (pendentEscolta) {
