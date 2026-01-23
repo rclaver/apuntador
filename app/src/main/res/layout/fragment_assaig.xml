@@ -30,7 +30,6 @@
       android:layout_marginEnd="8dp"
       android:textSize="14sp"
       android:text="@string/blanc"
-      android:visibility="visible"
       android:lines="4"
       android:gravity="bottom|left"
       app:layout_constraintTop_toBottomOf="@id/titol_assaig" />

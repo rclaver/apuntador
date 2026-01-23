@@ -22,6 +22,7 @@ object GestorDeVeu {
       fun set(t: TextToSpeech?) { tts = t }
       fun get(): TextToSpeech? = tts
       fun inici() { tts?.language = Locale("ca_ES") }
+      /*
       fun llistaNomsDeVeus(local: String): Array<String> {
          var llista: Array<String> = arrayOf()
          tts?.voices?.forEach {
@@ -30,7 +31,8 @@ object GestorDeVeu {
             }
          }
          return llista
-      }
+      } */
+      /*
       fun llistaDeVeus(local: String): Array<Voice> {
          var llista: Array<Voice> = arrayOf()
          tts?.voices?.forEach {
@@ -39,7 +41,7 @@ object GestorDeVeu {
             }
          }
          return llista
-      }
+      } */
    }
 
    object objVeus {
@@ -90,14 +92,13 @@ object GestorDeVeu {
    */
    suspend fun textToAudio(text: String,
                            veuActor: Map<String, Any>,
-                           ends: String,
                            esNarracio: Boolean = false,
                            esObraSencera: Boolean = false,
-                           ac: Activitat): String {
+                           ac: Activitat) {
 
-      ac.mostraSentencia(text, ends, esNarracio)
+      ac.mostraSentencia(text, esNarracio)
 
-      if (esObraSencera or (ends != ":" && !esNarracio)) {
+      if (esObraSencera or !esNarracio) {
          val tts = objTTS.get()
          val veu = veuActor["veu"] as Voice
          val registre = veuActor["registre"].toString().toFloat()
@@ -108,7 +109,6 @@ object GestorDeVeu {
          tts?.voice = veu
          while (tts?.isSpeaking==true) { true }
       }
-      return text
    }
 
    /*
@@ -183,7 +183,8 @@ object GestorDeVeu {
    }
 
    private fun calculaTemps(text: String): Long {
-      return  (text.length * 100).toLong()
+      val temps = (text.length * 100).toLong()
+      return if (temps < 2000) 2000L else temps
    }
 
    fun canta(veuSeleccionada: String, registre: String, velocitat: String, llengua: String) {

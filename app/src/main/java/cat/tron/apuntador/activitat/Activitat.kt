@@ -85,46 +85,36 @@ class Activitat : AppCompatActivity() {
    }
 
    private suspend fun processaEscena(fitxerEscena: DocumentFile? = null, i: Int = 0, nEscenes:Int = 0) {
-
       if (fitxerEscena?.exists() == true ) {
          val sentencies = Utilitats.llegeixArxiu(ctxAssaig, fitxerEscena).split('\n')
 
          for (sentencia in sentencies) {
-            var ret = ""
-            var nar = ""
             if (sentencia.isNotEmpty()) {
                try {
                   val ma = regexPersonatge.find(sentencia)!!
                   val personatge = ma.groupValues[1]
-                  nar = processaFragment(personatge, narrador, ":", true)
+                  processaFragment(personatge, narrador, true)
                   val veu = personatges[personatge] ?: narrador
                   try {
                      val mb = regexNarrador.find(ma.groupValues[3])!!
                      if (mb.groupValues[1].isNotEmpty() && mb.groupValues[2].isNotEmpty() && mb.groupValues[3].isNotEmpty()) {
-                        ret += processaFragment(mb.groupValues[1], veu, " ")
-                        nar += processaFragment(mb.groupValues[2], narrador, " ", true)
-                        ret += processaFragment(mb.groupValues[3], veu, "\n")
+                        processaFragment(mb.groupValues[1], veu)
+                        processaFragment(mb.groupValues[2], narrador, true)
+                        processaFragment(mb.groupValues[3], veu)
                      } else if (mb.groupValues[1].isNotEmpty() && mb.groupValues[2].isNotEmpty()) {
-                        ret += processaFragment(mb.groupValues[1], veu, " ")
-                        nar += processaFragment(mb.groupValues[2], narrador, "\n", true)
+                        processaFragment(mb.groupValues[1], veu)
+                        processaFragment(mb.groupValues[2], narrador, true)
                      } else if (mb.groupValues[2].isNotEmpty() && mb.groupValues[3].isNotEmpty()) {
-                        nar += processaFragment(mb.groupValues[2], narrador, " ", true)
-                        ret += processaFragment(mb.groupValues[3], veu, "\n")
+                        processaFragment(mb.groupValues[2], narrador, true)
+                        processaFragment(mb.groupValues[3], veu)
                      }
-                  } catch (e: Exception) {
-                     ret += processaFragment(ma.groupValues[3], veu, "\n")
+                  } catch (e: Exception) { //text pla del personatge
+                     processaFragment(ma.groupValues[3], veu)
                   }
-               } catch (e: Exception) {
-                  nar += processaFragment(sentencia, narrador, "\n", true)
+               } catch (e: Exception) { //text del narrador
+                  processaFragment(sentencia, narrador, true)
                }
-               withContext(Dispatchers.Main) {
-                  if (nar.isEmpty()) {
-                     frgAssaig.escenaActual.text = ret
-                  }else {
-                     frgAssaig.narracio.text = nar
-                  }
-               }
-               delay(50) //espera per donar temps a l'usuari (i a la UI)
+               delay(100) //espera per donar temps a l'usuari (i a la UI)
             }
             if (stop || (estat=="anterior" && i>0) || (estat=="següent" && i<nEscenes)) {
                break  //sortir del bucle de sentències d'aquesta escena
@@ -134,41 +124,37 @@ class Activitat : AppCompatActivity() {
       }
    }
 
-   private suspend fun processaFragment(text: String, veu: Map<String, Any>, ends: String, esNarracio: Boolean = false): String {
-      var ret = ""
-      val subText = patroEscena.replace(text, "")
+   private suspend fun processaFragment(text: String, veu: Map<String, Any>, esNarracio: Boolean = false) {
+      val subText = if (esNarracio) text.trim() else patroEscena.replace(text, "").trim()
 
       if (subText.equals(actor, ignoreCase = true)) {    //subText.lowercase() == actor.lowercase()
          pendentEscolta = !objActor.esObraSencera()
-         ret = mostraSentencia(subText, ends, esNarracio)
+         mostraSentencia(subText, esNarracio)
       } else if (pendentEscolta) {
          pendentEscolta = false
-         frgAssaig.escenaActual.text = subText  //mostra el text de l'actor
-         ret = escoltaActor(subText, esNarracio)
+         mostraSentencia(subText)  //mostra el text de l'actor
+         escoltaActor(subText, esNarracio)
       } else {
-         ret += GestorDeVeu.textToAudio(subText, veu, ends, esNarracio, objActor.esObraSencera(), this)
+         GestorDeVeu.textToAudio(subText, veu, esNarracio, objActor.esObraSencera(), this)
          delay(100)
       }
-      return ret
    }
 
-   suspend fun mostraSentencia(text: String, ends: String, esNarracio: Boolean = false): String {
-      val ret = "${text}${ends}"
+   suspend fun mostraSentencia(text: String, esNarracio: Boolean=false) {
       withContext(Dispatchers.Main) {
-         if (esNarracio || ends == ":") {
-            frgAssaig.narracio.text = ret
-            delay(100)
-         } else {
-            frgAssaig.escenaActual.text = patroEscena.replace(ret, "")
+         if (esNarracio) {
+            frgAssaig.narracio.text = text
+         }else {
+            frgAssaig.escenaActual.text = text
          }
+         delay(200)
       }
-      delay(100)
-      return ret
    }
 
    private suspend fun mostraError(text: String) {
       withContext(Dispatchers.Main) {
          frgAssaig.error.text = text
+         delay(100)
       }
    }
 
@@ -186,7 +172,7 @@ class Activitat : AppCompatActivity() {
       }
       if (encert < 80) {
          delay(100)
-         GestorDeVeu.textToAudio(originalText, personatges[actor] ?: narrador, "\n", esNarracio, objActor.esObraSencera(), this)
+         GestorDeVeu.textToAudio(originalText, personatges[actor] ?: narrador, esNarracio, objActor.esObraSencera(), this)
          mostraError("")
       }
       return originalText
