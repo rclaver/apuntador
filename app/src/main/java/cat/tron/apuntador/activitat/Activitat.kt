@@ -19,16 +19,13 @@ class Activitat : AppCompatActivity() {
 
    private var titol = ""
    private var actor = ""
-   private var estat = "inici"
-   private var enPausa = false
-   private var stop = false
    private var pendentEscolta = false
    private val regexPersonatge = """^(\w*?\s?)(:\s?)(.*$)""".toRegex()
    private val regexNarrador = """([^\(]*)(\(.*?\))(.*)""".toRegex()
    private val patroEscena = Regex("""\(.*?\)""")
 
    private var personatges = mutableMapOf<String, Map<String,Any>>()
-   private val narrador = GestorDeVeu.objVeus.getVeuNarrador()
+   private val veuNarrador = GestorDeVeu.objVeus.getVeuNarrador()
 
    object objActor {
       private var actor: String = ""
@@ -41,13 +38,14 @@ class Activitat : AppCompatActivity() {
       fun esObraSencera(): Boolean = sencera
    }
 
-   fun canviEstat(stat: String) {
-      estat = stat
-      enPausa = (estat == "pausa")
-      stop = (estat == "stop")
-      if (estat == "primer_inici") {
-         iniciAssaig()
+   object objControls {
+      private val ac = Activitat()
+      private var estat: String = "inici"
+      fun set(e:String) {
+         estat = e
+         if (e == "primer_inici") ac.iniciAssaig()
       }
+      fun get(): String = estat
    }
 
    fun iniciAssaig() {
@@ -71,14 +69,14 @@ class Activitat : AppCompatActivity() {
             ).sortedBy { it.name }
             val nEscenes = escenes.size
             var i = 0
-            while (i <= nEscenes && ! stop) {
+            while (i <= nEscenes && objControls.get() != "stop") {
                processaEscena(escenes[i], i, nEscenes)
-               if (estat == "anterior" ) {
+               if (objControls.get() == "anterior" ) {
                   if (i > 0) i--
                }else if (i < nEscenes) {
                   i++
                }
-               estat = "inici"
+               objControls.set("inici")
             }
          }
       }
@@ -89,37 +87,37 @@ class Activitat : AppCompatActivity() {
          val sentencies = Utilitats.llegeixArxiu(ctxAssaig, fitxerEscena).split('\n')
 
          for (sentencia in sentencies) {
-            if (sentencia.isNotEmpty()) {
+            if (sentencia.isNotEmpty() || objControls.get()=="més") {
                try {
                   val ma = regexPersonatge.find(sentencia)!!
                   val personatge = ma.groupValues[1]
-                  processaFragment(personatge, narrador, true)
-                  val veu = personatges[personatge] ?: narrador
+                  processaFragment(personatge, veuNarrador, true)
+                  val veu = personatges[personatge] ?: veuNarrador
                   try {
                      val mb = regexNarrador.find(ma.groupValues[3])!!
                      if (mb.groupValues[1].isNotEmpty() && mb.groupValues[2].isNotEmpty() && mb.groupValues[3].isNotEmpty()) {
                         processaFragment(mb.groupValues[1], veu)
-                        processaFragment(mb.groupValues[2], narrador, true)
+                        if (objActor.esObraSencera()) processaFragment(mb.groupValues[2], veuNarrador, true)
                         processaFragment(mb.groupValues[3], veu)
                      } else if (mb.groupValues[1].isNotEmpty() && mb.groupValues[2].isNotEmpty()) {
                         processaFragment(mb.groupValues[1], veu)
-                        processaFragment(mb.groupValues[2], narrador, true)
+                        if (objActor.esObraSencera()) processaFragment(mb.groupValues[2], veuNarrador, true)
                      } else if (mb.groupValues[2].isNotEmpty() && mb.groupValues[3].isNotEmpty()) {
-                        processaFragment(mb.groupValues[2], narrador, true)
+                        if (objActor.esObraSencera()) processaFragment(mb.groupValues[2], veuNarrador, true)
                         processaFragment(mb.groupValues[3], veu)
                      }
                   } catch (e: Exception) { //text pla del personatge
                      processaFragment(ma.groupValues[3], veu)
                   }
                } catch (e: Exception) { //text del narrador
-                  processaFragment(sentencia, narrador, true)
+                  processaFragment(sentencia, veuNarrador, true)
                }
-               delay(100) //espera per donar temps a l'usuari (i a la UI)
+               delay(150) //espera per donar temps a l'usuari (i a la UI)
             }
-            if (stop || (estat=="anterior" && i>0) || (estat=="següent" && i<nEscenes)) {
+            if (objControls.get()=="stop" || (objControls.get()=="anterior" && i>0) || (objControls.get()=="següent" && i<nEscenes)) {
                break  //sortir del bucle de sentències d'aquesta escena
             }
-            while (enPausa) {delay(50) } //esperar mentre estigui en pausa
+            while (objControls.get()=="pausa") delay(50)  //esperar mentre estigui en pausa
          }
       }
    }
@@ -172,7 +170,7 @@ class Activitat : AppCompatActivity() {
       }
       if (encert < 80) {
          delay(100)
-         GestorDeVeu.textToAudio(originalText, personatges[actor] ?: narrador, esNarracio, objActor.esObraSencera(), this)
+         GestorDeVeu.textToAudio(originalText, personatges[actor] ?: veuNarrador, esNarracio, objActor.esObraSencera(), this)
          mostraError("")
       }
       return originalText

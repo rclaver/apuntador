@@ -25,6 +25,8 @@ class AssaigFragment : Fragment() {
    lateinit var btnStop: ImageView
    lateinit var btnAnterior: ImageView
    lateinit var btnSeguent: ImageView
+   lateinit var btnMenys: ImageView
+   lateinit var btnMes: ImageView
 
    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
       _binding = FragmentAssaigBinding.inflate(inflater, container, false)
@@ -45,28 +47,36 @@ class AssaigFragment : Fragment() {
          estatIniciat = "inici"
          btnInici.visibility = View.INVISIBLE
          btnPausa.visibility = View.VISIBLE
-         activitat.canviEstat(estat)
+         Activitat.objControls.set(estat)
       }
 
       btnPausa.setOnClickListener {
          btnInici.visibility = View.VISIBLE
          btnPausa.visibility = View.INVISIBLE
-         activitat.canviEstat("pausa")
+         Activitat.objControls.set("pausa")
       }
 
       btnStop.setOnClickListener {
          btnInici.visibility= View.VISIBLE
          btnPausa.visibility= View.INVISIBLE
-         activitat.canviEstat("stop")
+         Activitat.objControls.set("stop")
          findNavController().navigate(R.id.action_AssaigFragment_to_SeleccioFragment)
       }
 
       btnAnterior.setOnClickListener {
-         activitat.canviEstat("anterior")
+         Activitat.objControls.set("anterior")
       }
 
       btnSeguent.setOnClickListener {
-         activitat.canviEstat("següent")
+         Activitat.objControls.set("següent")
+      }
+
+      btnMenys.setOnClickListener {
+         Activitat.objControls.set("menys")
+      }
+
+      btnMes.setOnClickListener {
+         Activitat.objControls.set("més")
       }
    }
 
@@ -78,6 +88,8 @@ class AssaigFragment : Fragment() {
       btnStop = binding.stop
       btnAnterior = binding.anterior
       btnSeguent = binding.seguent
+      btnMenys = binding.menys
+      btnMes = binding.mes
 
       btnInici.visibility= View.VISIBLE
       btnPausa.visibility= View.INVISIBLE
