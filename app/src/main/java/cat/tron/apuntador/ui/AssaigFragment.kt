@@ -47,7 +47,7 @@ class AssaigFragment : Fragment() {
          estatIniciat = "inici"
          btnInici.visibility = View.INVISIBLE
          btnPausa.visibility = View.VISIBLE
-         Activitat.objControls.set(estat)
+         activitat.estatInicial(estat)
       }
 
       btnPausa.setOnClickListener {

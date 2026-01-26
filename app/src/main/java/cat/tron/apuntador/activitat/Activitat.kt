@@ -39,13 +39,14 @@ class Activitat : AppCompatActivity() {
    }
 
    object objControls {
-      private val ac = Activitat()
       private var estat: String = "inici"
-      fun set(e:String) {
-         estat = e
-         if (e == "primer_inici") ac.iniciAssaig()
-      }
+      fun set(e:String) { estat = e }
       fun get(): String = estat
+   }
+
+   fun estatInicial(estat: String) {
+      objControls.set(estat)
+      if (estat == "primer_inici") iniciAssaig()
    }
 
    fun iniciAssaig() {
@@ -87,7 +88,7 @@ class Activitat : AppCompatActivity() {
          val sentencies = Utilitats.llegeixArxiu(ctxAssaig, fitxerEscena).split('\n')
 
          for (sentencia in sentencies) {
-            if (sentencia.isNotEmpty() || objControls.get()=="més") {
+            if (sentencia.isNotEmpty() && objControls.get() != "més") {
                try {
                   val ma = regexPersonatge.find(sentencia)!!
                   val personatge = ma.groupValues[1]

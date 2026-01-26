@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId = "cat.tron.apuntador"
         minSdk = 23
-        targetSdk = 28
+        targetSdk = 33
         //noinspection ExpiredTargetSdkVersion
         //sin problema si no se publica en Google Play #35->Android-15 #28->Android-9 #22->Android-5.1
         versionCode = 1
