@@ -44,11 +44,6 @@ class Activitat : AppCompatActivity() {
       fun get(): String = estat
    }
 
-   fun estatInicial(estat: String) {
-      objControls.set(estat)
-      if (estat == "primer_inici") iniciAssaig()
-   }
-
    fun iniciAssaig() {
       GestorDeVeu.objTTS.inici()
 
@@ -119,6 +114,7 @@ class Activitat : AppCompatActivity() {
                break  //sortir del bucle de sentències d'aquesta escena
             }
             while (objControls.get()=="pausa") delay(50)  //esperar mentre estigui en pausa
+            if (objControls.get() == "més") objControls.set("inici")
          }
       }
    }
