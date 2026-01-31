@@ -19,6 +19,8 @@ class Activitat : AppCompatActivity() {
 
    private var titol = ""
    private var actor = ""
+   private var estat = "inici"
+   private var salta = 0
    private var pendentEscolta = false
    private val regexPersonatge = """^(\w*?\s?)(:\s?)(.*$)""".toRegex()
    private val regexNarrador = """([^\(]*)(\(.*?\))(.*)""".toRegex()
@@ -38,10 +40,9 @@ class Activitat : AppCompatActivity() {
       fun esObraSencera(): Boolean = sencera
    }
 
-   object objControls {
-      private var estat: String = "inici"
-      fun set(e:String) { estat = e }
-      fun get(): String = estat
+   fun setControl(control: String) {
+      estat = control
+      if (control == "primer_inici") iniciAssaig()
    }
 
    fun iniciAssaig() {
@@ -57,7 +58,7 @@ class Activitat : AppCompatActivity() {
          if (objActor.esObraSencera()) {
             val escena = Utilitats.obraSencera("${titol}.txt")
             processaEscena(escena)
-         } else {
+         }else {
             val escenes = Utilitats.llistaFragmentsObra(
                "${titol}.*\\.txt",
                "${titol}-${actor.lowercase()}-[0-9]*.txt",
@@ -65,14 +66,14 @@ class Activitat : AppCompatActivity() {
             ).sortedBy { it.name }
             val nEscenes = escenes.size
             var i = 0
-            while (i <= nEscenes && objControls.get() != "stop") {
+            while (i <= nEscenes && estat != "stop") {
                processaEscena(escenes[i], i, nEscenes)
-               if (objControls.get() == "anterior" ) {
+               if (estat == "anterior" ) {
                   if (i > 0) i--
                }else if (i < nEscenes) {
                   i++
                }
-               objControls.set("inici")
+               if (estat != "stop") estat = "inici"
             }
          }
       }
@@ -83,7 +84,7 @@ class Activitat : AppCompatActivity() {
          val sentencies = Utilitats.llegeixArxiu(ctxAssaig, fitxerEscena).split('\n')
 
          for (sentencia in sentencies) {
-            if (sentencia.isNotEmpty() && objControls.get() != "més") {
+            if (sentencia.isNotEmpty() && estat != "més") {
                try {
                   val ma = regexPersonatge.find(sentencia)!!
                   val personatge = ma.groupValues[1]
@@ -110,11 +111,18 @@ class Activitat : AppCompatActivity() {
                }
                delay(150) //espera per donar temps a l'usuari (i a la UI)
             }
-            if (objControls.get()=="stop" || (objControls.get()=="anterior" && i>0) || (objControls.get()=="següent" && i<nEscenes)) {
+            if (estat=="stop" || (estat=="anterior" && i>0) || (estat=="següent" && i<nEscenes)) {
                break  //sortir del bucle de sentències d'aquesta escena
             }
-            while (objControls.get()=="pausa") delay(50)  //esperar mentre estigui en pausa
-            if (objControls.get() == "més") objControls.set("inici")
+            while (estat=="pausa") delay(50)  //esperar mentre estigui en pausa
+            if (estat == "més") {
+               if (salta < 2) {
+                  salta++
+               }else {
+                  estat = "inici"
+                  salta = 0
+               }
+            }
          }
       }
    }

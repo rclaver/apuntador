@@ -47,37 +47,36 @@ class AssaigFragment : Fragment() {
          estatIniciat = "inici"
          btnInici.visibility = View.INVISIBLE
          btnPausa.visibility = View.VISIBLE
-         Activitat.objControls.set(estat)
-         if (estat == "primer_inici") activitat.iniciAssaig()
+         activitat.setControl(estat)
       }
 
       btnPausa.setOnClickListener {
          btnInici.visibility = View.VISIBLE
          btnPausa.visibility = View.INVISIBLE
-         Activitat.objControls.set("pausa")
+         activitat.setControl("pausa")
       }
 
       btnStop.setOnClickListener {
          btnInici.visibility= View.VISIBLE
          btnPausa.visibility= View.INVISIBLE
-         Activitat.objControls.set("stop")
+         activitat.setControl("stop")
          findNavController().navigate(R.id.action_AssaigFragment_to_SeleccioFragment)
       }
 
       btnAnterior.setOnClickListener {
-         Activitat.objControls.set("anterior")
+         activitat.setControl("anterior")
       }
 
       btnSeguent.setOnClickListener {
-         Activitat.objControls.set("següent")
+         activitat.setControl("següent")
       }
 
       btnMenys.setOnClickListener {
-         Activitat.objControls.set("menys")
+         activitat.setControl("menys")
       }
 
       btnMes.setOnClickListener {
-         Activitat.objControls.set("més")
+         activitat.setControl("més")
       }
    }
 
