@@ -135,7 +135,7 @@ class Activitat : AppCompatActivity() {
          mostraSentencia(subText, esNarracio)
       } else if (pendentEscolta) {
          pendentEscolta = false
-         mostraSentencia(subText)  //mostra el text de l'actor
+         mostraSentencia(subText, false, 20L)  //mostra el text de l'actor
          escoltaActor(subText, esNarracio)
       } else {
          GestorDeVeu.textToAudio(subText, veu, esNarracio, objActor.esObraSencera(), this)
@@ -143,14 +143,14 @@ class Activitat : AppCompatActivity() {
       }
    }
 
-   suspend fun mostraSentencia(text: String, esNarracio: Boolean=false) {
+   suspend fun mostraSentencia(text: String, esNarracio: Boolean=false, temps: Long=200) {
       withContext(Dispatchers.Main) {
          if (esNarracio) {
             frgAssaig.narracio.text = text
          }else {
             frgAssaig.escenaActual.text = text
          }
-         delay(200)
+         delay(temps)
       }
    }
 
