@@ -67,6 +67,7 @@ class Activitat : AppCompatActivity() {
             val nEscenes = escenes.size
             var i = 0
             while (i <= nEscenes && estat != "stop") {
+               frgAssaig.arxiu.text = escenes[i].name
                processaEscena(escenes[i], i, nEscenes)
                if (estat == "anterior" ) {
                   if (i > 0) i--

@@ -22,7 +22,7 @@
 <hr>
 <p><b>English</b></p>
 <p><b>The Theatre Prompter</b>. Android mobile application.</p>
-<p>The files corresponding to the fragments of the play for each actor and the file of the entire play must be saved in a accessible folder, example: 'Downloads/Prompter'</p>
+<p>The files corresponding to the fragments of the play for each actor and the file of the entire play must be saved in an accessible folder, example: 'Downloads/Prompter'</p>
 <p>See the examples in the sampledata folder<p>
 <p><b>The file names</b> must have the following format:<br>
 &gt; <b><u>play_name</u>-<u>actor_name</u>-<u>99</u>.txt</b><br>

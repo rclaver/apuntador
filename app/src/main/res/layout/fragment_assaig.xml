@@ -115,6 +115,18 @@
       app:layout_constraintLeft_toRightOf="@id/inici"
       app:layout_constraintTop_toTopOf="@id/inici" />
 
+   <TextView
+      android:id="@+id/arxiu"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="10dp"
+      android:layout_marginStart="8dp"
+      android:textSize="14sp"
+      android:text="@string/blanc"
+      android:visibility="visible"
+      android:textColor="@color/vermell"
+      app:layout_constraintBottom_toBottomOf="@id/inici" />
+
    <ImageView
       android:id="@+id/menys"
       android:layout_width="wrap_content"
@@ -128,12 +140,13 @@
       android:layout_marginTop="20dp"
       android:layout_marginEnd="140dp"
       android:src="@mipmap/decrementar"
-      app:layout_constraintTop_toBottomOf="@id/stop" />
+      app:layout_constraintTop_toBottomOf="@id/arxiu" />
 
    <ImageView
       android:id="@+id/mes"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:visibility="invisible"
       android:clickable="true"
       android:focusable="true"
       android:minHeight="48dp"
@@ -146,7 +159,7 @@
       android:id="@+id/error"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginStart="8dp"
+      android:layout_marginStart="0dp"
       android:layout_marginBottom="10dp"
       android:layout_marginEnd="8dp"
       android:textSize="14sp"

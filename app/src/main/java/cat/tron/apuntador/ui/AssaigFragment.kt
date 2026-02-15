@@ -20,6 +20,7 @@ class AssaigFragment : Fragment() {
    private var estatIniciat: String? = null
 
    lateinit var narracio: TextView
+   lateinit var arxiu: TextView
    lateinit var btnInici: ImageView
    lateinit var btnPausa: ImageView
    lateinit var btnStop: ImageView
@@ -83,6 +84,7 @@ class AssaigFragment : Fragment() {
    private fun initProperties() {
       activitat = Activitat()
       narracio = binding.narracio
+      arxiu = binding.arxiu
       btnInici = binding.inici
       btnPausa = binding.pausa
       btnStop = binding.stop

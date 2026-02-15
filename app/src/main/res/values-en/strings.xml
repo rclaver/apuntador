@@ -13,7 +13,7 @@
       \n<b>voice:</b> for each actor you must select one of the available voices
       \n<b>pitch:</b> deep:<i>low value</i>. high-pitched:<i>high value</i>
       \n<b>speed:</b> slow:<i>low value</i>. fast:<i>high value</i>\n
-      \n<b>note:</b> The files corresponding to the fragments of the play for each actor and the file of the complete play must be saved in a accessible folder, example: \'Documents\'\n
+      \n<b>note:</b> The files corresponding to the fragments of the play for each actor and the file of the complete play must be saved in an accessible folder, example: \'Documents\'\n
       \n<b>The file name</b> <i>fragment</i>must have the following format:
       \n- <b><u>playName</u>-<u>actorName</u>-<u>99</u>.txt</b>
       \n(the fragment_sequence_number: from 01 to 99 for each actor)\n
