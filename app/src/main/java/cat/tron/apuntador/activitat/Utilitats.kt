@@ -144,16 +144,20 @@ object Utilitats {
       }
    }
 
-   fun comparaSequenciesDeText(text1: String, text2: String): Int {
-      // normalitza el text original
-      val replace = "[\"'.,;:!¡¿?()]".toRegex()
-      val text = text1.replace(replace, " ").replace("\\s+".toRegex(), " ").trim().lowercase()
+   fun comparaSequenciesDeText(text1: String, text2: String="", tou: Boolean=true): Int {
+      if (text2.isEmpty()) {
+         return -1
+      }else {
+         // normalitza el text original
+         val replace = "[\"'.,;:!¡¿?()]".toRegex()
+         val text = text1.replace(replace, " ").replace("\\s+".toRegex(), " ").trim().lowercase()
 
-      val arrText1: List<String> = text.split(" ")
-      val arrText2: List<String> = text2.split(" ")
-      val encertDesplacament: Int = comparaPerDesplacament(arrText1, arrText2)
-      val encertPosicio: Int = comparaPerPosicio(arrText1, arrText2)
-      return maxOf(encertDesplacament, encertPosicio)
+         val arrText1: List<String> = text.split(" ")
+         val arrText2: List<String> = text2.split(" ")
+         val encertDesplacament: Int = if (tou) comparaPerDesplacament(arrText1, arrText2) else 0
+         val encertPosicio: Int = comparaPerPosicio(arrText1, arrText2)
+         return maxOf(encertDesplacament, encertPosicio)
+      }
    }
 
    private fun comparaPerPosicio(a1: List<String>, a2: List<String>): Int {

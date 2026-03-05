@@ -46,6 +46,7 @@ object GestorDeVeu {
 
    object objVeus {
       private var idioma = "ca"
+      private var reconeixementEstricte = false
       private val iVeus: Map<String, Map<String, Voice>> = mapOf(
          "ca" to mapOf(
             "dona" to Voice("ca-es-x-caf-local", Locale("ca_ES"), Voice.QUALITY_HIGH, Voice.LATENCY_NORMAL, false, null)
@@ -75,6 +76,8 @@ object GestorDeVeu {
          )
       )
       fun setIdioma(i: String) {idioma = i}
+      fun setReconeixementEstricte(r: Boolean) {reconeixementEstricte = r}
+      fun getReconeixementEstricte(): Boolean = reconeixementEstricte
       fun getVeu(elem: String, llengua: String?): Voice {
          val veus = iVeus[llengua ?: idioma]!!
          var ret = veus.values.toTypedArray()[0]

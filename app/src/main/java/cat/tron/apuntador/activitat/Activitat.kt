@@ -165,16 +165,12 @@ class Activitat : AppCompatActivity() {
    private suspend fun escoltaActor(text: String, esNarracio: Boolean = false): String {
       val originalText = patroEscena.replace(text, "")
       val nouText = GestorDeVeu.preparaReconeixementDeVeu(ctxAssaig, originalText, frgAssaig)
-      var encert = 0
-      if (nouText.isNotEmpty()) {
-         encert = Utilitats.comparaSequenciesDeText(originalText, nouText)
-         if (encert < 80) {
-            mostraError(String.format(cR.getString(R.string.encert), encert, originalText, nouText))
-         }
-      }else {
+      val encert = Utilitats.comparaSequenciesDeText(originalText, nouText, GestorDeVeu.objVeus.getReconeixementEstricte())
+      if (encert == -1) {
          mostraError(cR.getString(R.string.error_no_escolto_res))
       }
-      if (encert < 80) {
+      else if (encert < 80) {
+         mostraError(String.format(cR.getString(R.string.encert), encert, originalText, nouText))
          delay(100)
          GestorDeVeu.textToAudio(originalText, personatges[actor] ?: veuNarrador, esNarracio, objActor.esObraSencera(), this)
          mostraError("")

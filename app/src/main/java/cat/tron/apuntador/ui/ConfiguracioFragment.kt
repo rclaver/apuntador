@@ -12,6 +12,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.Spinner
+import android.widget.Switch
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -32,6 +33,7 @@ class ConfiguracioFragment : Fragment() {
    private val opcVelocitat = Array<String>(6) { n -> (0.9f + (n+1).toFloat()/10).toString() }
    private lateinit var botoDesar: Button
    private lateinit var botoInstruccions: Button
+   private lateinit var selectorEstricte: Switch
    private lateinit var instruccions: TextView
    private lateinit var espera: ProgressBar
    private val opcionsVeu = GestorDeVeu.objVeus.getList(null)
@@ -46,6 +48,7 @@ class ConfiguracioFragment : Fragment() {
       val seleccioVelocitat: Spinner
    )
    private val formulariActors = mutableListOf<VistaDadesActors>()
+   var reconeixementEstricte: Boolean = false
 
    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
       _binding = FragmentConfiguracioBinding.inflate(inflater, container, false)
@@ -81,6 +84,10 @@ class ConfiguracioFragment : Fragment() {
             }
          }
          override fun onNothingSelected(parent: AdapterView<*>) {}
+      }
+
+      selectorEstricte.setOnCheckedChangeListener { _, isChecked ->
+         GestorDeVeu.objVeus.setReconeixementEstricte(isChecked)
       }
 
       botoDesar.setOnClickListener {
@@ -196,6 +203,7 @@ class ConfiguracioFragment : Fragment() {
       selectorIdioma = binding.selectorIdioma
       botoDesar = binding.botoDesar
       botoInstruccions = binding.botoInstruccions
+      selectorEstricte = binding.selectorEstricte
       instruccions = binding.instruccions
       espera = binding.espera
    }

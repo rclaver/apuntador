@@ -124,26 +124,40 @@
          android:layout_marginTop="40dp" />
 
       <LinearLayout
-         android:id="@+id/formIdioma"
+         android:id="@+id/seleccions"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:layout_marginTop="10dp"
-         android:orientation="horizontal"
+         android:orientation="vertical"
          android:layout_marginBottom="100dp"
          android:layout_alignParentBottom="true" >
-         <TextView
-            android:layout_width="wrap_content"
+
+         <LinearLayout
+            android:id="@+id/formIdioma"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="@string/titol_seleccio_idioma"
-            android:textSize="15sp"
-            android:textColor="@color/marro"
-            android:textStyle="bold" />
-         <Spinner
-            android:id="@+id/selectorIdioma"
+            android:orientation="horizontal">
+            <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginBottom="20dp"
+               android:text="@string/titol_seleccio_idioma"
+               android:textSize="15sp"
+               android:textColor="@color/marro"
+               android:textStyle="bold" />
+            <Spinner
+               android:id="@+id/selectorIdioma"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="8dp" />
+         </LinearLayout>
+
+         <Switch
+            android:id="@+id/selectorEstricte"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp" />
+            android:layout_height="0dp"
+            android:layout_weight="0"
+            android:text="Reconeixement estricte " />
+
       </LinearLayout>
 
       <LinearLayout
