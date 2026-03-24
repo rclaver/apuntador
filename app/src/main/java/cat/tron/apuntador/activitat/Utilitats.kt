@@ -19,7 +19,6 @@ object Utilitats {
 
    const val REQUEST_CODE_OPEN_DIRECTORY = 101
    private const val STORAGE_PERMISSION_CODE = 100
-   private const val arxiuParametres = "parametres.json"
 
    object objEnFagmentSeleccio {
       private var estat: Boolean = false
@@ -34,15 +33,18 @@ object Utilitats {
    }
 
    object objCompanyia {
+      private const val arxiuDadesCompanyia = "parametres.json"
       private var llistaActors = mutableListOf<String>()
       private var dadesActors = mutableMapOf<String, Map<String,Any>>()
       private var titol: String? = null
       private var idioma: String = "ca"
+      private var estricte: Boolean = false
 
       fun set(json: JSONObject?) {
          json?.let {
             titol = it.optString("titolDeLobra", "")
             idioma = it.optString("idioma", "")
+            estricte = it.optBoolean("estricte", false)
 
             val jsonLlista = it.optJSONObject("llistatDactors")
             if (jsonLlista != null) {
@@ -66,6 +68,7 @@ object Utilitats {
          val json = JSONObject()
          json.put("titolDeLobra", titol)
          json.put("idioma", idioma)
+         json.put("estricte", estricte)
          val jsonActors = JSONObject()
          if (dadesActors.isNotEmpty()) {
             for ((actor, parametres) in dadesActors) {
@@ -84,11 +87,14 @@ object Utilitats {
 
       fun setTitol(t: String) { titol = t }
       fun setIdioma(i: String) { idioma = i }
+      fun setReconeixementEstricte(e: Boolean) { estricte = e }
       fun setActors(a: MutableList<String>) { llistaActors = a }
       fun setDadesActors(d: MutableMap<String, Map<String,Any>>) { dadesActors = d }
 
       fun getTitol(): String = titol.orEmpty()
       fun getIdioma(): String = idioma
+      fun getReconeixementEstricte(): Boolean = estricte
+      fun getArxiu(): String = arxiuDadesCompanyia
       fun getActors(): MutableList<String> {
          if (llistaActors.isEmpty()) {
             dadesActors.forEach { llistaActors.add(it.key) }
@@ -120,7 +126,7 @@ object Utilitats {
    }
 
    fun llistaDirectoriDescarregues(patro: Regex): List<DocumentFile> {
-      var llistaArxiusDescarregues = mutableListOf<DocumentFile>()
+      val llistaArxiusDescarregues = mutableListOf<DocumentFile>()
       val dir = DirectoriDescarregues.get()
       if (dir?.exists() == true) {
          dir.listFiles().forEach { file ->
@@ -144,7 +150,7 @@ object Utilitats {
       }
    }
 
-   fun comparaSequenciesDeText(text1: String, text2: String="", tou: Boolean=true): Int {
+   fun comparaSequenciesDeText(text1: String, text2: String="", estricte: Boolean=true): Int {
       if (text2.isEmpty()) {
          return -1
       }else {
@@ -154,7 +160,7 @@ object Utilitats {
 
          val arrText1: List<String> = text.split(" ")
          val arrText2: List<String> = text2.split(" ")
-         val encertDesplacament: Int = if (tou) comparaPerDesplacament(arrText1, arrText2) else 0
+         val encertDesplacament: Int = if (estricte) 0 else comparaPerDesplacament(arrText1, arrText2)
          val encertPosicio: Int = comparaPerPosicio(arrText1, arrText2)
          return maxOf(encertDesplacament, encertPosicio)
       }
@@ -266,8 +272,8 @@ object Utilitats {
    suspend fun verificaDadesCompanyia(context: Context): JSONObject? {
       var dades: JSONObject? = null
       withContext(Dispatchers.IO) {
-         if (File(context.filesDir, arxiuParametres).exists()) {
-            dades = llegeixJsonArxiu(arxiuParametres, context)
+         if (File(context.filesDir, objCompanyia.getArxiu()).exists()) {
+            dades = llegeixDades(objCompanyia.getArxiu(), context)
          }
          if (dades == null) {
             obtenirDadesCompanyia()
@@ -279,12 +285,10 @@ object Utilitats {
    }
 
    /*
-   Escriu a l'arxiu de paràmetres les dades de la Companyia en format JSON
+   Escriu a un arxiu les dades en format JSON
    */
-   fun desaJsonArxiu(file: String?, data: JSONObject?, context: Context): Boolean {
+   fun desaDades(arxiu: String, dades: JSONObject, context: Context): Boolean {
       return try {
-         val arxiu = file ?: arxiuParametres
-         val dades = data ?: objCompanyia.get()
          context.openFileOutput(arxiu, Context.MODE_PRIVATE).use {
             it.write(dades.toString().toByteArray())
          }
@@ -296,10 +300,10 @@ object Utilitats {
 
    /*
    Llegeix l'arxiu de paràmetres per obtenir les dades en format JSON
+   /data/data/cat.tron.apuntador/files/parametres.json
    */
-   fun llegeixJsonArxiu(file: String?, context: Context): JSONObject? {
+   fun llegeixDades(arxiu: String, context: Context): JSONObject? {
       return try {
-         val arxiu = file ?: arxiuParametres  //  /data/data/cat.tron.apuntador/files/parametres.json
          val jsonString = File(context.filesDir, arxiu).readText()
          JSONObject(jsonString)
       } catch (e: Exception) {

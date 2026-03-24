@@ -48,7 +48,6 @@ class ConfiguracioFragment : Fragment() {
       val seleccioVelocitat: Spinner
    )
    private val formulariActors = mutableListOf<VistaDadesActors>()
-   var reconeixementEstricte: Boolean = false
 
    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
       _binding = FragmentConfiguracioBinding.inflate(inflater, container, false)
@@ -87,11 +86,12 @@ class ConfiguracioFragment : Fragment() {
       }
 
       selectorEstricte.setOnCheckedChangeListener { _, isChecked ->
-         GestorDeVeu.objVeus.setReconeixementEstricte(isChecked)
+         Utilitats.objCompanyia.setReconeixementEstricte(isChecked)
       }
 
       botoDesar.setOnClickListener {
          val idioma = selectorIdioma.selectedItem.toString().substring(0,2).lowercase()
+         val estricte = selectorEstricte.isChecked
          val dadesActors = mutableMapOf<String, Map<String,Any>>()
          for (camp in formulariActors) {
             val actor = camp.actor.text.toString()
@@ -101,12 +101,12 @@ class ConfiguracioFragment : Fragment() {
             dadesActors[actor] = mapOf("idioma" to idioma, "veu" to veu, "registre" to registre, "velocitat" to velocitat)
          }
          Utilitats.objCompanyia.setDadesActors(dadesActors)
-
          Utilitats.objCompanyia.setIdioma(idioma)
+         Utilitats.objCompanyia.setReconeixementEstricte(estricte)
          GestorDeVeu.objVeus.setIdioma(idioma)
          Utilitats.canviaIdioma(idioma, requireContext())
 
-         if (Utilitats.desaJsonArxiu(null, null, requireContext())) {
+         if (Utilitats.desaDades(Utilitats.objCompanyia.getArxiu(), Utilitats.objCompanyia.get(), requireContext())) {
             findNavController().navigate(R.id.action_ConfiguracioFragment_to_SeleccioFragment)
          }
       }
@@ -136,12 +136,12 @@ class ConfiguracioFragment : Fragment() {
          for (dadesActor in llistaDadesActors) { afegirCampsActor(dadesActor, context) }
       }else {
          var llistaActors = Utilitats.objCompanyia.getActors()
-         if (llistaActors?.size == 0) {
+         if (llistaActors.size == 0) {
             Utilitats.obtenirDadesCompanyia()
             llistaActors = Utilitats.objCompanyia.getActors()
          }
          val mapaTemp = mutableMapOf<String, Map<String,Any>>()
-         llistaActors!!.forEach { mapaTemp[it] = mapOf<String, Any>() }
+         llistaActors.forEach { mapaTemp[it] = mapOf<String, Any>() }
          if (mapaTemp.isNotEmpty()) {
             for (dActor in mapaTemp) { afegirCampsActor(dActor, context) }
          }

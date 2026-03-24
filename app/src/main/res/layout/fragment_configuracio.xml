@@ -156,7 +156,11 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="0"
-            android:text="Reconeixement estricte " />
+            android:checked="false"
+            android:fontFamily="sans-serif-black"
+            android:showText="true"
+            android:text="Reconeixement estricte "
+            android:textColor="@color/marro" />
 
       </LinearLayout>
 

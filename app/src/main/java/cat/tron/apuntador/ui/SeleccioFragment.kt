@@ -68,7 +68,7 @@ class SeleccioFragment : Fragment() {
    */
    private fun creaBotonsDeRadio(context: Context, radioGrupActors: RadioGroup, obra: String) {
       val alt = Utilitats.dpToPx(context, 44).toInt()
-      var llistaActors = Utilitats.objCompanyia.getActors()
+      val llistaActors = Utilitats.objCompanyia.getActors()
 
       if (llistaActors != null) {
          llistaActors.add(obra)
