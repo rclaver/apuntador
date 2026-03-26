@@ -130,6 +130,9 @@ class ConfiguracioFragment : Fragment() {
       val index = idiomes.indexOf(Utilitats.objCompanyia.getIdioma())
       if (index >= 0) { selectorIdioma.setSelection(index) }
 
+      // Establir l'opció prèvia de selecció estricte
+      selectorEstricte.isChecked = Utilitats.objCompanyia.getReconeixementEstricte()
+
       // Crear els elements de formulari per a cada actor
       val llistaDadesActors = Utilitats.objCompanyia.getDadesActors()
       if (llistaDadesActors.isNotEmpty()) {

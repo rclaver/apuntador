@@ -69,20 +69,16 @@ class SeleccioFragment : Fragment() {
    private fun creaBotonsDeRadio(context: Context, radioGrupActors: RadioGroup, obra: String) {
       val alt = Utilitats.dpToPx(context, 44).toInt()
       val llistaActors = Utilitats.objCompanyia.getActors()
-
-      if (llistaActors != null) {
-         llistaActors.add(obra)
-
-         var i = 180
-         llistaActors.forEach { actor ->
-            val radioButton = RadioButton(context).apply {
-               text = actor.capitalize(Locale.ROOT)
-               id = i++
-               height = alt
-               textSize = 14f
-            }
-            radioGrupActors.addView(radioButton)
+      llistaActors.add(obra)
+      var i = 180
+      llistaActors.forEach { actor ->
+         val radioButton = RadioButton(context).apply {
+            text = actor.capitalize(Locale.ROOT)
+            id = i++
+            height = alt
+            textSize = 14f
          }
+         radioGrupActors.addView(radioButton)
       }
    }
 
