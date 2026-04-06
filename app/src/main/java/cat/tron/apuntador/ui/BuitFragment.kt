@@ -45,6 +45,15 @@ class BuitFragment : Fragment() {
       }
    }
 
+   override fun onResume() {
+      super.onResume()
+      if (Utilitats.objAplicacio.get()) {
+         val frAct = this.activity
+         frAct?.finish()
+         //exitProcess(0)
+      }
+   }
+
    private fun mostraVersio(): String {
       return "${Build.MANUFACTURER} ${Build.MODEL}\n" +
              "ver. Android: ${Build.VERSION.RELEASE}"

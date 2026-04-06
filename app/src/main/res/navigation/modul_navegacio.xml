@@ -40,6 +40,9 @@
       <action
          android:id="@+id/action_SeleccioFragment_to_ConfiguracioFragment"
          app:destination="@id/ConfiguracioFragment" />
+      <action
+         android:id="@+id/action_SeleccioFragment_to_BuitFragment"
+         app:destination="@id/BuitFragment" />
    </fragment>
 
    <fragment

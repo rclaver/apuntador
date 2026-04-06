@@ -169,7 +169,7 @@ class Activitat : AppCompatActivity() {
       val encert = Utilitats.comparaSequenciesDeText(originalText, nouText, estricte)
       if (encert == -1 && !estricte) {
          mostraError(cR.getString(R.string.error_no_escolto_res))
-      }else if ((estricte && encert < 100) || encert < 80) {
+      }else if (estricte || encert < 80) {
          mostraError(String.format(cR.getString(R.string.encert), encert, originalText, nouText))
          delay(100)
          GestorDeVeu.textToAudio(originalText, personatges[actor] ?: veuNarrador, esNarracio, objActor.esObraSencera(), this)

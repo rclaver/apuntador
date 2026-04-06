@@ -16,7 +16,6 @@ import cat.tron.apuntador.activitat.Activitat
 import cat.tron.apuntador.activitat.Utilitats
 import cat.tron.apuntador.databinding.FragmentSeleccioBinding
 import java.util.Locale
-import kotlin.system.exitProcess
 
 class SeleccioFragment : Fragment() {
    private var _binding: FragmentSeleccioBinding? = null
@@ -46,7 +45,6 @@ class SeleccioFragment : Fragment() {
          val radioBtn: RadioButton = view.findViewById(checkedRadioButtonId)
          val nomActor = radioBtn.text.toString()
          Activitat.objActor.set(nomActor, getString(R.string.obra_sencera))
-
          findNavController().navigate(R.id.action_SeleccioFragment_to_AssaigFragment)
       }
 
@@ -56,9 +54,8 @@ class SeleccioFragment : Fragment() {
       }
 
       botoTancar.setOnClickListener {
-         val frAct = this.activity
-         frAct?.finish()
-         exitProcess(0)
+         Utilitats.objAplicacio.set(true)
+         findNavController().navigate(R.id.action_SeleccioFragment_to_BuitFragment)
       }
    }
 

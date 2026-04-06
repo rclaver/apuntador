@@ -20,6 +20,12 @@ object Utilitats {
    const val REQUEST_CODE_OPEN_DIRECTORY = 101
    private const val STORAGE_PERMISSION_CODE = 100
 
+   object objAplicacio {
+      private var finalitzat: Boolean = false
+      fun set(e: Boolean) { finalitzat = e }
+      fun get(): Boolean = finalitzat
+   }
+
    object objEnFagmentSeleccio {
       private var estat: Boolean = false
       fun set(e: Boolean) { estat = e }
