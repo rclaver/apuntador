@@ -45,6 +45,7 @@ class BuitFragment : Fragment() {
       }
    }
 
+/*
    override fun onResume() {
       super.onResume()
       if (Utilitats.objAplicacio.get()) {
@@ -53,7 +54,7 @@ class BuitFragment : Fragment() {
          //exitProcess(0)
       }
    }
-
+*/
    private fun mostraVersio(): String {
       return "${Build.MANUFACTURER} ${Build.MODEL}\n" +
              "ver. Android: ${Build.VERSION.RELEASE}"
