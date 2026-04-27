@@ -98,7 +98,7 @@ object GestorDeVeu {
 
       ac.mostraSentencia(text, esNarracio)
 
-      if (esObraSencera or !esNarracio) {
+      if (esObraSencera || !esNarracio) {
          val tts = objTTS.get()
          val veu = veuActor["veu"] as Voice
          val registre = veuActor["registre"].toString().toFloat()
