@@ -167,13 +167,13 @@ class Activitat : AppCompatActivity() {
       val nouText = GestorDeVeu.preparaReconeixementDeVeu(ctxAssaig, originalText, frgAssaig)
       val estricte = Utilitats.objCompanyia.getReconeixementEstricte()
       val encert = Utilitats.comparaSequenciesDeText(originalText, nouText, estricte)
-      if (!estricte && encert == -1) {
-         mostraError(cR.getString(R.string.error_no_escolto_res))
-      }else if (estricte || encert < 80) {
+      delay(100)
+      if (estricte || encert < 80) {
          mostraError(String.format(cR.getString(R.string.encert), encert, originalText, nouText))
          GestorDeVeu.textToAudio(originalText, personatges[actor] ?: veuNarrador, esNarracio, objActor.esObraSencera(), this)
-         delay(100)
-      }
+      }//else if (!estricte && encert == -1) {
+      //   mostraError(cR.getString(R.string.error_no_escolto_res))
+      //}
       return originalText
    }
 
