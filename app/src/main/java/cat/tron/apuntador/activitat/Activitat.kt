@@ -28,6 +28,7 @@ class Activitat : AppCompatActivity() {
 
    private var personatges = mutableMapOf<String, Map<String,Any>>()
    private val veuNarrador = GestorDeVeu.objVeus.getVeuNarrador()
+   private val estricte = Utilitats.objCompanyia.getReconeixementEstricte()
 
    object objActor {
       private var actor: String = ""
@@ -165,9 +166,8 @@ class Activitat : AppCompatActivity() {
    private suspend fun escoltaActor(text: String, esNarracio: Boolean = false): String {
       val originalText = patroEscena.replace(text, "")
       val nouText = GestorDeVeu.preparaReconeixementDeVeu(ctxAssaig, originalText, frgAssaig)
-      val estricte = Utilitats.objCompanyia.getReconeixementEstricte()
+      //val estricte = Utilitats.objCompanyia.getReconeixementEstricte()
       val encert = Utilitats.comparaSequenciesDeText(originalText, nouText, estricte)
-      delay(100)
       if (estricte || encert < 80) {
          mostraError(String.format(cR.getString(R.string.encert), encert, originalText, nouText))
          GestorDeVeu.textToAudio(originalText, personatges[actor] ?: veuNarrador, esNarracio, objActor.esObraSencera(), this)
